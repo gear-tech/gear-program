@@ -22,14 +22,14 @@ const DEFAULT_GEAR_ENDPOINT: &str = "wss://rpc-node.gear-tech.io:443";
 
 /// gear api
 pub struct Api {
-    api: RuntimeApi<GearConfig, PolkadotExtrinsicParams<GearConfig>>,
+    runtime: RuntimeApi<GearConfig, PolkadotExtrinsicParams<GearConfig>>,
     signer: PairSigner<GearConfig, Pair>,
 }
 
 impl Api {
     /// New gear api
     pub async fn new(url: Option<&str>, passwd: Option<&str>) -> Result<Self> {
-        let api = ClientBuilder::new()
+        let runtime = ClientBuilder::new()
             .set_url(url.unwrap_or(DEFAULT_GEAR_ENDPOINT))
             .build()
             .await?
@@ -37,6 +37,6 @@ impl Api {
 
         let signer = keystore::cache(passwd.as_ref().copied())?;
 
-        Ok(Self { api, signer })
+        Ok(Self { runtime, signer })
     }
 }

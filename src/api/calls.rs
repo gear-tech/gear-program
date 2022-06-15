@@ -14,7 +14,7 @@ impl Api {
     ///
     /// gear submit_program
     pub async fn submit_program(&self, params: gear::calls::SubmitProgram) -> Result<H256> {
-        let process = self.api.tx().gear().submit_program(
+        let process = self.runtime.tx().gear().submit_program(
             params.code,
             params.salt,
             params.init_payload,
@@ -41,7 +41,7 @@ impl Api {
         Call: subxt::Call + Send + Sync,
     {
         let mut process = tx.sign_and_submit_then_watch_default(&self.signer).await?;
-        println!("Submited call {}::{}", Call::PALLET, Call::FUNCTION);
+        println!("Submited extrinsic {}::{}", Call::PALLET, Call::FUNCTION);
 
         loop {
             if let Some(status) = process.next_item().await {
