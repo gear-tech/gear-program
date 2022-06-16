@@ -1,6 +1,13 @@
 //! command submit
 use crate::{
-    api::{generated::api::gear::calls::SubmitProgram, Api},
+    api::{
+        events::InBlockEvents,
+        generated::api::{
+            gear::{calls::SubmitProgram, Event},
+            Event as SystemEvent,
+        },
+        Api,
+    },
     Result,
 };
 use std::{fs, path::PathBuf};
@@ -56,14 +63,35 @@ impl Deploy {
             .await?;
 
         // submit program
-        api.submit_program(SubmitProgram {
-            code: fs::read(&self.code)?,
-            salt: hex::decode(&self.salt.trim_start_matches("0x"))?,
-            init_payload: hex::decode(&self.init_payload.trim_start_matches("0x"))?,
-            gas_limit,
-            value: self.value,
-        })
-        .await?;
+        let events = api
+            .submit_program(SubmitProgram {
+                code: fs::read(&self.code)?,
+                salt: hex::decode(&self.salt.trim_start_matches("0x"))?,
+                init_payload: hex::decode(&self.init_payload.trim_start_matches("0x"))?,
+                gas_limit,
+                value: self.value,
+            })
+            .await?
+            .wait_for_success()
+            .await?;
+
+        Self::init_status(events)?;
+        Ok(())
+    }
+
+    fn init_status(events: InBlockEvents<'_>) -> Result<()> {
+        for maybe_event in events.iter() {
+            let event = maybe_event?.event;
+
+            if let SystemEvent::Gear(e) = event {
+                println!("\t{e:?}");
+
+                match e {
+                    Event::InitSuccess(_) | Event::InitFailure(..) => break,
+                    _ => {}
+                }
+            }
+        }
 
         Ok(())
     }

@@ -2,18 +2,20 @@
 use crate::{
     api::{
         config::GearConfig,
-        generated::api::{gear, DispatchError, Event},
+        generated::api::{gear, runtime_types::sp_runtime::DispatchError, Event},
         Api,
     },
     Result,
 };
-use subxt::{sp_core::H256, PolkadotExtrinsicParams, SubmittableExtrinsic, TransactionStatus};
+use subxt::{PolkadotExtrinsicParams, SubmittableExtrinsic, TransactionInBlock, TransactionStatus};
+
+type InBlock<'i> = Result<TransactionInBlock<'i, GearConfig, DispatchError, Event>>;
 
 impl Api {
     /// pallet gear extrinsic
     ///
     /// gear submit_program
-    pub async fn submit_program(&self, params: gear::calls::SubmitProgram) -> Result<H256> {
+    pub async fn submit_program(&self, params: gear::calls::SubmitProgram) -> InBlock<'_> {
         let process = self.runtime.tx().gear().submit_program(
             params.code,
             params.salt,
@@ -27,7 +29,7 @@ impl Api {
 
     /// listen transaction process and print logs
     pub async fn ps<'client, Call>(
-        &self,
+        &'client self,
         tx: SubmittableExtrinsic<
             'client,
             GearConfig,
@@ -36,7 +38,7 @@ impl Api {
             DispatchError,
             Event,
         >,
-    ) -> Result<H256>
+    ) -> InBlock<'client>
     where
         Call: subxt::Call + Send + Sync,
     {
@@ -72,7 +74,7 @@ impl Api {
                             b.extrinsic_hash(),
                             b.block_hash()
                         );
-                        return Ok(b.extrinsic_hash());
+                        return Ok(b);
                     }
                     TransactionStatus::Usurped(h) => println!("\tStatus: Usurped( {} )", h),
                     TransactionStatus::Dropped => println!("\tStatus: Dropped"),

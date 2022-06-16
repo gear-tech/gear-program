@@ -29,9 +29,20 @@ pub enum Error {
     #[error(transparent)]
     SubxtBasic(#[from] subxt::BasicError),
     #[error(transparent)]
+    SubxtGeneric(
+        #[from]
+        subxt::GenericError<
+            subxt::RuntimeError<
+                crate::api::generated::api::runtime_types::sp_runtime::DispatchError,
+            >,
+        >,
+    ),
+    #[error(transparent)]
     SubxtRpc(#[from] subxt::rpc::RpcError),
     #[error(transparent)]
     Tx(#[from] TransactionError),
+    // #[error(transparent)]
+    // ExtrinsicFailed(#[from] crate::api::generated::api::system::events::ExtrinsicFailed),
 }
 
 /// Custom result
