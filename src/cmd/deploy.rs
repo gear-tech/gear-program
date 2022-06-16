@@ -1,15 +1,17 @@
 //! command submit
 use crate::{
     api::{
-        events::InBlockEvents,
+        events::Events,
         generated::api::{
-            gear::{calls::SubmitProgram, Event},
-            Event as SystemEvent,
+            gear::{calls::SubmitProgram, Event as GearEvent},
+            system::Event as SystemEvent,
+            Event,
         },
         Api,
     },
     Result,
 };
+use futures_util::StreamExt;
 use std::{fs, path::PathBuf};
 use structopt::StructOpt;
 
@@ -49,6 +51,15 @@ impl Deploy {
         )
         .await?;
 
+        let events = api.events().await?;
+        let (sp, wis) = tokio::join!(self.submit_program(&api), self.wait_init_status(events));
+        sp?;
+        wis?;
+
+        Ok(())
+    }
+
+    async fn submit_program(&self, api: &Api) -> Result<()> {
         // estimate gas
         let gas_limit = api
             .estimate_gas(self.gas_limit, || async {
@@ -63,32 +74,41 @@ impl Deploy {
             .await?;
 
         // submit program
-        let events = api
-            .submit_program(SubmitProgram {
-                code: fs::read(&self.code)?,
-                salt: hex::decode(&self.salt.trim_start_matches("0x"))?,
-                init_payload: hex::decode(&self.init_payload.trim_start_matches("0x"))?,
-                gas_limit,
-                value: self.value,
-            })
-            .await?
-            .wait_for_success()
-            .await?;
+        api.submit_program(SubmitProgram {
+            code: fs::read(&self.code)?,
+            salt: hex::decode(&self.salt.trim_start_matches("0x"))?,
+            init_payload: hex::decode(&self.init_payload.trim_start_matches("0x"))?,
+            gas_limit,
+            value: self.value,
+        })
+        .await?
+        .wait_for_success()
+        .await?;
 
-        Self::init_status(events)?;
         Ok(())
     }
 
-    fn init_status(events: InBlockEvents<'_>) -> Result<()> {
-        for maybe_event in events.iter() {
-            let event = maybe_event?.event;
+    async fn wait_init_status(&self, mut events: Events<'_>) -> Result<()> {
+        while let Some(events) = events.next().await {
+            for maybe_event in events?.iter() {
+                let event = maybe_event?.event;
 
-            if let SystemEvent::Gear(e) = event {
-                println!("\t{e:?}");
+                // Exit when extrinsic failed
+                //
+                // # Safty
+                //
+                // The error message will be paniced in another thread
+                if let Event::System(SystemEvent::ExtrinsicFailed { .. }) = event {
+                    return Ok(());
+                }
 
-                match e {
-                    Event::InitSuccess(_) | Event::InitFailure(..) => break,
-                    _ => {}
+                if let Event::Gear(e) = event {
+                    println!("\t{e:?}");
+
+                    match e {
+                        GearEvent::InitSuccess(_) | GearEvent::InitFailure(..) => return Ok(()),
+                        _ => {}
+                    }
                 }
             }
         }

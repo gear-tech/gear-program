@@ -719,7 +719,6 @@ dependencies = [
  "dialoguer",
  "dirs",
  "env_logger",
- "futures",
  "futures-util",
  "hex",
  "lazy_static",

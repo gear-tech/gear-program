@@ -10,9 +10,12 @@ use subxt::{
     TransactionEvents,
 };
 
-type Events<'a> = EventSubscription<'a, Subscription<Header<u32, BlakeTwo256>>, GearConfig, Event>;
+/// Generic events
+pub type Events<'a> =
+    EventSubscription<'a, Subscription<Header<u32, BlakeTwo256>>, GearConfig, Event>;
 
-/// transaction events
+/// Transaction events
+#[allow(unused)]
 pub type InBlockEvents<'client> = TransactionEvents<'client, GearConfig, Event>;
 
 impl Api {
