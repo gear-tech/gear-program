@@ -41,8 +41,6 @@ pub enum Error {
     SubxtRpc(#[from] subxt::rpc::RpcError),
     #[error(transparent)]
     Tx(#[from] TransactionError),
-    // #[error(transparent)]
-    // ExtrinsicFailed(#[from] crate::api::generated::api::system::events::ExtrinsicFailed),
 }
 
 /// Custom result

@@ -43,7 +43,7 @@ pub struct Deploy {
 }
 
 impl Deploy {
-    /// exec command submit
+    /// Exec command submit
     pub async fn exec(&self) -> Result<()> {
         let api = Api::new(
             self.endpoint.as_ref().map(|s| s.as_ref()),
@@ -93,15 +93,16 @@ impl Deploy {
             for maybe_event in events?.iter() {
                 let event = maybe_event?.event;
 
-                // Exit when extrinsic failed
+                // Exit when extrinsic failed.
                 //
                 // # Safty
                 //
-                // The error message will be paniced in another thread
+                // The error message will be paniced in another thread.
                 if let Event::System(SystemEvent::ExtrinsicFailed { .. }) = event {
                     return Ok(());
                 }
 
+                // Exit when success or failure.
                 if let Event::Gear(e) = event {
                     println!("\t{e:?}");
 
