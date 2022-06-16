@@ -6,7 +6,7 @@ use crate::{
 use structopt::StructOpt;
 use subxt::{sp_core::crypto::Ss58Codec, sp_runtime::AccountId32};
 
-/// command transfer
+/// Transfer value to destination
 #[derive(Debug, StructOpt)]
 pub struct Transfer {
     /// gear node rpc endpoint
