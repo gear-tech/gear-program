@@ -6,9 +6,7 @@ impl Api {
     ///
     /// get gas limit
     pub async fn gas_limit(&self) -> Result<u64> {
-        self.runtime
-            .constants()
-            .gas()
+        gas::constants::ConstantsApi::new(&self.runtime.client)
             .block_gas_limit()
             .map_err(Into::into)
     }

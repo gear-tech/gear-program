@@ -95,9 +95,9 @@ impl Deploy {
 
                 // Exit when extrinsic failed.
                 //
-                // # Safty
+                // # Safety
                 //
-                // The error message will be paniced in another thread.
+                // The error message will be panicked in another thread.
                 if let Event::System(SystemEvent::ExtrinsicFailed { .. }) = event {
                     return Ok(());
                 }
