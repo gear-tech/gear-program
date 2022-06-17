@@ -2,7 +2,7 @@
 use crate::{
     api::{
         config::GearConfig,
-        generated::api::{gear, runtime_types::sp_runtime::DispatchError, Event},
+        generated::api::{balances, gear, runtime_types::sp_runtime::DispatchError, Event},
         Api,
     },
     Result,
@@ -31,7 +31,7 @@ impl Api {
     ///
     /// gear submit_program
     pub async fn submit_program(&self, params: gear::calls::SubmitProgram) -> InBlock<'_> {
-        let process = self.runtime.tx().gear().submit_program(
+        let ex = self.runtime.tx().gear().submit_program(
             params.code,
             params.salt,
             params.init_payload,
