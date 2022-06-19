@@ -2,16 +2,16 @@
 use crate::{api::Api, Result};
 use structopt::StructOpt;
 
-/// Get account info of ss58address
+/// Get account info from ss58address.
 #[derive(Debug, StructOpt)]
 pub struct Info {
-    /// gear node rpc endpoint
+    /// Gear node rpc endpoint.
     #[structopt(short, long)]
     endpoint: Option<String>,
-    /// password of the signer account
+    /// Password of the signer account.
     #[structopt(short, long)]
     passwd: Option<String>,
-    /// Get info of this address (ss58address)
+    /// Get info of this address (ss58address).
     address: String,
 }
 

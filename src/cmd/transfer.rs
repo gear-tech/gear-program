@@ -6,23 +6,30 @@ use crate::{
 use structopt::StructOpt;
 use subxt::{sp_core::crypto::Ss58Codec, sp_runtime::AccountId32};
 
-/// Transfer value to destination
+/// Transfer value.
+///
+/// # Note
+///
+/// Gear node is currently using the default properties of substrate for
+/// [the staging testnet][0], and the deciamls of 1 UNIT is 12 by default.
+///
+/// [0]: https://github.com/gear-tech/gear/blob/c01d0390cdf1031cb4eba940d0199d787ea480e0/node/src/chain_spec.rs#L218
 #[derive(Debug, StructOpt)]
 pub struct Transfer {
-    /// gear node rpc endpoint
+    /// Gear node rpc endpoint.
     #[structopt(short, long)]
     endpoint: Option<String>,
-    /// password of the signer account
+    /// Password of the signer account.
     #[structopt(short, long)]
     passwd: Option<String>,
-    /// transfer to destination (ss58address)
+    /// Transfer to (ss58address).
     destination: String,
-    /// balance will be transfered
+    /// Balance will be transfered.
     value: u128,
 }
 
 impl Transfer {
-    /// execute command transfer
+    /// Execute command transfer.
     pub async fn exec(&self) -> Result<()> {
         let passwd = self.passwd.as_ref().map(|s| s.as_ref());
         let pair = keystore::cache(passwd)?;
