@@ -18,7 +18,7 @@ pub struct Info {
 impl Info {
     /// execute command transfer
     pub async fn exec(&self) -> Result<()> {
-        let passwd = self.passwd.as_ref().map(|s| s.as_ref());
+        let passwd = self.passwd.as_deref();
 
         let api = Api::new(self.endpoint.as_ref().map(|s| s.as_ref()), passwd).await?;
         let info = api.info(&self.address).await?;

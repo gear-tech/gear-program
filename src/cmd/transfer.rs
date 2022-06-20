@@ -31,7 +31,7 @@ pub struct Transfer {
 impl Transfer {
     /// Execute command transfer.
     pub async fn exec(&self) -> Result<()> {
-        let passwd = self.passwd.as_ref().map(|s| s.as_ref());
+        let passwd = self.passwd.as_deref();
         let pair = keystore::cache(passwd)?;
         let address = pair.account_id();
 
@@ -40,7 +40,7 @@ impl Transfer {
 
         println!("Address: {address:?}");
         println!(
-            "Current balance: {balance:?} ~= {} UINT",
+            "Current balance: {balance:?} ~= {} UNIT",
             balance / 10u128.pow(12)
         );
 
@@ -52,7 +52,7 @@ impl Transfer {
 
         let balance = api.get_balance(&address.to_ss58check()).await?;
         println!(
-            "Current balance: {balance:?} ~= {} UINT",
+            "Current balance: {balance:?} ~= {} UNIT",
             balance / 10u128.pow(12)
         );
 
