@@ -70,17 +70,14 @@ impl Deploy {
             .await?;
 
         // submit program
-        let tx = api
-            .submit_program(SubmitProgram {
-                code: fs::read(&self.code)?,
-                salt: hex::decode(&self.salt.trim_start_matches("0x"))?,
-                init_payload: hex::decode(&self.init_payload.trim_start_matches("0x"))?,
-                gas_limit,
-                value: self.value,
-            })
-            .await?;
-
-        api.capture_dispatch_info(tx).await?;
+        api.submit_program(SubmitProgram {
+            code: fs::read(&self.code)?,
+            salt: hex::decode(&self.salt.trim_start_matches("0x"))?,
+            init_payload: hex::decode(&self.init_payload.trim_start_matches("0x"))?,
+            gas_limit,
+            value: self.value,
+        })
+        .await?;
 
         Ok(())
     }

@@ -44,14 +44,11 @@ impl Transfer {
             balance / 10u128.pow(12)
         );
 
-        let tx = api
-            .transfer(TransferCall {
-                dest: AccountId32::from_ss58check(&self.destination)?.into(),
-                value: self.value,
-            })
-            .await?;
-
-        api.capture_dispatch_info(tx).await?;
+        api.transfer(TransferCall {
+            dest: AccountId32::from_ss58check(&self.destination)?.into(),
+            value: self.value,
+        })
+        .await?;
 
         let balance = api.get_balance(&address.to_ss58check()).await?;
         println!(

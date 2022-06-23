@@ -1,16 +1,38 @@
+use crate::api::{
+    config::GearConfig,
+    generated::api::{runtime_types::sp_runtime::DispatchError, Event},
+};
+use subxt::{sp_core::H256, TransactionStatus};
+
+type TxStatus<'t> = TransactionStatus<'t, GearConfig, DispatchError, Event>;
+
 /// transaction error
 #[derive(Debug, thiserror::Error)]
 pub enum TransactionError {
-    #[error("transaction retracted {0}")]
-    Retracted(String),
-    #[error("transaction timeout {0}")]
-    FinalityTimeout(String),
-    #[error("transaction usurped {0}")]
-    Usurped(String),
-    #[error("transaction dropped")]
+    #[error("Transaction Retracted( {0} )")]
+    Retracted(H256),
+    #[error("Transaction Timeout( {0} )")]
+    FinalityTimeout(H256),
+    #[error("Transaction Usurped( {0} )")]
+    Usurped(H256),
+    #[error("Transaction Dropped")]
     Dropped,
-    #[error("transaction invalid")]
+    #[error("Transaction Invalid")]
     Invalid,
+    #[error("Not an error, this will never be reached.")]
+    None,
+}
+
+impl From<TxStatus<'_>> for Error {
+    fn from(status: TxStatus<'_>) -> Self {
+        match status {
+            TransactionStatus::Retracted(h) => TransactionError::Retracted(h),
+            TransactionStatus::FinalityTimeout(h) => TransactionError::FinalityTimeout(h),
+            TransactionStatus::Usurped(h) => TransactionError::Usurped(h),
+            _ => TransactionError::None,
+        }
+        .into()
+    }
 }
 
 /// Errors

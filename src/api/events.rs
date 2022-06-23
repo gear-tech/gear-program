@@ -36,7 +36,7 @@ impl Api {
     /// Capture the dispatch info of any extrinsic and display the weight spent
     pub async fn capture_dispatch_info<'e>(
         &self,
-        tx: TransactionInBlock<'e, GearConfig, DispatchError, Event>,
+        tx: &TransactionInBlock<'e, GearConfig, DispatchError, Event>,
     ) -> core::result::Result<InBlockEvents<'e>, SubxtError> {
         let events = tx.fetch_events().await?;
 
@@ -63,6 +63,7 @@ impl Api {
                     return Err(subxt::Error::Runtime(RuntimeError(dispatch_error)));
                 }
             } else if &ev.pallet == "System" && &ev.variant == "ExtrinsicSuccess" {
+                self.capture_weight_info(event?.event);
                 break;
             }
         }

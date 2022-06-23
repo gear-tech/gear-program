@@ -62,7 +62,8 @@ impl Api {
 
         loop {
             if let Some(status) = process.next_item().await {
-                match status? {
+                let status = status?;
+                match status {
                     TransactionStatus::Future => println!("\tStatus: Future"),
                     TransactionStatus::Ready => println!("\tStatus: Ready"),
                     TransactionStatus::Broadcast(v) => println!("\tStatus: Broadcast( {:?} )", v),
@@ -71,9 +72,13 @@ impl Api {
                         b.block_hash(),
                         b.extrinsic_hash()
                     ),
-                    TransactionStatus::Retracted(h) => println!("\tStatus: Retracted( {} )", h),
+                    TransactionStatus::Retracted(h) => {
+                        println!("\tStatus: Retracted( {} )", h);
+                        break Err(status.into());
+                    }
                     TransactionStatus::FinalityTimeout(h) => {
-                        println!("\tStatus: FinalityTimeout( {} )", h)
+                        println!("\tStatus: FinalityTimeout( {} )", h);
+                        break Err(status.into());
                     }
                     TransactionStatus::Finalized(b) => {
                         println!(
@@ -89,11 +94,22 @@ impl Api {
                             b.extrinsic_hash(),
                             b.block_hash()
                         );
+
+                        self.capture_dispatch_info(&b).await?;
                         return Ok(b);
                     }
-                    TransactionStatus::Usurped(h) => println!("\tStatus: Usurped( {} )", h),
-                    TransactionStatus::Dropped => println!("\tStatus: Dropped"),
-                    TransactionStatus::Invalid => println!("\tStatus: Invalid"),
+                    TransactionStatus::Usurped(h) => {
+                        println!("\tStatus: Usurped( {} )", h);
+                        break Err(status.into());
+                    }
+                    TransactionStatus::Dropped => {
+                        println!("\tStatus: Dropped");
+                        break Err(status.into());
+                    }
+                    TransactionStatus::Invalid => {
+                        println!("\tStatus: Invalid");
+                        break Err(status.into());
+                    }
                 }
             }
         }
