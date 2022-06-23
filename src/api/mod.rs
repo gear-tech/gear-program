@@ -15,6 +15,8 @@ pub mod events;
 /// gear-node 0.1.0-f48450dd-x86_64-linux-gnu
 ///
 /// subxt codegen | rustfmt --edition=2021
+///
+/// spec_version: 1080
 #[allow(clippy::all)]
 pub mod generated;
 mod rpc;

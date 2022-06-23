@@ -70,7 +70,7 @@ impl Deploy {
             .await?;
 
         // submit program
-        let events = api
+        let tx = api
             .submit_program(SubmitProgram {
                 code: fs::read(&self.code)?,
                 salt: hex::decode(&self.salt.trim_start_matches("0x"))?,
@@ -78,11 +78,9 @@ impl Deploy {
                 gas_limit,
                 value: self.value,
             })
-            .await?
-            .wait_for_success()
             .await?;
 
-        api.capture_weight_info(events)?;
+        api.capture_dispatch_info(tx).await?;
 
         Ok(())
     }
