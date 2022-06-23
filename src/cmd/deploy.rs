@@ -70,16 +70,19 @@ impl Deploy {
             .await?;
 
         // submit program
-        api.submit_program(SubmitProgram {
-            code: fs::read(&self.code)?,
-            salt: hex::decode(&self.salt.trim_start_matches("0x"))?,
-            init_payload: hex::decode(&self.init_payload.trim_start_matches("0x"))?,
-            gas_limit,
-            value: self.value,
-        })
-        .await?
-        .wait_for_success()
-        .await?;
+        let events = api
+            .submit_program(SubmitProgram {
+                code: fs::read(&self.code)?,
+                salt: hex::decode(&self.salt.trim_start_matches("0x"))?,
+                init_payload: hex::decode(&self.init_payload.trim_start_matches("0x"))?,
+                gas_limit,
+                value: self.value,
+            })
+            .await?
+            .wait_for_success()
+            .await?;
+
+        api.capture_weight_info(events)?;
 
         Ok(())
     }
@@ -103,7 +106,7 @@ impl Deploy {
                     println!("\t{e:?}");
 
                     match e {
-                        GearEvent::InitSuccess(_) | GearEvent::InitFailure(..) => return Ok(()),
+                        GearEvent::MessageEnqueued { .. } => return Ok(()),
                         _ => {}
                     }
                 }

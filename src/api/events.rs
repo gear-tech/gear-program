@@ -1,6 +1,10 @@
 //! events api
 use crate::{
-    api::{config::GearConfig, generated::api::Event, Api},
+    api::{
+        config::GearConfig,
+        generated::api::{system::Event as SystemEvent, Event},
+        Api,
+    },
     Result,
 };
 use subxt::{
@@ -23,5 +27,18 @@ impl Api {
     #[allow(unused)]
     pub async fn events(&self) -> Result<Events<'_>> {
         Ok(self.runtime.events().subscribe().await?)
+    }
+
+    /// Parse transaction fee from InBlockEvents
+    pub fn capture_weight_info(&self, events: InBlockEvents) -> Result<()> {
+        for maybe_event in events.iter() {
+            let event = maybe_event?.event;
+            if let Event::System(SystemEvent::ExtrinsicSuccess { dispatch_info }) = event {
+                println!("\tWeight spent: {:?}", dispatch_info.weight);
+                return Ok(());
+            }
+        }
+
+        Ok(())
     }
 }
