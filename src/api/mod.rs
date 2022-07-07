@@ -16,7 +16,7 @@ pub mod events;
 ///
 /// subxt codegen | rustfmt --edition=2021
 ///
-/// spec_version: 1080
+/// spec_version: 1260
 #[allow(clippy::all)]
 pub mod generated;
 mod rpc;

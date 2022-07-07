@@ -15,7 +15,7 @@ pub mod api {
         "GearMessenger",
         "Gear",
         "Usage",
-        "Gas",
+        "GearGas",
         "GearPayment",
         "GearDebug",
     ];
@@ -1269,10 +1269,10 @@ pub mod api {
                 > {
                     if self.client.metadata().constant_hash("System", "Version")?
                         == [
-                            10u8, 210u8, 52u8, 118u8, 140u8, 150u8, 247u8, 50u8, 241u8, 227u8,
-                            251u8, 53u8, 243u8, 89u8, 228u8, 178u8, 231u8, 126u8, 36u8, 21u8,
-                            182u8, 111u8, 162u8, 198u8, 225u8, 25u8, 146u8, 200u8, 67u8, 51u8,
-                            161u8, 41u8,
+                            177u8, 233u8, 13u8, 116u8, 219u8, 154u8, 17u8, 55u8, 173u8, 76u8,
+                            187u8, 251u8, 112u8, 197u8, 146u8, 45u8, 17u8, 85u8, 173u8, 238u8,
+                            210u8, 89u8, 72u8, 60u8, 140u8, 172u8, 200u8, 126u8, 79u8, 23u8, 199u8,
+                            38u8,
                         ]
                     {
                         let pallet = self.client.metadata().pallet("System")?;
@@ -5136,10 +5136,10 @@ pub mod api {
                 > {
                     if self.client.metadata().constant_hash("Gear", "Schedule")?
                         == [
-                            63u8, 250u8, 246u8, 74u8, 130u8, 134u8, 209u8, 173u8, 106u8, 88u8,
-                            129u8, 198u8, 241u8, 186u8, 143u8, 97u8, 106u8, 108u8, 191u8, 86u8,
-                            184u8, 117u8, 184u8, 2u8, 4u8, 185u8, 225u8, 158u8, 119u8, 3u8, 101u8,
-                            184u8,
+                            240u8, 254u8, 17u8, 203u8, 50u8, 12u8, 148u8, 173u8, 127u8, 208u8,
+                            83u8, 57u8, 175u8, 69u8, 48u8, 53u8, 78u8, 81u8, 8u8, 69u8, 91u8,
+                            156u8, 32u8, 238u8, 50u8, 120u8, 106u8, 124u8, 166u8, 217u8, 150u8,
+                            30u8,
                         ]
                     {
                         let pallet = self.client.metadata().pallet("Gear")?;
@@ -5192,6 +5192,35 @@ pub mod api {
                     {
                         let pallet = self.client.metadata().pallet("Gear")?;
                         let constant = pallet.constant("WaitListFeePerBlock")?;
+                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
+                        Ok(value)
+                    } else {
+                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
+                    }
+                }
+                #[doc = " The minimal gas amount for message to be inserted in mailbox."]
+                #[doc = ""]
+                #[doc = " This gas will be consuming as rent for storing and message will be available"]
+                #[doc = " for reply or claim, once gas ends, message removes."]
+                #[doc = ""]
+                #[doc = " Messages with gas limit less than that minimum will not be added in mailbox,"]
+                #[doc = " but will be seen in events."]
+                pub fn mailbox_threshold(
+                    &self,
+                ) -> ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>
+                {
+                    if self
+                        .client
+                        .metadata()
+                        .constant_hash("Gear", "MailboxThreshold")?
+                        == [
+                            15u8, 18u8, 48u8, 140u8, 90u8, 68u8, 208u8, 39u8, 160u8, 157u8, 106u8,
+                            16u8, 26u8, 119u8, 186u8, 32u8, 24u8, 111u8, 109u8, 71u8, 21u8, 78u8,
+                            34u8, 69u8, 83u8, 50u8, 80u8, 170u8, 41u8, 220u8, 17u8, 70u8,
+                        ]
+                    {
+                        let pallet = self.client.metadata().pallet("Gear")?;
+                        let constant = pallet.constant("MailboxThreshold")?;
                         let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
                         Ok(value)
                     } else {
@@ -5413,39 +5442,43 @@ pub mod api {
             }
         }
     }
-    pub mod gas {
+    pub mod gear_gas {
         use super::root_mod;
         use super::runtime_types;
         pub mod storage {
             use super::runtime_types;
-            pub struct Allowance;
-            impl ::subxt::StorageEntry for Allowance {
-                const PALLET: &'static str = "Gas";
-                const STORAGE: &'static str = "Allowance";
-                type Value = ::core::primitive::u64;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
             pub struct TotalIssuance;
             impl ::subxt::StorageEntry for TotalIssuance {
-                const PALLET: &'static str = "Gas";
+                const PALLET: &'static str = "GearGas";
                 const STORAGE: &'static str = "TotalIssuance";
                 type Value = ::core::primitive::u64;
                 fn key(&self) -> ::subxt::StorageEntryKey {
                     ::subxt::StorageEntryKey::Plain
                 }
             }
-            pub struct GasTree<'a>(pub &'a ::subxt::sp_core::H256);
-            impl ::subxt::StorageEntry for GasTree<'_> {
-                const PALLET: &'static str = "Gas";
-                const STORAGE: &'static str = "GasTree";
-                type Value = runtime_types::pallet_gas::ValueNode;
+            pub struct GasNodes<'a>(pub &'a runtime_types::gear_core::ids::MessageId);
+            impl ::subxt::StorageEntry for GasNodes<'_> {
+                const PALLET: &'static str = "GearGas";
+                const STORAGE: &'static str = "GasNodes";
+                type Value = runtime_types::gear_common::gas_provider::node::GasNode<
+                    ::subxt::sp_core::crypto::AccountId32,
+                    runtime_types::gear_core::ids::MessageId,
+                    ::core::primitive::u64,
+                >;
                 fn key(&self) -> ::subxt::StorageEntryKey {
                     ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
                         &self.0,
                         ::subxt::StorageHasher::Identity,
                     )])
+                }
+            }
+            pub struct Allowance;
+            impl ::subxt::StorageEntry for Allowance {
+                const PALLET: &'static str = "GearGas";
+                const STORAGE: &'static str = "Allowance";
+                type Value = ::core::primitive::u64;
+                fn key(&self) -> ::subxt::StorageEntryKey {
+                    ::subxt::StorageEntryKey::Plain
                 }
             }
             pub struct StorageApi<'a, T: ::subxt::Config> {
@@ -5454,6 +5487,73 @@ pub mod api {
             impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
                 pub fn new(client: &'a ::subxt::Client<T>) -> Self {
                     Self { client }
+                }
+                pub async fn total_issuance(
+                    &self,
+                    block_hash: ::core::option::Option<T::Hash>,
+                ) -> ::core::result::Result<
+                    ::core::option::Option<::core::primitive::u64>,
+                    ::subxt::BasicError,
+                > {
+                    if self.client.metadata().storage_hash::<TotalIssuance>()?
+                        == [
+                            215u8, 30u8, 184u8, 22u8, 122u8, 121u8, 61u8, 175u8, 90u8, 240u8,
+                            180u8, 196u8, 214u8, 242u8, 43u8, 245u8, 173u8, 13u8, 87u8, 19u8,
+                            119u8, 134u8, 64u8, 104u8, 44u8, 70u8, 65u8, 212u8, 132u8, 81u8, 246u8,
+                            247u8,
+                        ]
+                    {
+                        let entry = TotalIssuance;
+                        self.client.storage().fetch(&entry, block_hash).await
+                    } else {
+                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
+                    }
+                }
+                pub async fn gas_nodes(
+                    &self,
+                    _0: &runtime_types::gear_core::ids::MessageId,
+                    block_hash: ::core::option::Option<T::Hash>,
+                ) -> ::core::result::Result<
+                    ::core::option::Option<
+                        runtime_types::gear_common::gas_provider::node::GasNode<
+                            ::subxt::sp_core::crypto::AccountId32,
+                            runtime_types::gear_core::ids::MessageId,
+                            ::core::primitive::u64,
+                        >,
+                    >,
+                    ::subxt::BasicError,
+                > {
+                    if self.client.metadata().storage_hash::<GasNodes>()?
+                        == [
+                            219u8, 9u8, 97u8, 239u8, 90u8, 207u8, 242u8, 103u8, 53u8, 34u8, 14u8,
+                            228u8, 6u8, 212u8, 238u8, 8u8, 50u8, 209u8, 49u8, 250u8, 221u8, 168u8,
+                            204u8, 99u8, 65u8, 255u8, 57u8, 80u8, 116u8, 131u8, 177u8, 143u8,
+                        ]
+                    {
+                        let entry = GasNodes(_0);
+                        self.client.storage().fetch(&entry, block_hash).await
+                    } else {
+                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
+                    }
+                }
+                pub async fn gas_nodes_iter(
+                    &self,
+                    block_hash: ::core::option::Option<T::Hash>,
+                ) -> ::core::result::Result<
+                    ::subxt::KeyIter<'a, T, GasNodes<'a>>,
+                    ::subxt::BasicError,
+                > {
+                    if self.client.metadata().storage_hash::<GasNodes>()?
+                        == [
+                            219u8, 9u8, 97u8, 239u8, 90u8, 207u8, 242u8, 103u8, 53u8, 34u8, 14u8,
+                            228u8, 6u8, 212u8, 238u8, 8u8, 50u8, 209u8, 49u8, 250u8, 221u8, 168u8,
+                            204u8, 99u8, 65u8, 255u8, 57u8, 80u8, 116u8, 131u8, 177u8, 143u8,
+                        ]
+                    {
+                        self.client.storage().iter(block_hash).await
+                    } else {
+                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
+                    }
                 }
                 pub async fn allowance(
                     &self,
@@ -5472,67 +5572,6 @@ pub mod api {
                             .storage()
                             .fetch_or_default(&entry, block_hash)
                             .await
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
-                }
-                pub async fn total_issuance(
-                    &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>
-                {
-                    if self.client.metadata().storage_hash::<TotalIssuance>()?
-                        == [
-                            92u8, 226u8, 66u8, 199u8, 54u8, 52u8, 181u8, 17u8, 112u8, 209u8, 238u8,
-                            45u8, 116u8, 129u8, 46u8, 185u8, 177u8, 37u8, 58u8, 37u8, 39u8, 224u8,
-                            39u8, 111u8, 89u8, 105u8, 245u8, 46u8, 29u8, 196u8, 70u8, 97u8,
-                        ]
-                    {
-                        let entry = TotalIssuance;
-                        self.client
-                            .storage()
-                            .fetch_or_default(&entry, block_hash)
-                            .await
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
-                }
-                pub async fn gas_tree(
-                    &self,
-                    _0: &::subxt::sp_core::H256,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> ::core::result::Result<
-                    ::core::option::Option<runtime_types::pallet_gas::ValueNode>,
-                    ::subxt::BasicError,
-                > {
-                    if self.client.metadata().storage_hash::<GasTree>()?
-                        == [
-                            66u8, 231u8, 233u8, 117u8, 101u8, 24u8, 202u8, 224u8, 43u8, 232u8,
-                            186u8, 131u8, 136u8, 106u8, 254u8, 8u8, 52u8, 240u8, 168u8, 89u8,
-                            213u8, 107u8, 129u8, 195u8, 98u8, 255u8, 63u8, 20u8, 186u8, 34u8, 50u8,
-                            43u8,
-                        ]
-                    {
-                        let entry = GasTree(_0);
-                        self.client.storage().fetch(&entry, block_hash).await
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
-                }
-                pub async fn gas_tree_iter(
-                    &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> ::core::result::Result<::subxt::KeyIter<'a, T, GasTree<'a>>, ::subxt::BasicError>
-                {
-                    if self.client.metadata().storage_hash::<GasTree>()?
-                        == [
-                            66u8, 231u8, 233u8, 117u8, 101u8, 24u8, 202u8, 224u8, 43u8, 232u8,
-                            186u8, 131u8, 136u8, 106u8, 254u8, 8u8, 52u8, 240u8, 168u8, 89u8,
-                            213u8, 107u8, 129u8, 195u8, 98u8, 255u8, 63u8, 20u8, 186u8, 34u8, 50u8,
-                            43u8,
-                        ]
-                    {
-                        self.client.storage().iter(block_hash).await
                     } else {
                         Err(::subxt::MetadataError::IncompatibleMetadata.into())
                     }
@@ -5556,14 +5595,14 @@ pub mod api {
                     if self
                         .client
                         .metadata()
-                        .constant_hash("Gas", "BlockGasLimit")?
+                        .constant_hash("GearGas", "BlockGasLimit")?
                         == [
                             238u8, 78u8, 114u8, 61u8, 170u8, 104u8, 123u8, 124u8, 134u8, 230u8,
                             226u8, 21u8, 123u8, 201u8, 93u8, 97u8, 54u8, 247u8, 187u8, 65u8, 16u8,
                             252u8, 152u8, 92u8, 136u8, 64u8, 32u8, 25u8, 16u8, 207u8, 69u8, 121u8,
                         ]
                     {
-                        let pallet = self.client.metadata().pallet("Gas")?;
+                        let pallet = self.client.metadata().pallet("GearGas")?;
                         let constant = pallet.constant("BlockGasLimit")?;
                         let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
                         Ok(value)
@@ -6194,6 +6233,31 @@ pub mod api {
                     OutOfRent,
                 }
             }
+            pub mod gas_provider {
+                use super::runtime_types;
+                pub mod node {
+                    use super::runtime_types;
+                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    pub struct GasNode<_0, _1, _2> {
+                        pub spec_refs: ::core::primitive::u32,
+                        pub unspec_refs: ::core::primitive::u32,
+                        pub inner:
+                            runtime_types::gear_common::gas_provider::node::GasNodeType<_0, _1, _2>,
+                        pub consumed: ::core::primitive::bool,
+                    }
+                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    pub enum GasNodeType<_0, _1, _2> {
+                        #[codec(index = 0)]
+                        External { id: _0, value: _2 },
+                        #[codec(index = 1)]
+                        ReservedLocal { id: _0, value: _2 },
+                        #[codec(index = 2)]
+                        SpecifiedLocal { parent: _1, value: _2 },
+                        #[codec(index = 3)]
+                        UnspecifiedLocal { parent: _1 },
+                    }
+                }
+            }
             pub mod storage {
                 use super::runtime_types;
                 pub mod complicated {
@@ -6697,75 +6761,6 @@ pub mod api {
                 pub amount: _1,
             }
         }
-        pub mod pallet_gas {
-            use super::runtime_types;
-            pub mod pallet {
-                use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                pub enum Error {
-                    #[codec(index = 0)]
-                    #[doc = "Forbidden operation for the value node"]
-                    Forbidden,
-                    #[codec(index = 1)]
-                    #[doc = "Gas (gas tree) has already been created for the provided key."]
-                    NodeAlreadyExists,
-                    #[codec(index = 2)]
-                    #[doc = "Account doesn't have enough funds to complete operation."]
-                    InsufficientBalance,
-                    #[codec(index = 3)]
-                    #[doc = "Value node doesn't exist for a key"]
-                    NodeNotFound,
-                    #[codec(index = 4)]
-                    #[doc = "Creating node with existing id"]
-                    KeyAlreadyExists,
-                    #[codec(index = 5)]
-                    #[doc = "Procedure can't be called on consumed node"]
-                    NodeWasConsumed,
-                    #[codec(index = 6)]
-                    #[doc = "Errors stating that gas tree has been invalidated"]
-                    #[doc = "Parent must be in the tree, but not found"]
-                    #[doc = ""]
-                    #[doc = "This differs from `Error::<T>::NodeNotFound`, because parent"]
-                    #[doc = "node for local node types must be found, but was not. Thus,"]
-                    #[doc = "tree is invalidated."]
-                    ParentIsLost,
-                    #[codec(index = 7)]
-                    #[doc = "Parent node must have children, but they weren't found"]
-                    #[doc = ""]
-                    #[doc = "If node is a parent to some other node it must have at least"]
-                    #[doc = "one child, otherwise it's id can't be used as a parent for"]
-                    #[doc = "local nodes in the tree."]
-                    ParentHasNoChildren,
-                }
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-            pub struct ValueNode {
-                pub spec_refs: ::core::primitive::u32,
-                pub unspec_refs: ::core::primitive::u32,
-                pub inner: runtime_types::pallet_gas::ValueType,
-                pub consumed: ::core::primitive::bool,
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-            pub enum ValueType {
-                #[codec(index = 0)]
-                External {
-                    id: ::subxt::sp_core::H256,
-                    value: ::core::primitive::u64,
-                },
-                #[codec(index = 1)]
-                ReservedLocal {
-                    id: ::subxt::sp_core::H256,
-                    value: ::core::primitive::u64,
-                },
-                #[codec(index = 2)]
-                SpecifiedLocal {
-                    parent: ::subxt::sp_core::H256,
-                    value: ::core::primitive::u64,
-                },
-                #[codec(index = 3)]
-                UnspecifiedLocal { parent: ::subxt::sp_core::H256 },
-            }
-        }
         pub mod pallet_gear {
             use super::runtime_types;
             pub mod pallet {
@@ -7046,8 +7041,10 @@ pub mod api {
                     pub gr_send_push_per_byte: ::core::primitive::u64,
                     pub gr_send_commit: ::core::primitive::u64,
                     pub gr_send_commit_per_byte: ::core::primitive::u64,
-                    pub gr_reply: ::core::primitive::u64,
-                    pub gr_reply_per_byte: ::core::primitive::u64,
+                    pub gr_reply_commit: ::core::primitive::u64,
+                    pub gr_reply_commit_per_byte: ::core::primitive::u64,
+                    pub gr_reply_push: ::core::primitive::u64,
+                    pub gr_reply_push_per_byte: ::core::primitive::u64,
                     pub gr_reply_to: ::core::primitive::u64,
                     pub gr_debug: ::core::primitive::u64,
                     pub gr_exit_code: ::core::primitive::u64,
@@ -7056,6 +7053,7 @@ pub mod api {
                     pub gr_wait: ::core::primitive::u64,
                     pub gr_wake: ::core::primitive::u64,
                     pub gr_create_program_wgas: ::core::primitive::u64,
+                    pub gr_create_program_wgas_per_byte: ::core::primitive::u64,
                     pub gas: ::core::primitive::u64,
                 }
                 #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
@@ -7200,6 +7198,29 @@ pub mod api {
                     Active(runtime_types::pallet_gear_debug::pallet::ProgramInfo),
                     #[codec(index = 1)]
                     Terminated,
+                }
+            }
+        }
+        pub mod pallet_gear_gas {
+            use super::runtime_types;
+            pub mod pallet {
+                use super::runtime_types;
+                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                pub enum Error {
+                    #[codec(index = 0)]
+                    Forbidden,
+                    #[codec(index = 1)]
+                    NodeAlreadyExists,
+                    #[codec(index = 2)]
+                    InsufficientBalance,
+                    #[codec(index = 3)]
+                    NodeNotFound,
+                    #[codec(index = 4)]
+                    NodeWasConsumed,
+                    #[codec(index = 5)]
+                    ParentIsLost,
+                    #[codec(index = 6)]
+                    ParentHasNoChildren,
                 }
             }
         }
@@ -8592,9 +8613,9 @@ pub mod api {
         pub fn validate_metadata(&'a self) -> Result<(), ::subxt::MetadataError> {
             if self.client.metadata().metadata_hash(&PALLETS)
                 != [
-                    96u8, 176u8, 196u8, 29u8, 225u8, 168u8, 100u8, 238u8, 174u8, 213u8, 22u8, 10u8,
-                    191u8, 54u8, 188u8, 86u8, 204u8, 194u8, 19u8, 59u8, 253u8, 166u8, 43u8, 174u8,
-                    191u8, 93u8, 209u8, 247u8, 177u8, 72u8, 52u8, 78u8,
+                    9u8, 207u8, 27u8, 111u8, 179u8, 52u8, 82u8, 49u8, 2u8, 108u8, 233u8, 220u8,
+                    44u8, 66u8, 248u8, 252u8, 200u8, 220u8, 70u8, 112u8, 189u8, 110u8, 164u8,
+                    173u8, 74u8, 98u8, 13u8, 90u8, 96u8, 98u8, 16u8, 92u8,
                 ]
             {
                 Err(::subxt::MetadataError::IncompatibleMetadata)
@@ -8687,8 +8708,8 @@ pub mod api {
         pub fn usage(&self) -> usage::constants::ConstantsApi<'a, T> {
             usage::constants::ConstantsApi::new(self.client)
         }
-        pub fn gas(&self) -> gas::constants::ConstantsApi<'a, T> {
-            gas::constants::ConstantsApi::new(self.client)
+        pub fn gear_gas(&self) -> gear_gas::constants::ConstantsApi<'a, T> {
+            gear_gas::constants::ConstantsApi::new(self.client)
         }
     }
     pub struct StorageApi<'a, T: ::subxt::Config> {
@@ -8728,8 +8749,8 @@ pub mod api {
         pub fn gear_messenger(&self) -> gear_messenger::storage::StorageApi<'a, T> {
             gear_messenger::storage::StorageApi::new(self.client)
         }
-        pub fn gas(&self) -> gas::storage::StorageApi<'a, T> {
-            gas::storage::StorageApi::new(self.client)
+        pub fn gear_gas(&self) -> gear_gas::storage::StorageApi<'a, T> {
+            gear_gas::storage::StorageApi::new(self.client)
         }
         pub fn gear_debug(&self) -> gear_debug::storage::StorageApi<'a, T> {
             gear_debug::storage::StorageApi::new(self.client)
