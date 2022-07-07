@@ -18,9 +18,6 @@ use structopt::StructOpt;
 /// Deploy program to gear node
 #[derive(StructOpt, Debug)]
 pub struct Deploy {
-    /// gear node rpc endpoint
-    #[structopt(short, long)]
-    endpoint: Option<String>,
     /// gear program code <*.wasm>
     code: PathBuf,
     /// gear program salt ( hex encoding )
@@ -37,16 +34,11 @@ pub struct Deploy {
     /// gear program balance
     #[structopt(default_value = "0")]
     value: u128,
-    /// password of the signer account
-    #[structopt(short, long)]
-    passwd: Option<String>,
 }
 
 impl Deploy {
     /// Exec command submit
-    pub async fn exec(&self) -> Result<()> {
-        let api = Api::new(self.endpoint.as_deref(), self.passwd.as_deref()).await?;
-
+    pub async fn exec(&self, api: Api) -> Result<()> {
         let events = api.events().await?;
         let (sp, wis) = tokio::join!(self.submit_program(&api), self.wait_init_status(events));
         sp?;

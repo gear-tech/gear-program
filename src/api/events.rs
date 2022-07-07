@@ -44,7 +44,7 @@ impl Api {
         for (raw, event) in events.iter_raw().zip(events.iter()) {
             let ev = raw?;
             if &ev.pallet == "System" && &ev.variant == "ExtrinsicFailed" {
-                self.capture_weight_info(event?.event);
+                Self::capture_weight_info(event?.event);
                 let dispatch_error = DispatchError::decode(&mut &*ev.data)?;
                 if let Some(error_data) = dispatch_error.module_error_data() {
                     // Error index is utilized as the first byte from the error array.
@@ -63,7 +63,7 @@ impl Api {
                     return Err(subxt::Error::Runtime(RuntimeError(dispatch_error)));
                 }
             } else if &ev.pallet == "System" && &ev.variant == "ExtrinsicSuccess" {
-                self.capture_weight_info(event?.event);
+                Self::capture_weight_info(event?.event);
                 break;
             }
         }
@@ -72,7 +72,7 @@ impl Api {
     }
 
     /// Parse transaction fee from InBlockEvents
-    pub fn capture_weight_info(&self, event: Event) {
+    pub fn capture_weight_info(event: Event) {
         if let Event::System(SystemEvent::ExtrinsicSuccess { dispatch_info })
         | Event::System(SystemEvent::ExtrinsicFailed { dispatch_info, .. }) = event
         {
