@@ -6313,7 +6313,9 @@ pub mod api {
                 use super::runtime_types;
                 #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
                 pub struct CodeId(pub [::core::primitive::u8; 32usize]);
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug, Clone,
+                )]
                 pub struct MessageId(pub [::core::primitive::u8; 32usize]);
                 #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
                 pub struct ProgramId(pub [::core::primitive::u8; 32usize]);

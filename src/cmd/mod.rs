@@ -15,6 +15,7 @@ mod update;
 
 #[derive(Debug, StructOpt)]
 pub enum Command {
+    Claim(claim::Claim),
     Deploy(deploy::Deploy),
     Info(info::Info),
     Login(login::Login),
@@ -57,6 +58,7 @@ impl Opt {
     /// Execute command.
     pub async fn exec(&self) -> Result<()> {
         match &self.command {
+            Command::Claim(claim) => claim.exec(self.api().await?).await?,
             Command::Deploy(deploy) => deploy.exec(self.api().await?).await?,
             Command::Info(info) => info.exec(self.api().await?).await?,
             Command::Login(login) => login.exec()?,
