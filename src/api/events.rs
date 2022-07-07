@@ -2,11 +2,14 @@
 use crate::{
     api::{
         config::GearConfig,
-        generated::api::{system::Event as SystemEvent, DispatchError, Event},
+        generated::api::{
+            gear::Event as GearEvent, system::Event as SystemEvent, DispatchError, Event,
+        },
         Api,
     },
     Result,
 };
+use futures_util::StreamExt;
 use subxt::{
     codec::Decode,
     events::EventSubscription,
@@ -78,5 +81,34 @@ impl Api {
         {
             println!("\tWeight cost: {:?}", dispatch_info.weight);
         }
+    }
+
+    /// Wait for GearEvent.
+    pub async fn wait_for(mut events: Events<'_>, wait: fn(GearEvent) -> bool) -> Result<()> {
+        while let Some(events) = events.next().await {
+            for maybe_event in events?.iter() {
+                let event = maybe_event?.event;
+
+                // Exit when extrinsic failed.
+                //
+                // # Safety
+                //
+                // The error message will be panicked in another thread.
+                if let Event::System(SystemEvent::ExtrinsicFailed { .. }) = event {
+                    return Ok(());
+                }
+
+                // Exit when success or failure.
+                if let Event::Gear(e) = event {
+                    println!("\t{e:?}");
+
+                    if wait(e) {
+                        return Ok(());
+                    }
+                }
+            }
+        }
+
+        Ok(())
     }
 }

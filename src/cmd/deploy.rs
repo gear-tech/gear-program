@@ -1,17 +1,11 @@
 //! command submit
 use crate::{
     api::{
-        events::Events,
-        generated::api::{
-            gear::{calls::SubmitProgram, Event as GearEvent},
-            system::Event as SystemEvent,
-            Event,
-        },
+        generated::api::gear::{calls::SubmitProgram, Event as GearEvent},
         Api,
     },
     Result,
 };
-use futures_util::StreamExt;
 use std::{fs, path::PathBuf};
 use structopt::StructOpt;
 
@@ -40,7 +34,16 @@ impl Deploy {
     /// Exec command submit
     pub async fn exec(&self, api: Api) -> Result<()> {
         let events = api.events().await?;
-        let (sp, wis) = tokio::join!(self.submit_program(&api), self.wait_init_status(events));
+        let (sp, wis) = tokio::join!(
+            self.submit_program(&api),
+            Api::wait_for(events, |event| {
+                if let GearEvent::MessageEnqueued { .. } = event {
+                    true
+                } else {
+                    false
+                }
+            })
+        );
         sp?;
         wis?;
 
@@ -70,35 +73,6 @@ impl Deploy {
             value: self.value,
         })
         .await?;
-
-        Ok(())
-    }
-
-    async fn wait_init_status(&self, mut events: Events<'_>) -> Result<()> {
-        while let Some(events) = events.next().await {
-            for maybe_event in events?.iter() {
-                let event = maybe_event?.event;
-
-                // Exit when extrinsic failed.
-                //
-                // # Safety
-                //
-                // The error message will be panicked in another thread.
-                if let Event::System(SystemEvent::ExtrinsicFailed { .. }) = event {
-                    return Ok(());
-                }
-
-                // Exit when success or failure.
-                if let Event::Gear(e) = event {
-                    println!("\t{e:?}");
-
-                    match e {
-                        GearEvent::MessageEnqueued { .. } => return Ok(()),
-                        _ => {}
-                    }
-                }
-            }
-        }
 
         Ok(())
     }
