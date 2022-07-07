@@ -7,7 +7,10 @@ use crate::{
     },
     Result,
 };
-use subxt::{PolkadotExtrinsicParams, SubmittableExtrinsic, TransactionInBlock, TransactionStatus};
+use subxt::{
+    sp_core::crypto::Ss58Codec, PolkadotExtrinsicParams, SubmittableExtrinsic, TransactionInBlock,
+    TransactionStatus,
+};
 
 type InBlock<'i> = Result<TransactionInBlock<'i, GearConfig, DispatchError, Event>>;
 
@@ -57,6 +60,9 @@ impl Api {
     where
         Call: subxt::Call + Send + Sync,
     {
+        let mut balance = self
+            .get_balance(&self.signer.account_id().to_ss58check())
+            .await?;
         let mut process = tx.sign_and_submit_then_watch_default(&self.signer).await?;
         println!("Submited extrinsic {}::{}", Call::PALLET, Call::FUNCTION);
 
@@ -96,6 +102,12 @@ impl Api {
                         );
 
                         self.capture_dispatch_info(&b).await?;
+                        balance = balance.saturating_sub(
+                            self.get_balance(&self.signer.account_id().to_ss58check())
+                                .await?,
+                        );
+
+                        println!("\tBalance spent: {balance}");
                         return Ok(b);
                     }
                     TransactionStatus::Usurped(h) => {
