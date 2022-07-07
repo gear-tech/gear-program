@@ -1,7 +1,10 @@
 //! Command `reply`
 use crate::{
     api::{
-        generated::api::{gear::calls::SendReply, runtime_types::gear_core::ids::MessageId},
+        generated::api::{
+            gear::{calls::SendReply, Event as GearEvent},
+            runtime_types::gear_core::ids::MessageId,
+        },
         Api,
     },
     Result,
@@ -34,6 +37,24 @@ pub struct Reply {
 
 impl Reply {
     pub async fn exec(&self, api: Api) -> Result<()> {
+        let events = api.events().await?;
+        let (sp, wis) = tokio::join!(
+            self.send_reply(&api),
+            Api::wait_for(events, |event| {
+                if let GearEvent::MessagesDispatched { .. } = event {
+                    true
+                } else {
+                    false
+                }
+            })
+        );
+
+        (sp?, wis?);
+
+        Ok(())
+    }
+
+    async fn send_reply(&self, api: &Api) -> Result<()> {
         let mut reply_to_id = [0; 32];
         reply_to_id
             .copy_from_slice(&mut hex::decode(self.reply_to_id.trim_start_matches("0x"))?.as_ref());

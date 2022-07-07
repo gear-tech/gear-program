@@ -44,8 +44,8 @@ impl Deploy {
                 }
             })
         );
-        sp?;
-        wis?;
+
+        (sp?, wis?);
 
         Ok(())
     }
