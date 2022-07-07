@@ -8,6 +8,18 @@ use crate::{
 };
 use structopt::StructOpt;
 
+/// Sends a reply message.
+///
+/// The origin must be Signed and the sender must have sufficient funds to pay
+/// for `gas` and `value` (in case the latter is being transferred).
+///
+/// Parameters:
+/// - `reply_to_id`: the original message id.
+/// - `payload`: data expected by the original sender.
+/// - `gas_limit`: maximum amount of gas the program can spend before it is halted.
+/// - `value`: balance to be transferred to the program once it's been created.
+///
+/// - `DispatchMessageEnqueued(H256)` when dispatch message is placed in the queue.
 #[derive(StructOpt, Debug)]
 pub struct Reply {
     /// Reply to

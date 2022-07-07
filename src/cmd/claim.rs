@@ -10,6 +10,7 @@ use crate::{
 };
 use structopt::StructOpt;
 
+/// Claim value from mailbox.
 #[derive(StructOpt, Debug)]
 pub struct Claim {
     /// Claim value from.
