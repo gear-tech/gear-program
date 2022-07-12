@@ -1,10 +1,10 @@
 use gear_program::builder::Pre;
 
 fn main() {
-    let ext = Pre::default();
+    let pre = Pre::default();
 
-    if let Err((expected, _)) = ext.check_spec_version() {
-        // ext.build_gear();
-        ext.generate_gear_api(expected).unwrap();
+    if let Err((expected, _)) = pre.check_spec_version() {
+        pre.build_gear();
+        pre.generate_gear_api(expected).unwrap();
     }
 }

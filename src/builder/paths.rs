@@ -6,6 +6,10 @@ pub const API_MODULE: &str = "src/api";
 /// Path of custom `Cargo.toml`
 pub const CARGO_TOML: &str = "Cargo.toml";
 
+/// Path of the gear binary.
+#[cfg(test)]
+pub const GEAR_BIN: &str = "target/release/gear";
+
 /// Path of the gear submodule.
 pub const GEAR_SUBMODULE: &str = "res/gear";
 

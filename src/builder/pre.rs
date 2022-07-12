@@ -44,6 +44,25 @@ impl Default for Pre {
 }
 
 impl Pre {
+    /// Build the gear node
+    pub fn build_gear(&self) {
+        let manifest = self.gear.join(paths::CARGO_TOML);
+        let mut cargo = Command::new("cargo");
+
+        cargo
+            .args([
+                "build",
+                "--manifest-path",
+                manifest
+                    .as_os_str()
+                    .to_str()
+                    .expect("Invalid package manifest."),
+                "--release",
+            ])
+            .status()
+            .expect("Build gear node failed");
+    }
+
     /// - fetch or update the gear submodule
     /// - check if the spec_version of client api is matched with
     ///   the lastest gear node
@@ -79,25 +98,6 @@ impl Pre {
         } else {
             Err((runtime_version, api_version))
         }
-    }
-
-    /// Build the gear node
-    pub fn build_gear(&self) {
-        let manifest = self.gear.join(paths::CARGO_TOML);
-        let mut cargo = Command::new("cargo");
-
-        cargo
-            .args([
-                "build",
-                "--manifest-path",
-                manifest
-                    .as_os_str()
-                    .to_str()
-                    .expect("Invalid package manifest."),
-                "--release",
-            ])
-            .status()
-            .expect("Build gear node failed");
     }
 
     /// Generate gear api
@@ -139,8 +139,6 @@ impl Pre {
         // Concat generated api.
         let generated = [header.trim_start().as_bytes(), &fmt_output.stdout].concat();
         let target = self.api.join(paths::GENERATED_RS);
-
-        // println!("{:?}", String::from_utf8_lossy(&generated));
         fs::write(target, generated)?;
 
         Ok(())
