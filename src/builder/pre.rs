@@ -70,7 +70,8 @@ impl Pre {
         let mut git = Command::new("git");
         let mut args = vec!["submodule", "update"];
 
-        if self.gear.exists() {
+        let runtime_lib_path = self.gear.join(paths::RUNTIME_LIB_PATH);
+        if runtime_lib_path.exists() {
             args.push("--remote");
         } else {
             args.push("--init");
@@ -82,8 +83,7 @@ impl Pre {
 
         // get the spec_version from the gear submodule
         let (runtime_lib, api) = (
-            File::open(self.gear.join(paths::RUNTIME_LIB_PATH))
-                .expect("Gear runtime library not found."),
+            File::open(runtime_lib_path).expect("Gear runtime library not found."),
             File::open(&self.api.join(paths::GENERATED_RS)).expect("Api module not found."),
         );
 
