@@ -49,16 +49,7 @@ impl Pre {
     ///   the lastest gear node
     pub fn check_spec_version(&self) -> Result<(), UnexpectedSpecVersion> {
         let mut git = Command::new("git");
-        let mut args = vec![
-            "-C",
-            &self
-                .gear
-                .as_os_str()
-                .to_str()
-                .expect("Failed to parse the directory of the gear submodule"),
-            "submodule",
-            "update",
-        ];
+        let mut args = vec!["submodule", "update"];
 
         if self.gear.exists() {
             args.push("--remote");
