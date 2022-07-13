@@ -8,7 +8,7 @@ pub mod utils;
 
 pub use self::pre::Pre;
 
-/// Spwan gear node and then execute the passing closure.
+/// Spawn gear node and then execute the passing closure.
 #[cfg(test)]
 pub fn dev(ws: u16, f: fn()) {
     let mut ps = node::Node::new(Pre::default().gear.join(paths::GEAR_BIN))

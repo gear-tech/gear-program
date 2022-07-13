@@ -5,8 +5,6 @@ use std::{
 
 // - we can just match `spec_version:` in `gear/runtime/src/lib.rs`
 // since our code has rustfmt checks
-//
-//
 const SPEC_VERSION_FIELD: &str = "spec_version:";
 
 /// Find spec version from file.
