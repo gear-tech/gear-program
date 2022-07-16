@@ -23,9 +23,6 @@ pub type Events<'a> =
 #[allow(unused)]
 pub type InBlockEvents<'client> = TransactionEvents<'client, GearConfig, Event>;
 
-/// Subxt Error
-pub type SubxtError = subxt::Error<DispatchError>;
-
 impl Api {
     /// Subscribe all events
     #[allow(unused)]
@@ -37,7 +34,7 @@ impl Api {
     pub async fn capture_dispatch_info<'e>(
         &self,
         tx: &TransactionInBlock<'e, GearConfig, DispatchError, Event>,
-    ) -> core::result::Result<InBlockEvents<'e>, SubxtError> {
+    ) -> Result<InBlockEvents<'e>> {
         let events = tx.fetch_events().await?;
 
         // Try to find any errors; return the first one we encounter.
@@ -58,9 +55,10 @@ impl Api {
                         error: details.error().to_string(),
                         description: details.description().to_vec(),
                         error_data,
-                    }));
+                    })
+                    .into());
                 } else {
-                    return Err(subxt::Error::Runtime(RuntimeError(dispatch_error)));
+                    return Err(subxt::Error::Runtime(RuntimeError(dispatch_error)).into());
                 }
             } else if &ev.pallet == "System" && &ev.variant == "ExtrinsicSuccess" {
                 self.capture_weight_info(event?.event);
