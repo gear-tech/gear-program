@@ -31,20 +31,13 @@ impl Api {
         value: u64,
         at: Option<H256>,
     ) -> Result<types::GasInfo> {
-        let r = self
-            .rpc()
+        self.rpc()
             .request(
                 "gear_calculateInitGas",
                 rpc_params![self.source(), code, payload, value, true, at],
             )
             .await
-            .map_err(Into::into);
-
-        if let Err(e) = &r {
-            println!("got gas limit {e:?}");
-            std::process::exit(1);
-        }
-        r
+            .map_err(Into::into)
     }
 
     #[allow(dead_code)]
@@ -61,7 +54,7 @@ impl Api {
         self.rpc()
             .request(
                 "gear_calculateHandleGas",
-                rpc_params![self.source(), dest, payload, value, false, at],
+                rpc_params![self.source(), dest, payload, value, true, at],
             )
             .await
             .map_err(Into::into)

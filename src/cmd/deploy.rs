@@ -48,9 +48,7 @@ impl Deploy {
         let api = Api::new(self.endpoint.as_deref(), self.passwd.as_deref()).await?;
 
         let events = api.events().await?;
-        let (sp, wis) = tokio::join!(self.submit_program(&api), self.wait_init_status(events));
-        sp?;
-        wis?;
+        tokio::try_join!(self.submit_program(&api), self.wait_init_status(events))?;
 
         Ok(())
     }
