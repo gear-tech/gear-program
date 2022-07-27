@@ -24,7 +24,7 @@ pub type Events<'a> =
 
 /// Transaction events
 #[allow(unused)]
-pub type InBlockEvents<'client> = TransactionEvents<'client, GearConfig, Event>;
+pub type InBlockEvents = TransactionEvents<GearConfig, Event>;
 
 /// Subxt Error
 pub type SubxtError = subxt::Error<DispatchError>;
@@ -40,7 +40,7 @@ impl Api {
     pub async fn capture_dispatch_info<'e>(
         &self,
         tx: &TransactionInBlock<'e, GearConfig, DispatchError, Event>,
-    ) -> core::result::Result<InBlockEvents<'e>, SubxtError> {
+    ) -> core::result::Result<InBlockEvents, SubxtError> {
         let events = tx.fetch_events().await?;
 
         // Try to find any errors; return the first one we encounter.
@@ -51,11 +51,11 @@ impl Api {
                 let dispatch_error = DispatchError::decode(&mut &*ev.data)?;
                 if let Some(error_data) = dispatch_error.module_error_data() {
                     // Error index is utilized as the first byte from the error array.
-                    let details = self
-                        .runtime
-                        .client
-                        .metadata()
-                        .error(error_data.pallet_index, error_data.error_index())?;
+                    let metadata_lock = self.runtime.client.metadata();
+                    let metadata = metadata_lock.read();
+                    let details =
+                        metadata.error(error_data.pallet_index, error_data.error_index())?;
+
                     return Err(subxt::Error::Module(ModuleError {
                         pallet: details.pallet().to_string(),
                         error: details.error().to_string(),
