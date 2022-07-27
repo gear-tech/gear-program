@@ -1,7 +1,10 @@
 //! Command `send`
 use crate::{
     api::{
-        generated::api::{gear::calls::SendMessage, runtime_types::gear_core::ids::ProgramId},
+        generated::api::{
+            gear::{calls::SendMessage, Event as GearEvent},
+            runtime_types::gear_core::ids::ProgramId,
+        },
         Api,
     },
     Result,
@@ -39,6 +42,24 @@ pub struct Send {
 
 impl Send {
     pub async fn exec(&self, api: Api) -> Result<()> {
+        let events = api.events().await?;
+        let r = tokio::try_join!(
+            self.send_message(&api),
+            Api::wait_for(events, |event| {
+                if let GearEvent::MessagesDispatched { .. } = event {
+                    true
+                } else {
+                    false
+                }
+            })
+        );
+
+        r?;
+
+        Ok(())
+    }
+
+    async fn send_message(&self, api: &Api) -> Result<()> {
         let mut destination = [0; 32];
         destination
             .copy_from_slice(&mut hex::decode(self.destination.trim_start_matches("0x"))?.as_ref());

@@ -111,9 +111,8 @@ impl Api {
     where
         Call: subxt::Call + Send + Sync,
     {
-        let mut balance = self
-            .get_balance(&self.signer.account_id().to_ss58check())
-            .await?;
+        let signer_address = self.signer.account_id().to_ss58check();
+        let mut balance = self.get_balance(&signer_address).await?;
         let mut process = tx.sign_and_submit_then_watch_default(&self.signer).await?;
         println!("Submited extrinsic {}::{}", Call::PALLET, Call::FUNCTION);
 
@@ -153,10 +152,7 @@ impl Api {
                         );
 
                         self.capture_dispatch_info(&b).await?;
-                        balance = balance.saturating_sub(
-                            self.get_balance(&self.signer.account_id().to_ss58check())
-                                .await?,
-                        );
+                        balance = balance.saturating_sub(self.get_balance(&signer_address).await?);
 
                         println!("\tBalance spent: {balance}");
                         return Ok(b);

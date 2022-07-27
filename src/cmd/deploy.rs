@@ -1,17 +1,11 @@
 //! command submit
 use crate::{
     api::{
-        events::Events,
-        generated::api::{
-            gear::{calls::SubmitProgram, Event as GearEvent},
-            system::Event as SystemEvent,
-            Event,
-        },
+        generated::api::gear::{calls::SubmitProgram, Event as GearEvent},
         Api,
     },
     Result,
 };
-use futures_util::StreamExt;
 use std::{fs, path::PathBuf};
 use structopt::StructOpt;
 
@@ -40,26 +34,37 @@ impl Deploy {
     /// Exec command submit
     pub async fn exec(&self, api: Api) -> Result<()> {
         let events = api.events().await?;
-        let (sp, wis) = tokio::join!(self.submit_program(&api), self.wait_init_status(events));
-        sp?;
-        wis?;
+
+        tokio::try_join!(
+            self.submit_program(&api),
+            Api::wait_for(events, |event| {
+                if let GearEvent::MessageEnqueued { .. } = event {
+                    true
+                } else {
+                    false
+                }
+            })
+        )?;
 
         Ok(())
     }
 
     async fn submit_program(&self, api: &Api) -> Result<()> {
+        let gas = if self.gas_limit == 0 {
+            api.get_init_gas_spent(
+                fs::read(&self.code)?.into(),
+                hex::decode(&self.init_payload.trim_start_matches("0x"))?.into(),
+                0,
+                None,
+            )
+            .await?
+            .min_limit
+        } else {
+            self.gas_limit
+        };
+
         // estimate gas
-        let gas_limit = api
-            .estimate_gas(self.gas_limit, || async {
-                api.get_init_gas_spent(
-                    fs::read(&self.code)?.into(),
-                    hex::decode(&self.init_payload.trim_start_matches("0x"))?.into(),
-                    0,
-                    None,
-                )
-                .await
-            })
-            .await?;
+        let gas_limit = api.cmp_gas_limit(gas).await?;
 
         // submit program
         api.submit_program(SubmitProgram {
@@ -70,35 +75,6 @@ impl Deploy {
             value: self.value,
         })
         .await?;
-
-        Ok(())
-    }
-
-    async fn wait_init_status(&self, mut events: Events<'_>) -> Result<()> {
-        while let Some(events) = events.next().await {
-            for maybe_event in events?.iter() {
-                let event = maybe_event?.event;
-
-                // Exit when extrinsic failed.
-                //
-                // # Safety
-                //
-                // The error message will be panicked in another thread.
-                if let Event::System(SystemEvent::ExtrinsicFailed { .. }) = event {
-                    return Ok(());
-                }
-
-                // Exit when success or failure.
-                if let Event::Gear(e) = event {
-                    println!("\t{e:?}");
-
-                    match e {
-                        GearEvent::MessageEnqueued { .. } => return Ok(()),
-                        _ => {}
-                    }
-                }
-            }
-        }
 
         Ok(())
     }

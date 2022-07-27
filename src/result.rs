@@ -45,6 +45,8 @@ pub enum Error {
     #[error("No available account was found in keystore, please run `gear login` first.")]
     Logout,
     #[error(transparent)]
+    Codec(#[from] parity_scale_codec::Error),
+    #[error(transparent)]
     Hex(#[from] hex::FromHexError),
     #[error(transparent)]
     Io(#[from] std::io::Error),
@@ -59,6 +61,8 @@ pub enum Error {
             >,
         >,
     ),
+    #[error(transparent)]
+    SubxtMetadata(#[from] subxt::MetadataError),
     #[error(transparent)]
     SubxtPublic(#[from] subxt::sp_core::crypto::PublicError),
     #[error(transparent)]

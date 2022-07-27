@@ -2,11 +2,14 @@
 use crate::{
     api::{
         config::GearConfig,
-        generated::api::{system::Event as SystemEvent, DispatchError, Event},
+        generated::api::{
+            gear::Event as GearEvent, system::Event as SystemEvent, DispatchError, Event,
+        },
         Api,
     },
     Result,
 };
+use futures_util::StreamExt;
 use subxt::{
     codec::Decode,
     events::EventSubscription,
@@ -21,10 +24,7 @@ pub type Events<'a> =
 
 /// Transaction events
 #[allow(unused)]
-pub type InBlockEvents<'client> = TransactionEvents<'client, GearConfig, Event>;
-
-/// Subxt Error
-pub type SubxtError = subxt::Error<DispatchError>;
+pub type InBlockEvents = TransactionEvents<GearConfig, Event>;
 
 impl Api {
     /// Subscribe all events
@@ -35,9 +35,9 @@ impl Api {
 
     /// Capture the dispatch info of any extrinsic and display the weight spent
     pub async fn capture_dispatch_info<'e>(
-        &self,
+        &'e self,
         tx: &TransactionInBlock<'e, GearConfig, DispatchError, Event>,
-    ) -> core::result::Result<InBlockEvents<'e>, SubxtError> {
+    ) -> Result<InBlockEvents> {
         let events = tx.fetch_events().await?;
 
         // Try to find any errors; return the first one we encounter.
@@ -48,19 +48,19 @@ impl Api {
                 let dispatch_error = DispatchError::decode(&mut &*ev.data)?;
                 if let Some(error_data) = dispatch_error.module_error_data() {
                     // Error index is utilized as the first byte from the error array.
-                    let details = self
-                        .runtime
-                        .client
-                        .metadata()
-                        .error(error_data.pallet_index, error_data.error_index())?;
+                    let locked_metadata = self.runtime.client.metadata();
+                    let metadata = locked_metadata.read();
+                    let details =
+                        metadata.error(error_data.pallet_index, error_data.error_index())?;
                     return Err(subxt::Error::Module(ModuleError {
                         pallet: details.pallet().to_string(),
                         error: details.error().to_string(),
                         description: details.description().to_vec(),
                         error_data,
-                    }));
+                    })
+                    .into());
                 } else {
-                    return Err(subxt::Error::Runtime(RuntimeError(dispatch_error)));
+                    return Err(subxt::Error::Runtime(RuntimeError(dispatch_error)).into());
                 }
             } else if &ev.pallet == "System" && &ev.variant == "ExtrinsicSuccess" {
                 Self::capture_weight_info(event?.event);
@@ -78,5 +78,34 @@ impl Api {
         {
             println!("\tWeight cost: {:?}", dispatch_info.weight);
         }
+    }
+
+    /// Wait for GearEvent.
+    pub async fn wait_for(mut events: Events<'_>, wait: fn(GearEvent) -> bool) -> Result<()> {
+        while let Some(events) = events.next().await {
+            for maybe_event in events?.iter() {
+                let event = maybe_event?.event;
+
+                // Exit when extrinsic failed.
+                //
+                // # Safety
+                //
+                // The error message will be panicked in another thread.
+                if let Event::System(SystemEvent::ExtrinsicFailed { .. }) = event {
+                    return Ok(());
+                }
+
+                // Exit when success or failure.
+                if let Event::Gear(e) = event {
+                    println!("\t{e:?}");
+
+                    if wait(e) {
+                        return Ok(());
+                    }
+                }
+            }
+        }
+
+        Ok(())
     }
 }
