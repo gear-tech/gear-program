@@ -37,26 +37,6 @@ pub struct EncryptedEncoding {
     pub version: String,
 }
 
-/// JSON keypair meta.
-///
-/// # Example
-///
-/// ```json
-/// "meta": {
-///     "genesisHash": "",
-///     "name": "GEAR",
-///     "whenCreated": 1659544420591
-///  }
-/// ```
-#[derive(Serialize, Deserialize)]
-pub struct EncryptedMeta {
-    #[serde(rename(deserialize = "genesisHash"))]
-    pub genesis_hash: String,
-    pub name: String,
-    #[serde(rename(deserialize = "whenCreated"))]
-    pub when_created: u64,
-}
-
 /// Json keypair.
 ///
 /// # Example
@@ -88,7 +68,6 @@ pub struct Encrypted {
     pub encoded: String,
     pub encoding: EncryptedEncoding,
     pub address: String,
-    pub meta: EncryptedMeta,
 }
 
 impl Encrypted {
@@ -146,7 +125,7 @@ impl Encrypted {
         let secret_key = &decrypted[SEED_OFFSET..SEED_OFFSET + SEC_LENGTH];
 
         // For deriving sr25519 pairs, we need to load the secret key as ed25519 bytes
-        // with `schnorrkel::SecretKey`.
+        // with `schnorrkel::SecretKey` directly.
         //
         // See https://github.com/polkadot-js/wasm/blob/master/packages/wasm-crypto/src/rs/sr25519.rs
         let pair = sr25519::Pair::from(schnorrkel::SecretKey::from_ed25519_bytes(secret_key)?);
