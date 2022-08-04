@@ -1,8 +1,6 @@
-use crate::result::{Error, Result};
-use scrypt::Params;
+use crate::result::Result;
 use serde::{Deserialize, Serialize};
-use std::{fs, path::PathBuf};
-use subxt::sp_core::{crypto::Ss58Codec, sr25519, Pair};
+use subxt::sp_core::{crypto::Ss58Codec, sr25519, Pair, U256};
 
 const NONCE_LENGTH: usize = 24;
 const SCRYPT_LENGTH: usize = 32 + (3 * 4);
@@ -12,9 +10,8 @@ const SEED_OFFSET: usize = 16;
 const PUB_LENGTH: usize = 32;
 const SALT_LENGTH: usize = 32;
 const SEC_LENGTH: usize = 64;
-const SEED_LENGTH: usize = 32;
-const DIV_OFFSET: usize = 80;
-const PUB_OFFSET: usize = 96;
+const DIV_OFFSET: usize = SEED_OFFSET + SEC_LENGTH;
+const PUB_OFFSET: usize = DIV_OFFSET + PKCS8_DIVIDER.len();
 
 /// JSON keypair encoding.
 ///
@@ -111,11 +108,12 @@ impl Encrypted {
         Ok(nacl::secret_box::open(
             &encrypted[NONCE_LENGTH..],
             &encrypted[..NONCE_LENGTH],
-            &password,
+            &password[..32],
         )?)
     }
 
-    fn create(self, passphrase: String) -> Result<()> {
+    /// Create pair with passphrase.
+    pub fn create(self, passphrase: &str) -> Result<sr25519::Pair> {
         assert!(
             self.encoding.version != "3".to_string() || self.encoding.content[0] == "pkcs8",
             "Unable to decode non-pkcs8 type, [{}] found",
@@ -135,7 +133,6 @@ impl Encrypted {
             "Invalid Pkcs8 header found in body"
         );
 
-        let secret_key = &decrypted[SEED_OFFSET..(SEED_OFFSET + SEC_LENGTH)];
         let divider = &decrypted[DIV_OFFSET..(DIV_OFFSET + PKCS8_DIVIDER.len())];
         assert_eq!(
             divider, PKCS8_DIVIDER,
@@ -144,17 +141,22 @@ impl Encrypted {
 
         let public_key = &decrypted[PUB_OFFSET..(PUB_OFFSET + PUB_LENGTH)];
         let public = sr25519::Public::from_ss58check(&self.address)?;
-        assert_eq!(public_key, public.0);
+        assert_eq!(public.0, public_key);
 
-        Ok(())
+        let secret_key = &decrypted[SEED_OFFSET..SEED_OFFSET + SEC_LENGTH];
+
+        // For deriving sr25519 pairs, we need to load the secret key as ed25519 bytes
+        // with `schnorrkel::SecretKey`.
+        //
+        // See https://github.com/polkadot-js/wasm/blob/master/packages/wasm-crypto/src/rs/sr25519.rs
+        let pair = sr25519::Pair::from(schnorrkel::SecretKey::from_ed25519_bytes(secret_key)?);
+        assert_eq!(public.0, pair.public().0);
+
+        Ok(pair)
     }
 }
 
 /// Get password with scrypt.
-///
-/// # TODO
-///
-/// Check the params.
 ///
 /// ```typescript
 /// export const DEFAULT_PARAMS = {
@@ -164,34 +166,51 @@ impl Encrypted {
 /// };
 /// ```
 /// https://github.com/polkadot-js/common/blob/master/packages/util-crypto/src/scrypt/defaults.ts
-pub fn scrypt_from_slice(passphrase: &[u8], data: &[u8]) -> Result<Vec<u8>> {
+fn scrypt_from_slice(passphrase: &[u8], data: &[u8]) -> Result<[u8; 32]> {
     let mut salt = [0; 32];
     salt.copy_from_slice(&data[..SALT_LENGTH]);
 
-    let mut password: Vec<u8> = vec![];
-    scrypt::scrypt(passphrase, &salt, &Params::new(15, 1, 8)?, &mut password);
+    assert_eq!(
+        U256::from_little_endian(&data[SALT_LENGTH + 0..SALT_LENGTH + 4]),
+        U256::from(1 << 15),
+        "Invalid injected scrypt log_n found'"
+    );
+
+    assert_eq!(
+        U256::from_little_endian(&data[SALT_LENGTH + 4..SALT_LENGTH + 8]),
+        U256::from(1),
+        "Invalid injected scrypt parameter r found'"
+    );
+
+    assert_eq!(
+        U256::from_little_endian(&data[SALT_LENGTH + 8..SALT_LENGTH + 12]),
+        U256::from(8),
+        "Invalid injected scrypt parameter t found'"
+    );
+
+    let mut password: [u8; 32] = [0; 32];
+    let output = nacl::scrypt(passphrase, &salt, 15, 8, 1, 64, &|_: u32| {})?;
+    password.copy_from_slice(&output[..32]);
 
     Ok(password)
 }
 
-// /// Decode pair from json file.
-// ///
-// /// @WARNING: THIS WILL ONLY BE SECURE IF THE keystore IS SECURE.
-// /// when you have NO PASSWORD, If it can be got by an attacker then
-// /// they can also get your key.
-// pub fn decode_json_file(p: PathBuf, passphrase: Option<String>) -> Result<()> {
-//     let json = serde_json::from_slice::<Encrypted>(&fs::read(p)?)?;
-//
-//     Ok(())
-// }
+#[cfg(test)]
+mod tests {
+    use super::Encrypted;
+    use std::{fs, path::PathBuf};
 
-#[test]
-fn test_can_create_pair_from_json_file() {
-    let root = env!("CARGO_MANIFEST_DIR");
-    let json =
-        fs::read(PathBuf::from(root).join("res/pair.json")).expect("Read res/pair.json failed.");
+    #[test]
+    fn test_can_create_pair_from_json_file() {
+        let root = env!("CARGO_MANIFEST_DIR");
+        let json = fs::read(PathBuf::from(root).join("res/pair.json"))
+            .expect("Read res/pair.json failed.");
 
-    let encrypted = serde_json::from_slice::<Encrypted>(&json).expect("Parse json pair failed.");
+        let encrypted =
+            serde_json::from_slice::<Encrypted>(&json).expect("Parse json pair failed.");
 
-    encrypted.create("000000".to_string()).unwrap();
+        encrypted
+            .create("000000")
+            .expect("create pair from json file failed");
+    }
 }
