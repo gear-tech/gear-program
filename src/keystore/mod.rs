@@ -1,4 +1,7 @@
 //! keystore
+
+mod json;
+
 use crate::{api::config::GearConfig, utils, Error, Result};
 use lazy_static::lazy_static;
 use std::{fs, path::PathBuf};
@@ -12,9 +15,14 @@ lazy_static! {
     // when you have NO PASSWORD, If it can be got by an attacker then
     // they can also get your key.
     static ref KEYSTORE_PATH: PathBuf = utils::home().join("keystore");
+
+    // @WARNING: THIS WILL ONLY BE SECURE IF THE keystore IS SECURE.
+    // when you have NO PASSWORD, If it can be got by an attacker then
+    // they can also get your key.
+    static ref KEYSTORE_JSON_PATH: PathBuf = utils::home().join("keystore.json");
 }
 
-/// generate a new keypair
+/// Generate a new keypair.
 ///
 /// @WARNING: THIS WILL ONLY BE SECURE IF THE keystore IS SECURE.
 /// when you have NO PASSWORD, If it can be got by an attacker then
@@ -26,7 +34,7 @@ pub fn generate(passwd: Option<&str>) -> Result<PairSigner<GearConfig, Pair>> {
     Ok(PairSigner::new(pair.0))
 }
 
-/// login with suri
+/// Login with suri.
 ///
 /// @WARNING: THIS WILL ONLY BE SECURE IF THE keystore IS SECURE.
 /// when you have NO PASSWORD, If it can be got by an attacker then
@@ -37,7 +45,7 @@ pub fn login(suri: &str, passwd: Option<&str>) -> Result<PairSigner<GearConfig, 
     Ok(PairSigner::new(pair))
 }
 
-/// get signer from cache
+/// Get signer from cache.
 ///
 /// @WARNING: THIS WILL ONLY BE SECURE IF THE keystore IS SECURE.
 /// when you have NO PASSWORD, If it can be got by an attacker then
