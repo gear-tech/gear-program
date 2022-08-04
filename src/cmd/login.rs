@@ -42,7 +42,13 @@ impl Login {
             (None, Some(json)) => {
                 keystore::decode_json_file(json, self.passwd.as_ref().map(|p| p.as_ref()))?
             }
-            _ => keystore::generate(self.passwd.as_ref().map(|p| p.as_ref()))?,
+            _ => {
+                if let Ok(pair) = keystore::cache(self.passwd.as_deref()) {
+                    pair
+                } else {
+                    keystore::generate(self.passwd.as_ref().map(|p| p.as_ref()))?
+                }
+            }
         };
 
         println!("Successfully logged in as {}!", signer.account_id());
