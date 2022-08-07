@@ -10,41 +10,70 @@ mod executor;
 mod ext;
 mod result;
 
+pub use result::{Error, Result};
+
 /// Data used for the wasm exectuon.
 pub type StoreData = ext::Ext;
 
-/// Gear program metadata
-///
-/// See https://github.com/gear-tech/gear/blob/master/gstd/src/macros/metadata.rs.
-const META_TYPES: [&str; 12] = [
-    "meta_title",
-    "meta_init_input",
-    "meta_init_output",
-    "meta_async_init_input",
-    "meta_async_init_output",
-    "meta_handle_input",
-    "meta_handle_output",
-    "meta_async_handle_input",
-    "meta_async_handle_output",
-    "meta_state_input",
-    "meta_state_output",
-    "meta_registry",
+macro_rules! construct_metadata {
+    ($($meta:ident),+) => {
+        /// Gear program metadata
+        ///
+        /// See https://github.com/gear-tech/gear/blob/master/gstd/src/macros/metadata.rs.
+        #[derive(Debug)]
+        pub struct Metadata {
+            $(
+                pub $meta: Option<String>,
+            )+
+        }
+
+        impl Metadata {
+            /// Get metadata of "*meta.wasm"
+            pub fn of(bin: &[u8]) -> Result<Self> {
+                executor::execute(bin, |mut reader| -> Result<Self> {
+                    let memory = reader.memory()?;
+
+                    unsafe {
+                        Ok(Self {
+                            $(
+                                $meta: reader.meta(&memory, stringify!($meta)).ok(),
+                            )+
+                        })
+                    }
+                })
+            }
+        }
+    };
+}
+
+construct_metadata![
+    meta_title,
+    meta_init_input,
+    meta_init_output,
+    meta_async_init_input,
+    meta_async_init_output,
+    meta_handle_input,
+    meta_handle_output,
+    meta_async_handle_input,
+    meta_async_handle_output,
+    meta_state_input,
+    meta_state_output,
+    meta_registry
 ];
 
-/// Gear program metadata
-///
-/// See https://github.com/gear-tech/gear/blob/master/gstd/src/macros/metadata.rs.
-pub struct Metadata {
-    pub meta_title: String,
-    pub meta_init_input: String,
-    pub meta_init_output: String,
-    pub meta_async_init_input: String,
-    pub meta_async_init_output: String,
-    pub meta_handle_input: String,
-    pub meta_handle_output: String,
-    pub meta_async_handle_input: String,
-    pub meta_async_handle_output: String,
-    pub meta_state_input: String,
-    pub meta_state_output: String,
-    pub meta_registry: String,
+#[test]
+fn test_parsing_metadata() {
+    use parity_scale_codec::Decode;
+    use scale_info::PortableRegistry;
+
+    let demo_meta = include_bytes!("../../res/demo_meta.meta.wasm");
+    let metadata = Metadata::of(demo_meta).expect("get metadata failed");
+    let registry = PortableRegistry::decode(
+        &mut hex::decode(metadata.meta_registry.unwrap())
+            .unwrap()
+            .as_ref(),
+    )
+    .unwrap();
+
+    println!("{:#?}", registry.types());
 }

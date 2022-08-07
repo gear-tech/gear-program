@@ -84,19 +84,3 @@ impl Reader {
         Ok(String::from_utf8_lossy(&mem[ptr..(ptr + len)]).into())
     }
 }
-
-#[test]
-fn test_parsing_metadata() {
-    let demo_meta = include_bytes!("../../res/demo_meta.meta.wasm");
-    execute(demo_meta, |mut reader| unsafe {
-        let memory = reader.memory().expect("Memory not exists");
-        let title = reader
-            .meta(&memory, "meta_title")
-            .expect("Read metadata failed");
-
-        println!("{:?}", title);
-
-        Ok(())
-    })
-    .unwrap();
-}
