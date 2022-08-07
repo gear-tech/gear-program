@@ -9,7 +9,7 @@ use crate::metadata::{
     StoreData,
 };
 use wasmtime::{
-    AsContext, AsContextMut, Engine, Extern, Func, Instance, Linker, Memory, Module, Store,
+    AsContext, AsContextMut, Engine, Extern, Func, Instance, Linker, Memory, Module, Store, Val,
 };
 
 /// Exeucte wasm binary
@@ -62,18 +62,26 @@ impl Reader {
 
     /// Read metadata from meta type
     pub unsafe fn meta(&mut self, memory: &Memory, meta: &str) -> Result<String> {
-        let func = self.func(meta)?.to_raw(&self.store.as_context());
+        let mut res = [Val::null()];
+        self.func(meta)?.call(&mut self.store, &[], &mut res)?;
+
+        let at = if let Val::I32(at) = res[0] {
+            at as usize
+        } else {
+            return Err(Error::ReadMetadataFailed(meta.into()));
+        };
+
         let mem = memory.data(&self.store);
 
-        println!("{:?}", func);
-        println!("{:?}", mem.len());
+        let mut ptr_bytes = [0; 4];
+        ptr_bytes.copy_from_slice(&mem[at..(at + 4)]);
+        let ptr = i32::from_le_bytes(ptr_bytes) as usize;
 
-        let ptr = mem[func..(func + 4)][0] as usize;
-        println!("{:?}", ptr);
+        let mut len_bytes = [0; 4];
+        len_bytes.copy_from_slice(&mem[(at + 4)..(at + 8)]);
+        let len = i32::from_le_bytes(len_bytes) as usize;
 
-        let len = mem[(func + 4)..(func + 8)][0] as usize;
-
-        Ok(String::from_utf8_lossy(&mem[ptr..len]).into())
+        Ok(String::from_utf8_lossy(&mem[ptr..(ptr + len)]).into())
     }
 }
 
@@ -82,9 +90,11 @@ fn test_parsing_metadata() {
     let demo_meta = include_bytes!("../../res/demo_meta.meta.wasm");
     execute(demo_meta, |mut reader| unsafe {
         let memory = reader.memory().expect("Memory not exists");
-        reader
+        let title = reader
             .meta(&memory, "meta_title")
             .expect("Read metadata failed");
+
+        println!("{:?}", title);
 
         Ok(())
     })

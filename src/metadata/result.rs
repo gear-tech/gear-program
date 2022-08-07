@@ -7,6 +7,8 @@ pub enum Error {
     MemoryNotExists,
     #[error("Metadata {0} not exists")]
     MetadataNotExists(String),
+    #[error("Read {0} failed")]
+    ReadMetadataFailed(String),
     #[error(transparent)]
     Anyhow(#[from] anyhow::Error),
 }
