@@ -8,9 +8,14 @@
 mod env;
 mod executor;
 mod ext;
+mod registry;
 mod result;
+mod tests;
 
+use registry::LocalRegistry;
 pub use result::{Error, Result};
+use scale_info::{form::PortableForm, PortableRegistry};
+use std::fmt;
 
 /// Data used for the wasm exectuon.
 pub type StoreData = ext::Ext;
@@ -20,11 +25,23 @@ macro_rules! construct_metadata {
         /// Gear program metadata
         ///
         /// See https://github.com/gear-tech/gear/blob/master/gstd/src/macros/metadata.rs.
-        #[derive(Debug)]
+        #[derive(Debug, Eq)]
         pub struct Metadata {
             $(
                 pub $meta: Option<String>,
             )+
+        }
+
+        impl PartialEq for Metadata {
+            fn eq(&self, other: &Self) -> bool {
+                $(
+                    if self.$meta != other.$meta && stringify!($meta) != "meta_registry"{
+                        return false;
+                    }
+                )+
+
+                true
+            }
         }
 
         impl Metadata {
@@ -41,6 +58,27 @@ macro_rules! construct_metadata {
                         })
                     }
                 })
+            }
+
+            fn format(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+                let registry = self.registry().map_err(|_|fmt::Error)?;
+                let mut display = fmt.debug_struct("Metadata");
+
+                $(
+                    if let Some(type_name) = &self.$meta {
+                        if let Ok(ty) = registry.derive_name(&type_name) {
+                            display.field(stringify!($meta), &ty);
+                        }
+                    }
+                )+
+
+                display.finish()
+            }
+        }
+
+        impl fmt::Display for Metadata {
+            fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+                self.format(fmt)
             }
         }
     };
@@ -61,19 +99,9 @@ construct_metadata![
     meta_registry
 ];
 
-#[test]
-fn test_parsing_metadata() {
-    use parity_scale_codec::Decode;
-    use scale_info::PortableRegistry;
-
-    let demo_meta = include_bytes!("../../res/demo_meta.meta.wasm");
-    let metadata = Metadata::of(demo_meta).expect("get metadata failed");
-    let registry = PortableRegistry::decode(
-        &mut hex::decode(metadata.meta_registry.unwrap())
-            .unwrap()
-            .as_ref(),
-    )
-    .unwrap();
-
-    println!("{:#?}", registry.types());
+impl Metadata {
+    /// Get type registry
+    pub fn registry(&self) -> Result<PortableRegistry> {
+        PortableRegistry::from_hex(&self.meta_registry.as_ref().ok_or(Error::RegistryNotFound)?)
+    }
 }
