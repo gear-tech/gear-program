@@ -45,7 +45,7 @@ impl Reader {
         let meta = name.as_ref();
         self.instance
             .get_func(self.store.as_context_mut(), meta)
-            .ok_or(Error::MetadataNotExists(meta.into()))
+            .ok_or_else(|| Error::MetadataNotExists(meta.into()))
     }
 
     /// Get memory from wasm instance

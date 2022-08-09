@@ -12,7 +12,7 @@ use std::{any::TypeId, collections::HashMap, convert::TryFrom, fmt, ops::Deref};
 /// Wrapper of `scale_info::Type` for rust formatting
 pub struct LocalType<'t, T: Form> {
     pub ty: &'t Type<T>,
-    pub registry: Box<&'t PortableRegistry>,
+    pub registry: &'t PortableRegistry,
 }
 
 impl<'t, T: Form> LocalType<'t, T> {
@@ -31,13 +31,10 @@ impl<'t, T: Form<Type = UntrackedSymbol<TypeId>>> fmt::Debug for LocalType<'t, T
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         match self.ty.type_def() {
             TypeDef::Array(array) => fmt.write_str(&format!(
-                "[{}; {}]",
-                format!(
-                    "{:?}",
-                    self.registry
-                        .derive_id(array.type_param().id())
-                        .map_err(|_| fmt::Error)?
-                ),
+                "[{:?}; {}]",
+                self.registry
+                    .derive_id(array.type_param().id())
+                    .map_err(|_| fmt::Error)?,
                 array.len()
             )),
             TypeDef::BitSequence(bit_sequence) => {
@@ -66,7 +63,7 @@ impl<'t, T: Form<Type = UntrackedSymbol<TypeId>>> fmt::Debug for LocalType<'t, T
                     fmt.debug_struct(self.ty.path().ident().ok_or(fmt::Error)?.as_ref());
                 for field in composite.fields() {
                     debug.field(
-                        &field.name().ok_or(fmt::Error)?.as_ref(),
+                        field.name().ok_or(fmt::Error)?.as_ref(),
                         &field.type_name().ok_or(fmt::Error)?.as_ref(),
                     );
                 }
@@ -142,8 +139,8 @@ impl LocalRegistry for PortableRegistry {
         Ok(LocalType {
             ty: self
                 .resolve(id)
-                .ok_or(Error::TypeNotFound(format!("{id:?}")))?,
-            registry: Box::new(self),
+                .ok_or_else(|| Error::TypeNotFound(format!("{id:?}")))?,
+            registry: self,
         })
     }
 
@@ -151,10 +148,7 @@ impl LocalRegistry for PortableRegistry {
         for ty in self.types() {
             let ty = ty.ty();
             if ty.path().ident() == Some(ident.into()) {
-                return Ok(LocalType {
-                    ty,
-                    registry: Box::new(self),
-                });
+                return Ok(LocalType { ty, registry: self });
             }
         }
 

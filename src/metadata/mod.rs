@@ -12,8 +12,8 @@ mod registry;
 mod result;
 mod tests;
 
-use registry::LocalRegistry;
-pub use result::{Error, Result};
+use self::{registry::LocalRegistry, result::Result};
+pub use result::Error;
 use scale_info::{form::PortableForm, PortableRegistry};
 use std::fmt;
 
@@ -102,6 +102,6 @@ construct_metadata![
 impl Metadata {
     /// Get type registry
     pub fn registry(&self) -> Result<PortableRegistry> {
-        PortableRegistry::from_hex(&self.meta_registry.as_ref().ok_or(Error::RegistryNotFound)?)
+        PortableRegistry::from_hex(self.meta_registry.as_ref().ok_or(Error::RegistryNotFound)?)
     }
 }

@@ -9,7 +9,7 @@ pub fn apply(store: &mut Store<StoreData>, linker: &mut Linker<StoreData>) -> Re
     let memory = Memory::new(store.as_context_mut(), MemoryType::new(256, None))?;
 
     // Define memory
-    linker.define("env", "memory", Extern::Memory(memory.clone()))?;
+    linker.define("env", "memory", Extern::Memory(memory))?;
 
     // Define functions
     linker.define(
