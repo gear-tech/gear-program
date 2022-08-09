@@ -62,6 +62,8 @@ pub enum Error {
     Instantiation(#[from] wasmi::errors::InstantiationError),
     #[error("{0}")]
     Memory(wasmi::errors::MemoryError),
+    #[error(transparent)]
+    Metadata(#[from] crate::metadata::Error),
     #[error("{0}")]
     Schnorrkel(schnorrkel::SignatureError),
     #[error(transparent)]
