@@ -1,14 +1,13 @@
 use std::{
     fs::File,
     io::{BufRead, BufReader},
-    process::{Command, Stdio},
 };
+
+mod common;
 
 /// we can just match `spec_version` since this is
 /// auto-generated in `src/client/generated.rs`.
 const SPEC_VERSION_FIELD: &str = "spec_version:";
-const GEAR_NODE_BIN_PATH: &str = "/usr/local/bin/gear-node";
-const GEAR_NODE_DOCKER_IMAGE: &str = "ghcr.io/gear-tech/node:latest";
 const GEAR_NODE_SPEC_VERSION_PATTERN: &str = "Native runtime: gear-node-";
 
 /// Find spec version from file.
@@ -37,33 +36,15 @@ fn find_spec_version(f: &File) -> Option<u16> {
 
 #[test]
 fn check_spec_version() {
-    let mut ps = Command::new("docker")
-        .args(&[
-            "run",
-            "--rm",
-            GEAR_NODE_DOCKER_IMAGE,
-            GEAR_NODE_BIN_PATH,
-            "--tmp",
-            "--dev",
-        ])
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .expect("Spawn gear-node with docker failed.");
+    let mut node = common::Node::dev(9999).expect("Failed to spawn gear-node.");
 
-    let reader = BufReader::new(
-        ps.stderr
-            .take()
-            .expect("No stderr from gear-node was found."),
-    );
-
-    for line in reader.lines().filter_map(|line| line.ok()) {
+    for line in node.logs().expect("Failed to spwan logs of gear-node.") {
         if line.contains(GEAR_NODE_SPEC_VERSION_PATTERN) {
             let current_version = find_spec_version(
                 &File::open("src/api/generated.rs").expect("genreated.rs not found."),
             )
             .expect("Failed to parse spec_version from generated.rs");
-            let latest_version = line
+            let latest_version: u16 = line
                 .split(GEAR_NODE_SPEC_VERSION_PATTERN)
                 .collect::<Vec<_>>()[1]
                 .split(|p: char| p.is_whitespace())
@@ -75,6 +56,4 @@ fn check_spec_version() {
             break;
         }
     }
-
-    ps.kill().expect("Failed to kill gear-node.");
 }
