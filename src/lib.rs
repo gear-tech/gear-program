@@ -1,11 +1,11 @@
 mod api;
-pub mod builder;
 mod cmd;
 mod keystore;
 mod metadata;
 mod registry;
 mod result;
 mod template;
+pub mod testing;
 mod utils;
 
 pub use self::{
