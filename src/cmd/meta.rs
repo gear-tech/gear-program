@@ -1,5 +1,5 @@
 //! command login
-use crate::{metadata::Metadata, Result};
+use crate::{metadata::Metadata, result::Result};
 use std::{fs, path::PathBuf};
 use structopt::StructOpt;
 

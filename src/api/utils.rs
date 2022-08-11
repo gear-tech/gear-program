@@ -1,5 +1,5 @@
 //! gear api utils
-use crate::{api::Api, Result};
+use crate::{api::Api, result::Result};
 
 impl Api {
     /// compare gas limit

@@ -4,7 +4,7 @@ use crate::{
         generated::api::gear::{calls::UploadProgram, Event as GearEvent},
         Api,
     },
-    Result,
+    result::Result,
 };
 use std::{fs, path::PathBuf};
 use structopt::StructOpt;

@@ -83,4 +83,8 @@ impl Reader {
 
         Ok(String::from_utf8_lossy(&mem[ptr..(ptr + len)]).into())
     }
+
+    // pub unsafe fn state(&mut self, ) -> Result<String> {
+    //
+    // }
 }

@@ -4,7 +4,7 @@ use crate::{
         generated::api::runtime_types::{frame_system::AccountInfo, pallet_balances::AccountData},
         Api,
     },
-    Result,
+    result::Result,
 };
 use subxt::{sp_core::crypto::Ss58Codec, sp_runtime::AccountId32};
 

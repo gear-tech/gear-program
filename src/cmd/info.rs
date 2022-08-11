@@ -1,5 +1,5 @@
 //! command transfer
-use crate::{api::Api, Result};
+use crate::{api::Api, result::Result};
 use structopt::StructOpt;
 
 /// Get account info from ss58address.

@@ -1,5 +1,5 @@
 //! command login
-use crate::{keystore, Result};
+use crate::{keystore, result::Result};
 use std::path::PathBuf;
 use structopt::StructOpt;
 

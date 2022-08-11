@@ -1,7 +1,7 @@
 //! gear api rpc methods
 use crate::{
     api::{generated::api::runtime_types::gear_common::ActiveProgram, types, Api},
-    Error, Result,
+    result::{Error, Result},
 };
 use hex::ToHex;
 use parity_scale_codec::Decode;

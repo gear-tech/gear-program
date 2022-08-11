@@ -1,7 +1,7 @@
 // Copyright (C) 2021-2022 Gear Technologies Inc.
 // SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0
 
-//! Metadata parser
+//! gear program metadata parser
 #![allow(dead_code)]
 #![allow(unused_imports)]
 
