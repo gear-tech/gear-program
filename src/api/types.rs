@@ -1,6 +1,7 @@
 //! gear types
 use parity_scale_codec::{Decode, Encode};
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 #[derive(Clone, Debug, Decode, Encode, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GasInfo {
@@ -11,3 +12,6 @@ pub struct GasInfo {
     /// Contains number of gas burned during message processing.
     pub burned: u64,
 }
+
+/// Gear pages.
+pub type GearPages = HashMap<u32, Vec<u8>>;

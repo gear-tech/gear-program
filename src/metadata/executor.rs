@@ -3,13 +3,13 @@
 
 //! WASM executor for getting metadata from `*.meta.wasm`
 use crate::{
+    api::types::GearPages,
     metadata::{
         env,
         ext::Ext,
         result::{Error, Result},
         StoreData,
     },
-    types::GearPages,
 };
 use wasmtime::{
     AsContext, AsContextMut, Engine, Extern, Func, Instance, Linker, Memory, Module, Store, Val,

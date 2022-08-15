@@ -13,8 +13,8 @@ mod result;
 mod tests;
 
 use crate::{
+    api::types::GearPages,
     metadata::{registry::LocalRegistry, result::Result},
-    types::GearPages,
 };
 pub use result::Error;
 use scale_info::{form::PortableForm, PortableRegistry};
@@ -104,6 +104,7 @@ construct_metadata![
 ];
 
 impl Metadata {
+    /// Read meta state.
     pub fn read(
         bin: &[u8],
         initial_size: u64,

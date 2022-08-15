@@ -977,6 +977,7 @@ version = "0.1.1"
 dependencies = [
  "anyhow",
  "base64",
+ "blake2-rfc",
  "dialoguer",
  "dirs",
  "env_logger",

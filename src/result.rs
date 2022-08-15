@@ -44,6 +44,8 @@ pub enum Error {
     Base64Decode(#[from] base64::DecodeError),
     #[error(transparent)]
     Codec(#[from] parity_scale_codec::Error),
+    #[error("Code not found {0}")]
+    CodeNotFound(String),
     #[error("Could not find directory {0}")]
     CouldNotFindDirectory(String),
     #[error(transparent)]
