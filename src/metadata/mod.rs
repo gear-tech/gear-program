@@ -12,13 +12,20 @@ mod registry;
 mod result;
 mod tests;
 
-use self::{registry::LocalRegistry, result::Result};
+use crate::{
+    metadata::{registry::LocalRegistry, result::Result},
+    types::GearPages,
+};
 pub use result::Error;
 use scale_info::{form::PortableForm, PortableRegistry};
 use std::fmt;
+use subxt::sp_runtime::traits::Saturating;
+use wasmtime::AsContextMut;
 
 /// Data used for the wasm exectuon.
 pub type StoreData = ext::Ext;
+
+const PAGE_SIZE: usize = 4096;
 
 macro_rules! construct_metadata {
     ($($meta:ident),+) => {
@@ -50,13 +57,13 @@ macro_rules! construct_metadata {
                 executor::execute(bin, |mut reader| -> Result<Self> {
                     let memory = reader.memory()?;
 
-                    unsafe {
-                        Ok(Self {
-                            $(
-                                $meta: reader.meta(&memory, stringify!($meta)).ok(),
-                            )+
-                        })
-                    }
+                    Ok(Self {
+                        $(
+                            $meta: reader.meta(&memory, stringify!($meta))
+                                .map(|b|String::from_utf8_lossy(&b).to_string())
+                                .ok(),
+                        )+
+                    })
                 })
             }
 
@@ -73,12 +80,6 @@ macro_rules! construct_metadata {
                 )+
 
                 display.finish()
-            }
-        }
-
-        impl fmt::Display for Metadata {
-            fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-                self.format(fmt)
             }
         }
     };
@@ -100,8 +101,27 @@ construct_metadata![
 ];
 
 impl Metadata {
+    pub fn read(
+        bin: &[u8],
+        initial_size: u64,
+        pages: GearPages,
+        msg: Vec<u8>,
+        timestamp: u64,
+        height: u64,
+    ) -> Result<Vec<u8>> {
+        executor::execute(bin, move |mut reader| -> Result<Vec<u8>> {
+            reader.state(initial_size, pages.clone(), msg.clone(), timestamp, height)
+        })
+    }
+
     /// Get type registry
     pub fn registry(&self) -> Result<PortableRegistry> {
         PortableRegistry::from_hex(self.meta_registry.as_ref().ok_or(Error::RegistryNotFound)?)
+    }
+}
+
+impl fmt::Display for Metadata {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        self.format(fmt)
     }
 }

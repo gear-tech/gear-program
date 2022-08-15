@@ -2,6 +2,7 @@
 use crate::{
     api::{generated::api::runtime_types::gear_common::ActiveProgram, types, Api},
     result::{Error, Result},
+    types::GearPages,
 };
 use hex::ToHex;
 use parity_scale_codec::Decode;
@@ -70,13 +71,13 @@ impl Api {
             .storage()
             .fetch_raw(StorageKey([GPROG.as_slice(), &pid.0].concat()), None)
             .await?
-            .ok_or(Error::ProgramNotFound(pid.encode_hex()))?;
+            .ok_or_else(|| Error::ProgramNotFound(pid.encode_hex()))?;
 
         Ok(ActiveProgram::decode(&mut bytes.0.as_ref())?)
     }
 
     /// Get pages of active program.
-    pub async fn gpages(&self, pid: H256, program: ActiveProgram) -> Result<HashMap<u32, Vec<u8>>> {
+    pub async fn gpages(&self, pid: H256, program: ActiveProgram) -> Result<GearPages> {
         let mut pages = HashMap::new();
         let prefix = [GPAGES.as_slice(), &pid.0, &SEPARATOR].concat();
         for page in program.pages_with_data {
@@ -89,7 +90,7 @@ impl Api {
                     None,
                 )
                 .await?
-                .ok_or(Error::PageNotFound(page.0, pid.encode_hex()))?;
+                .ok_or_else(|| Error::PageNotFound(page.0, pid.encode_hex()))?;
             pages.insert(page.0, value.0);
         }
 
@@ -98,6 +99,6 @@ impl Api {
 
     /// Get program pages from program id.
     pub async fn program_pages(&self, pid: H256) -> Result<HashMap<u32, Vec<u8>>> {
-        self.gpages(pid.clone(), self.gprog(pid).await?).await
+        self.gpages(pid, self.gprog(pid).await?).await
     }
 }
