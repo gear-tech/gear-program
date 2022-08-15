@@ -3,6 +3,7 @@ use crate::common;
 
 const DEMO_METADATA: &str = r#"
 Metadata {
+    meta_title: Example program with metadata,
     meta_init_input: MessageInitIn {
         amount: u8,
         currency: String,
@@ -29,6 +30,8 @@ Metadata {
     meta_async_handle_output: MessageHandleAsyncOut {
         empty: (),
     },
+    meta_state_input: Option<Id>,
+    meta_state_output: Vec<Wallet>,
 }
 "#;
 

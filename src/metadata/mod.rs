@@ -76,6 +76,9 @@ macro_rules! construct_metadata {
                         if let Ok(ty) = registry.derive_name(&type_name) {
                             display.field(stringify!($meta), &ty);
                         }
+                        else if stringify!($meta) != "meta_registry" {
+                            display.field(stringify!($meta), &type_name);
+                        }
                     }
                 )+
 
