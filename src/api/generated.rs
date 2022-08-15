@@ -2,7 +2,7 @@
 //!
 //! subxt codegen | rustfmt --edition=2021
 //!
-//! spec_version: 1520
+//! spec_version: 1540
 #![allow(clippy::all)]
 #[allow(dead_code, unused_imports, non_camel_case_types)]
 pub mod api {
@@ -1546,10 +1546,10 @@ pub mod api {
                     let metadata = locked_metadata.read();
                     if metadata.constant_hash("System", "Version")?
                         == [
-                            158u8, 57u8, 99u8, 172u8, 215u8, 212u8, 205u8, 189u8, 166u8, 19u8,
-                            81u8, 181u8, 247u8, 180u8, 61u8, 173u8, 223u8, 149u8, 135u8, 11u8,
-                            69u8, 207u8, 76u8, 246u8, 82u8, 167u8, 73u8, 189u8, 99u8, 34u8, 137u8,
-                            170u8,
+                            69u8, 223u8, 199u8, 206u8, 133u8, 201u8, 243u8, 200u8, 24u8, 146u8,
+                            133u8, 156u8, 80u8, 148u8, 15u8, 2u8, 150u8, 245u8, 17u8, 217u8, 95u8,
+                            128u8, 250u8, 88u8, 228u8, 151u8, 243u8, 115u8, 89u8, 248u8, 83u8,
+                            250u8,
                         ]
                     {
                         let pallet = metadata.pallet("System")?;
@@ -8545,6 +8545,14 @@ pub mod api {
                 }
             }
         }
+        pub mod pallet_gear_payment {
+            use super::runtime_types;
+            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            pub struct CustomChargeTransactionPayment<_0>(
+                pub runtime_types::pallet_transaction_payment::ChargeTransactionPayment,
+                #[codec(skip)] pub ::core::marker::PhantomData<_0>,
+            );
+        }
         pub mod pallet_gear_program {
             use super::runtime_types;
             pub mod pallet {
@@ -9920,9 +9928,9 @@ pub mod api {
             };
             if runtime_metadata_hash
                 != [
-                    50u8, 83u8, 42u8, 61u8, 171u8, 135u8, 79u8, 228u8, 187u8, 154u8, 240u8, 176u8,
-                    126u8, 77u8, 110u8, 209u8, 106u8, 7u8, 27u8, 182u8, 253u8, 239u8, 26u8, 67u8,
-                    111u8, 123u8, 98u8, 222u8, 5u8, 241u8, 184u8, 179u8,
+                    17u8, 88u8, 60u8, 158u8, 209u8, 107u8, 40u8, 197u8, 123u8, 88u8, 230u8, 84u8,
+                    119u8, 34u8, 37u8, 189u8, 132u8, 90u8, 91u8, 157u8, 212u8, 231u8, 219u8, 78u8,
+                    27u8, 115u8, 122u8, 15u8, 97u8, 114u8, 88u8, 57u8,
                 ]
             {
                 Err(::subxt::MetadataError::IncompatibleMetadata)
