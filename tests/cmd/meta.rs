@@ -40,5 +40,8 @@ async fn test_display_metadata_works() {
     let output =
         common::gear(&["meta", "res/demo_meta.meta.wasm", "display"]).expect("Run command failed");
 
-    assert_eq!(DEMO_METADATA.trim(), output.trim());
+    assert_eq!(
+        DEMO_METADATA.trim(),
+        String::from_utf8_lossy(&output.stdout).trim()
+    );
 }

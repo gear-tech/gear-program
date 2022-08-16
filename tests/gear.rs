@@ -1,15 +1,16 @@
+use common::Result;
 use std::fs::File;
 
 mod cmd;
 mod common;
 
 #[test]
-fn check_spec_version() {
+fn check_spec_version() -> Result<()> {
     use common::spec_version::{self, GEAR_NODE_SPEC_VERSION_PATTERN};
 
-    let mut node = common::Node::dev(9999).expect("Failed to spawn gear-node.");
+    let mut node = common::Node::dev(9999)?;
 
-    for line in node.logs().expect("Failed to spwan logs of gear-node.") {
+    for line in node.logs()? {
         if line.contains(GEAR_NODE_SPEC_VERSION_PATTERN) {
             let current_version = spec_version::find(
                 &File::open("src/api/generated.rs").expect("genreated.rs not found."),
@@ -23,4 +24,6 @@ fn check_spec_version() {
             break;
         }
     }
+
+    Ok(())
 }

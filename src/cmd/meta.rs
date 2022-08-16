@@ -3,14 +3,14 @@ use crate::{metadata::Metadata, result::Result};
 use std::{fs, path::PathBuf};
 use structopt::StructOpt;
 
-/// Action of command meta.
+/// Show metadata structure, read types from registry, etc.
 #[derive(Debug, StructOpt)]
 pub enum Action {
     /// Display the structure of the metadata.
     Display,
 }
 
-/// Login to account
+/// Show metadata structure, read types from registry, etc.
 #[derive(Debug, StructOpt)]
 pub struct Meta {
     /// Path of "*.meta.wasm".
@@ -32,13 +32,3 @@ impl Meta {
         Ok(())
     }
 }
-
-// /// Creates a unique identifier by passing given argument to blake2b hash-function.
-// fn hash(bin: &[u8]) -> [u8; 32] {
-//     let mut arr: [u8; 32] = Default::default();
-//
-//     let blake2b_hash = blake2b::blake2b(32, &[], bin);
-//     arr[..].copy_from_slice(blake2b_hash.as_bytes());
-//
-//     arr
-// }

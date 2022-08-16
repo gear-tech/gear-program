@@ -7,7 +7,7 @@ use crate::{
 use structopt::StructOpt;
 use subxt::sp_core::H256;
 
-/// Action of command program.
+/// Read program state, etc.
 #[derive(Clone, Debug, StructOpt)]
 pub enum Action {
     /// Read program state.
@@ -24,7 +24,7 @@ pub enum Action {
     },
 }
 
-/// Command program.
+/// Read program state, etc.
 #[derive(Debug, StructOpt)]
 pub struct Program {
     /// Program id.
