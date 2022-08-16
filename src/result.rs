@@ -56,6 +56,8 @@ pub enum Error {
     InvalidPassword,
     #[error(transparent)]
     Io(#[from] std::io::Error),
+    #[error(transparent)]
+    Logger(#[from] log::SetLoggerError),
     #[error("No available account was found in keystore, please run `gear login` first.")]
     Logout,
     #[error(transparent)]
@@ -66,6 +68,8 @@ pub enum Error {
     PageNotFound(u32, String),
     #[error("Program with id {0} was not found in the storage.")]
     ProgramNotFound(String),
+    #[error("Program has been terminated.")]
+    ProgramTerminated,
     #[error("{0}")]
     Schnorrkel(schnorrkel::SignatureError),
     #[error(transparent)]

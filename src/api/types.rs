@@ -1,4 +1,5 @@
 //! gear types
+use crate::api::generated::api::runtime_types::gear_common::ActiveProgram;
 use parity_scale_codec::{Decode, Encode};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -15,3 +16,10 @@ pub struct GasInfo {
 
 /// Gear pages.
 pub type GearPages = HashMap<u32, Vec<u8>>;
+
+/// Gear Program
+#[derive(Debug, Decode)]
+pub enum Program {
+    Active(ActiveProgram),
+    Terminated,
+}

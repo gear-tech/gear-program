@@ -4,6 +4,7 @@ use crate::{
     metadata::Metadata,
     result::{Error, Result},
 };
+use std::{fs, path::PathBuf};
 use structopt::StructOpt;
 use subxt::sp_core::H256;
 
@@ -12,6 +13,8 @@ use subxt::sp_core::H256;
 pub enum Action {
     /// Read program state.
     State {
+        /// Path of "*.meta.wasm".
+        metadata: PathBuf,
         /// Input message for reading program state.
         #[structopt(short, long, default_value = "0x")]
         msg: String,
@@ -50,22 +53,27 @@ impl Program {
     /// Read program state.
     pub async fn state(&self, api: Api, pid: H256) -> Result<()> {
         let Action::State {
+            metadata,
             msg,
             timestamp,
             height,
         } = self.action.clone();
 
+        // Get program
+        let program = api.gprog(pid).await?;
+        let code_id = program.code_hash;
         let code = api
-            .code_storage(pid.0)
+            .code_storage(code_id.0)
             .await?
             .ok_or_else(|| Error::CodeNotFound(self.pid.clone()))?;
+        let pages = api.gpages(pid, program).await?;
 
-        let pages = api.program_pages(pid).await?;
+        // Query state
         let state = Metadata::read(
-            &code.code,
+            &fs::read(&metadata)?,
             code.static_pages.0 as u64,
             pages,
-            hex::decode(msg)?,
+            hex::decode(msg.trim_start_matches("0x"))?,
             timestamp.unwrap_or(0),
             height.unwrap_or(0),
         )?;

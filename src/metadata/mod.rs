@@ -8,6 +8,7 @@
 mod env;
 mod executor;
 mod ext;
+mod funcs;
 mod registry;
 mod result;
 mod tests;

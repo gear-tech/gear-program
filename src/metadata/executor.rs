@@ -12,7 +12,8 @@ use crate::{
     },
 };
 use wasmtime::{
-    AsContext, AsContextMut, Engine, Extern, Func, Instance, Linker, Memory, Module, Store, Val,
+    AsContext, AsContextMut, Config, Engine, Extern, Func, Instance, Linker, Memory, Module, Store,
+    Val,
 };
 
 const PAGE_SIZE: usize = 4096;
@@ -108,13 +109,13 @@ impl Reader {
 
         // 2. Update the host state in ext.
         let data = self.store.data_mut();
-        data.msg = msg.clone();
+        data.msg = msg;
         data.timestamp = timestamp;
         data.height = height;
 
         // 3. Apply pages to the current wasm module
         let mem_mut = mem.data_mut(self.store.as_context_mut());
-        for (idx, page) in pages.clone().into_iter() {
+        for (idx, page) in pages {
             let start = (idx as usize) * PAGE_SIZE;
             let end = start + PAGE_SIZE;
 

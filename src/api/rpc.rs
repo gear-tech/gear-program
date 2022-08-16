@@ -1,20 +1,15 @@
 //! gear api rpc methods
 use crate::{
-    api::{generated::api::runtime_types::gear_common::ActiveProgram, types, Api},
-    result::{Error, Result},
-};
-use hex::ToHex;
-use parity_scale_codec::Decode;
-use std::{collections::HashMap, sync::Arc};
-use subxt::{
-    rpc::{rpc_params, ClientT},
-    sp_core::{storage::StorageKey, Bytes, H256},
-    RpcClient,
+    api::{types, Api},
+    result::Result,
 };
 
-const GPROG: [u8; 9] = *b"g::prog::";
-const GPAGES: [u8; 10] = *b"g::pages::";
-const SEPARATOR: [u8; 2] = *b"::";
+use std::sync::Arc;
+use subxt::{
+    rpc::{rpc_params, ClientT},
+    sp_core::{Bytes, H256},
+    RpcClient,
+};
 
 impl Api {
     /// get rpc client
@@ -60,44 +55,5 @@ impl Api {
             )
             .await
             .map_err(Into::into)
-    }
-
-    /// Get active program from program id.
-    pub async fn gprog(&self, pid: H256) -> Result<ActiveProgram> {
-        let bytes = self
-            .runtime
-            .client
-            .storage()
-            .fetch_raw(StorageKey([GPROG.as_slice(), &pid.0].concat()), None)
-            .await?
-            .ok_or_else(|| Error::ProgramNotFound(pid.encode_hex()))?;
-
-        Ok(ActiveProgram::decode(&mut bytes.0.as_ref())?)
-    }
-
-    /// Get pages of active program.
-    pub async fn gpages(&self, pid: H256, program: ActiveProgram) -> Result<types::GearPages> {
-        let mut pages = HashMap::new();
-        let prefix = [GPAGES.as_slice(), &pid.0, &SEPARATOR].concat();
-        for page in program.pages_with_data {
-            let value = self
-                .runtime
-                .client
-                .storage()
-                .fetch_raw(
-                    StorageKey([prefix.as_slice(), &page.0.to_le_bytes()].concat()),
-                    None,
-                )
-                .await?
-                .ok_or_else(|| Error::PageNotFound(page.0, pid.encode_hex()))?;
-            pages.insert(page.0, value.0);
-        }
-
-        Ok(pages)
-    }
-
-    /// Get program pages from program id.
-    pub async fn program_pages(&self, pid: H256) -> Result<types::GearPages> {
-        self.gpages(pid, self.gprog(pid).await?).await
     }
 }

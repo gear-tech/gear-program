@@ -63,6 +63,8 @@ impl Opt {
 
     /// Execute command.
     pub async fn exec(&self) -> Result<()> {
+        env_logger::builder().try_init()?;
+
         // # TODO
         //
         // Wrap `self.api` as closure into commands.
