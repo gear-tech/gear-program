@@ -8,6 +8,7 @@ use std::{
     process::{Command, Output},
 };
 
+mod docker;
 pub mod logs;
 mod node;
 mod result;

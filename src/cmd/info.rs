@@ -1,10 +1,7 @@
 //! command transfer
 use crate::{api::Api, result::Result};
 use structopt::StructOpt;
-use subxt::{
-    sp_core::{crypto::Ss58Codec, sr25519::Pair, Pair as PairT},
-    PairSigner,
-};
+use subxt::sp_core::{crypto::Ss58Codec, sr25519::Pair, Pair as PairT};
 
 /// Get account info from ss58address.
 #[derive(Debug, StructOpt)]

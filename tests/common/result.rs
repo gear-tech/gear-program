@@ -4,6 +4,8 @@ pub enum Error {
     EmptyStderr,
     #[error(transparent)]
     Io(#[from] std::io::Error),
+    #[error("Spwan process failed: {0}")]
+    Spawn(String),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
