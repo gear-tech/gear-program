@@ -66,7 +66,7 @@ pub enum Action {
         /// Raw message
         message: String,
         /// Public key of the signer of this signature
-        pubkey: Option<String>,
+        pubkey: String,
     },
 }
 
@@ -111,7 +111,11 @@ impl Key {
             Action::Inspect { suri } => self.inspect(&suri, passwd)?,
             Action::InspectNodeKey { secret } => Self::inspect_node_key(secret)?,
             Action::Sign { suri, message } => self.sign(&suri, &message, passwd)?,
-            _ => {}
+            Action::Verify {
+                signature,
+                message,
+                pubkey,
+            } => self.verify(signature, message, pubkey)?,
         }
 
         Ok(())
@@ -178,6 +182,20 @@ impl Key {
 
             println!("Signature: {}", hex::encode::<&[u8]>(sig.as_ref()));
             Self::info("The signer of this signature", signer)
+        });
+
+        Ok(())
+    }
+
+    fn verify(&self, sig: &str, message: &str, pubkey: &str) -> Result<()> {
+        let arr = [sig, pubkey]
+            .iter()
+            .map(|i| hex::decode(i.trim_start_matches("0x")))
+            .collect::<StdResult<Vec<Vec<u8>>, hex::FromHexError>>()?;
+        let [sig, msg, pubkey] = [&arr[0], message.as_bytes(), &arr[1]];
+
+        match_scheme!(self.scheme, verify, (sig, msg, pubkey), res, {
+            println!("Result: {}", res);
         });
 
         Ok(())
