@@ -1,15 +1,11 @@
 //! command key
 use crate::{
-    api::config::GearConfig,
     keystore::{key::Key as KeyT, node},
     result::Result,
 };
 use std::{path::PathBuf, result::Result as StdResult, str::FromStr};
 use structopt::StructOpt;
-use subxt::{
-    sp_core::{ecdsa, ed25519, sr25519, Pair},
-    PairSigner,
-};
+use subxt::sp_core::{ecdsa, ed25519, sr25519, Pair};
 
 /// Cryptography scheme
 #[derive(Debug)]
@@ -106,6 +102,7 @@ impl Key {
     pub fn exec(&self, passwd: Option<&str>) -> Result<()> {
         match self.action {
             Action::Generate => self.generate(passwd)?,
+            Action::GenerateNodeKey => Self::generate_node_key(),
             _ => {}
         }
 
@@ -124,5 +121,12 @@ impl Key {
         });
 
         Ok(())
+    }
+
+    fn generate_node_key() {
+        let key = node::generate();
+
+        println!("Secret:  0x{}", hex::encode(key.0.secret().as_ref()));
+        println!("Peer ID: {}", key.1)
     }
 }
