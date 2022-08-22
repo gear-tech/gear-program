@@ -40,6 +40,8 @@ impl From<TxStatus<'_>> for Error {
 pub enum Error {
     #[error(transparent)]
     Anyhow(#[from] anyhow::Error),
+    #[error("Invalid node key")]
+    BadNodeKey,
     #[error(transparent)]
     Base64Decode(#[from] base64::DecodeError),
     #[error(transparent)]

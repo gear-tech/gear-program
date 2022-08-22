@@ -49,14 +49,14 @@ impl Key {
     /// Generate pair with phrase
     pub fn generate_with_phrase<P>(
         passwd: Option<&str>,
-    ) -> Result<(PairSigner<GearConfig, P>, String)>
+    ) -> Result<(PairSigner<GearConfig, P>, String, Vec<u8>)>
     where
         P: Pair,
         MultiSignature: From<<P as Pair>::Signature>,
         MultiSigner: From<<P as Pair>::Public>,
     {
         let pair = P::generate_with_phrase(passwd);
-        Ok((PairSigner::new(pair.0), pair.1))
+        Ok((PairSigner::new(pair.0), pair.1, pair.2.as_ref().to_vec()))
     }
 
     /// Get keypair from key
