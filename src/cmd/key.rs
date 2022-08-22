@@ -41,7 +41,7 @@ pub enum Action {
 
     /// Gets a public key and a SS58 address from the provided Secret URI
     Inspect {
-        /// Secret uri, if none, will get keypair from cache.
+        /// Secret URI of the key
         suri: String,
     },
 
@@ -53,8 +53,8 @@ pub enum Action {
 
     /// Sign a message, with a given (secret) key
     Sign {
-        /// Secret uri, if none, will get keypair from cache
-        suri: Option<String>,
+        /// Secret URI of the key
+        suri: String,
         /// Message to sign
         message: String,
     },
@@ -65,8 +65,7 @@ pub enum Action {
         signature: String,
         /// Raw message
         message: String,
-        /// Public key of the signer of this signature, if none,
-        /// will get keypair from cache
+        /// Public key of the signer of this signature
         pubkey: Option<String>,
     },
 }
@@ -102,12 +101,16 @@ macro_rules! match_scheme {
 }
 
 impl Key {
+    /// # NOTE
+    ///
+    /// Reserved the `passwd` for getting suri from cache.
     pub fn exec(&self, passwd: Option<&str>) -> Result<()> {
         match &self.action {
             Action::Generate => self.generate(passwd)?,
             Action::GenerateNodeKey => Self::generate_node_key(),
             Action::Inspect { suri } => self.inspect(&suri, passwd)?,
             Action::InspectNodeKey { secret } => Self::inspect_node_key(secret)?,
+            Action::Sign { suri, message } => self.sign(&suri, &message, passwd)?,
             _ => {}
         }
 
@@ -162,6 +165,21 @@ impl Key {
         let key = node::inspect(data)?;
 
         println!("Peer ID: {}", key.1);
+        Ok(())
+    }
+
+    fn sign(&self, suri: &str, message: &str, passwd: Option<&str>) -> Result<()> {
+        let key = KeyT::from_string(suri);
+        let key_ref = &key;
+
+        match_scheme!(self.scheme, pair, (key_ref, passwd), pair, {
+            let signer = pair.signer();
+            let sig = signer.sign(message.as_bytes());
+
+            println!("Signature: {}", hex::encode::<&[u8]>(sig.as_ref()));
+            Self::info("The signer of this signature", signer)
+        });
+
         Ok(())
     }
 }
