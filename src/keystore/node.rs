@@ -1,4 +1,5 @@
 //! Node key
+#![cfg(feature = "node-key")]
 use crate::result::{Error, Result};
 use libp2p::{
     identity::{ed25519, PublicKey},

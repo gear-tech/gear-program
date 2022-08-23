@@ -3,6 +3,7 @@ use crate::common::{self, traits::Convert, Result};
 
 const SIGNATURE_PATT: &str = "Signature:";
 const SEED_PATT: &str = "Seed:";
+#[cfg(feature = "node-key")]
 const SECRET_PATT: &str = "Secret:";
 const PUBLIC_PATT: &str = "Public key:";
 
@@ -48,6 +49,7 @@ fn test_sign_and_verify() -> Result<()> {
 }
 
 #[test]
+#[cfg(feature = "node-key")]
 fn test_node_key() -> Result<()> {
     // template STDOUT
     //

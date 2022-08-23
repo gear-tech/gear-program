@@ -1,8 +1,5 @@
 //! command key
-use crate::{
-    keystore::{key::Key as KeyT, node},
-    result::Result,
-};
+use crate::{keystore::key::Key as KeyT, result::Result};
 use std::{fmt::Display, result::Result as StdResult, str::FromStr};
 use structopt::StructOpt;
 use subxt::{
@@ -36,6 +33,7 @@ pub enum Action {
     Generate,
 
     /// Generate a random node libp2p key
+    #[cfg(feature = "node-key")]
     #[structopt(name = "generate-node-key")]
     GenerateNodeKey,
 
@@ -46,6 +44,7 @@ pub enum Action {
     },
 
     /// Print the peer ID corresponding to the node key in the given file
+    #[cfg(feature = "node-key")]
     InspectNodeKey {
         /// Hex encoding of the secret key
         secret: String,
@@ -107,8 +106,10 @@ impl Key {
     pub fn exec(&self, passwd: Option<&str>) -> Result<()> {
         match &self.action {
             Action::Generate => self.generate(passwd)?,
+            #[cfg(feature = "node-key")]
             Action::GenerateNodeKey => Self::generate_node_key(),
             Action::Inspect { suri } => self.inspect(suri, passwd)?,
+            #[cfg(feature = "node-key")]
             Action::InspectNodeKey { secret } => Self::inspect_node_key(secret)?,
             Action::Sign { suri, message } => self.sign(suri, message, passwd)?,
             Action::Verify {
@@ -132,8 +133,9 @@ impl Key {
         Ok(())
     }
 
+    #[cfg(feature = "node-key")]
     fn generate_node_key() {
-        let key = node::generate();
+        let key = crate::keystore::node::generate();
 
         println!("Secret:  0x{}", hex::encode(key.0.secret().as_ref()));
         println!("Peer ID: {}", key.1)
@@ -171,9 +173,10 @@ impl Key {
         Ok(())
     }
 
+    #[cfg(feature = "node-key")]
     fn inspect_node_key(secret: &str) -> Result<()> {
         let data = hex::decode(secret.trim_start_matches("0x"))?;
-        let key = node::inspect(data)?;
+        let key = crate::keystore::node::inspect(data)?;
 
         println!("Peer ID: {}", key.1);
         Ok(())
