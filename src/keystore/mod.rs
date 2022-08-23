@@ -50,7 +50,7 @@ pub fn login(suri: &str, passwd: Option<&str>) -> Result<PairSigner<GearConfig, 
     let pair = Key::from_string(suri).pair::<sr25519::Pair>(passwd)?;
     fs::write(&*KEYSTORE_PATH, suri)?;
 
-    Ok(pair)
+    Ok(pair.0)
 }
 
 /// Get signer from cache.
@@ -61,7 +61,7 @@ pub fn login(suri: &str, passwd: Option<&str>) -> Result<PairSigner<GearConfig, 
 pub fn cache(passwd: Option<&str>) -> Result<PairSigner<GearConfig, sr25519::Pair>> {
     let pair = if (*KEYSTORE_PATH).exists() {
         let suri = fs::read_to_string(&*KEYSTORE_PATH).map_err(|_| Error::Logout)?;
-        Key::from_string(&suri).pair::<sr25519::Pair>(passwd)?
+        Key::from_string(&suri).pair::<sr25519::Pair>(passwd)?.0
     } else if (*KEYSTORE_JSON_PATH).exists() {
         decode_json_file(&*KEYSTORE_JSON_PATH, passwd)?
     } else {

@@ -82,7 +82,7 @@ pub struct Key {
 }
 
 macro_rules! match_scheme {
-    ($scheme:expr, $op:tt, ($($arg:ident),*), $res:ident, $repeat:expr) => {
+    ($scheme:expr, $op:tt ($($arg:ident),*), $res:ident, $repeat:expr) => {
         match $scheme {
             Scheme::Ecdsa => {
                 let $res = KeyT::$op::<ecdsa::Pair>($($arg),*)?;
@@ -122,11 +122,11 @@ impl Key {
     }
 
     fn generate(&self, passwd: Option<&str>) -> Result<()> {
-        match_scheme!(self.scheme, generate_with_phrase, (passwd), res, {
-            let (pair, phrase) = res;
+        match_scheme!(self.scheme, generate_with_phrase(passwd), res, {
+            let (pair, phrase, seed) = res;
             let signer = pair.signer();
 
-            Self::info(&format!("Secret Phrase `{}`", phrase), signer);
+            Self::info(&format!("Secret Phrase `{}`", phrase), signer, Some(seed));
         });
 
         Ok(())
@@ -139,17 +139,20 @@ impl Key {
         println!("Peer ID: {}", key.1)
     }
 
-    fn info<P>(title: &str, signer: &P)
+    fn info<P>(title: &str, signer: &P, seed: Option<Vec<u8>>)
     where
         P: Pair,
         <P as Pair>::Public: IdentifyAccount,
         <<P as Pair>::Public as IdentifyAccount>::AccountId: Display,
     {
+        let ss = if let Some(seed) = seed {
+            seed
+        } else {
+            signer.to_raw_vec()
+        };
+
         println!("{title} is account:");
-        println!(
-            "\tSecret Seed:  0x{}",
-            hex::encode(&signer.to_raw_vec()[..32])
-        );
+        println!("\tSecret Seed:  0x{}", hex::encode(&ss[..32]));
         println!("\tPublic key:   0x{}", hex::encode(signer.public()));
         println!("\tSS58 Address: {}", signer.public().into_account());
     }
@@ -157,8 +160,12 @@ impl Key {
     fn inspect(&self, suri: &str, passwd: Option<&str>) -> Result<()> {
         let key = KeyT::from_string(suri);
         let key_ref = &key;
-        match_scheme!(self.scheme, pair, (key_ref, passwd), pair, {
-            Self::info(&format!("Secret Key URI `{}`", suri), pair.signer())
+        match_scheme!(self.scheme, pair(key_ref, passwd), pair, {
+            Self::info(
+                &format!("Secret Key URI `{}`", suri),
+                pair.0.signer(),
+                pair.1,
+            )
         });
 
         Ok(())
@@ -176,12 +183,13 @@ impl Key {
         let key = KeyT::from_string(suri);
         let key_ref = &key;
 
-        match_scheme!(self.scheme, pair, (key_ref, passwd), pair, {
-            let signer = pair.signer();
+        match_scheme!(self.scheme, pair(key_ref, passwd), pair, {
+            let signer = pair.0.signer();
             let sig = signer.sign(message.as_bytes());
 
+            println!("Message: {}", message);
             println!("Signature: {}", hex::encode::<&[u8]>(sig.as_ref()));
-            Self::info("The signer of this signature", signer)
+            Self::info("The signer of this signature", signer, pair.1)
         });
 
         Ok(())
@@ -194,7 +202,7 @@ impl Key {
             .collect::<StdResult<Vec<Vec<u8>>, hex::FromHexError>>()?;
         let [sig, msg, pubkey] = [&arr[0], message.as_bytes(), &arr[1]];
 
-        match_scheme!(self.scheme, verify, (sig, msg, pubkey), res, {
+        match_scheme!(self.scheme, verify(sig, msg, pubkey), res, {
             println!("Result: {}", res);
         });
 

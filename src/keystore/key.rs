@@ -49,26 +49,29 @@ impl Key {
     /// Generate pair with phrase
     pub fn generate_with_phrase<P>(
         passwd: Option<&str>,
-    ) -> Result<(PairSigner<GearConfig, P>, String)>
+    ) -> Result<(PairSigner<GearConfig, P>, String, Vec<u8>)>
     where
         P: Pair,
         MultiSignature: From<<P as Pair>::Signature>,
         MultiSigner: From<<P as Pair>::Public>,
     {
         let pair = P::generate_with_phrase(passwd);
-        Ok((PairSigner::new(pair.0), pair.1))
+        Ok((PairSigner::new(pair.0), pair.1, pair.2.as_ref().to_vec()))
     }
 
     /// Get keypair from key
-    pub fn pair<P>(&self, passwd: Option<&str>) -> Result<PairSigner<GearConfig, P>>
+    pub fn pair<P>(
+        &self,
+        passwd: Option<&str>,
+    ) -> Result<(PairSigner<GearConfig, P>, Option<Vec<u8>>)>
     where
         P: Pair,
         MultiSignature: From<<P as Pair>::Signature>,
         MultiSigner: From<<P as Pair>::Public>,
     {
-        Ok(PairSigner::new(
-            P::from_string(&self.0, passwd).map_err(|_| Error::InvalidSecret)?,
-        ))
+        let (pair, seed) =
+            P::from_string_with_seed(&self.0, passwd).map_err(|_| Error::InvalidSecret)?;
+        Ok((PairSigner::new(pair), seed.map(|s| s.as_ref().to_vec())))
     }
 
     /// Sign messages
