@@ -26,7 +26,7 @@ futures-util = "0.3.21"
 hex = "0.4.3"
 keyring = "1.2.0"
 lazy_static = "1.4.0"
-libp2p = "0.47.0"
+libp2p = { version = "0.47.0", features = [ "identify" ] }
 log = "0.4.16"
 nacl = "0.5.3"
 parity-scale-codec = "3.1.5"

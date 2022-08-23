@@ -108,9 +108,9 @@ impl Key {
         match &self.action {
             Action::Generate => self.generate(passwd)?,
             Action::GenerateNodeKey => Self::generate_node_key(),
-            Action::Inspect { suri } => self.inspect(&suri, passwd)?,
+            Action::Inspect { suri } => self.inspect(suri, passwd)?,
             Action::InspectNodeKey { secret } => Self::inspect_node_key(secret)?,
-            Action::Sign { suri, message } => self.sign(&suri, &message, passwd)?,
+            Action::Sign { suri, message } => self.sign(suri, message, passwd)?,
             Action::Verify {
                 signature,
                 message,
