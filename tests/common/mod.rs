@@ -12,7 +12,7 @@ use std::{
 mod docker;
 pub mod logs;
 mod node;
-pub mod port;
+mod port;
 mod result;
 pub mod spec_version;
 pub mod traits;
