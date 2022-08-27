@@ -13,13 +13,13 @@ struct MessageInitIn {
 #[tokio::test]
 async fn test_command_state_works() -> Result<()> {
     common::login_as_alice().expect("login failed");
-    let mut node = common::Node::dev(9003)?;
+    let mut node = common::Node::dev()?;
     node.wait(logs::gear_node::IMPORTING_BLOCKS)?;
 
     // Deploy demo_meta
     let deploy = common::gear(&[
         "-e",
-        "ws://127.0.0.1:9003",
+        &node.ws(),
         "deploy",
         "res/demo_meta.opt.wasm",
         "",
@@ -44,7 +44,7 @@ async fn test_command_state_works() -> Result<()> {
     // Query state of demo_meta
     let state = common::gear(&[
         "-e",
-        "ws://127.0.0.1:9003",
+        &node.ws(),
         "program",
         &hex::encode(pid),
         "state",
