@@ -4,10 +4,10 @@ version = "0.1.2"
 authors = ["clearloop <clearloop@users.noreply.github.com>"]
 edition = "2021"
 description = "gear program cli"
-repository = "https://github.com/clearloop/gear-program"
+repository = "https://github.com/gear-tech/gear-program"
 license = "GPL-3.0"
 documentation = "https://docs.rs/gear-program"
-homepage = "https://github.com/clearloop/gear-program"
+homepage = "https://github.com/gear-tech/gear-program"
 keywords = ["gear", "cli", "wasm"]
 readme = './README.md'
 

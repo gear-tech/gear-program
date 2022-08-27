@@ -1,6 +1,7 @@
 //! commands
 use crate::{api::Api, result::Result};
-use std::env;
+use env_logger::{Builder, Env};
+use log::LevelFilter;
 use structopt::StructOpt;
 
 mod claim;
@@ -16,8 +17,6 @@ mod send;
 mod submit;
 mod transfer;
 mod update;
-
-const RUST_LOG: &str = "RUST_LOG";
 
 #[derive(Debug, StructOpt)]
 pub enum Command {
@@ -56,13 +55,30 @@ pub struct Opt {
 impl Opt {
     /// setup logs
     fn setup_logs(&self) -> Result<()> {
-        if self.verbose {
-            if env::var(RUST_LOG).is_err() {
-                env::set_var(RUST_LOG, "debug");
-            }
-        }
+        let mut builder = if self.verbose {
+            Builder::from_env(Env::default().default_filter_or("debug"))
+        } else {
+            match &self.command {
+                Command::Claim(_)
+                | Command::Deploy(_)
+                | Command::Reply(_)
+                | Command::Send(_)
+                | Command::Submit(_)
+                | Command::Transfer(_) => {
+                    let mut builder = Builder::from_env(Env::default().default_filter_or("info"));
+                    builder
+                        .format_target(false)
+                        .format_module_path(false)
+                        .format_timestamp(None)
+                        .filter_level(LevelFilter::Info);
 
-        env_logger::builder().try_init()?;
+                    builder
+                }
+                _ => Builder::from_default_env(),
+            }
+        };
+
+        builder.try_init()?;
         Ok(())
     }
 
