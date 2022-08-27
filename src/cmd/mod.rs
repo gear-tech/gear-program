@@ -1,5 +1,6 @@
 //! commands
 use crate::{api::Api, result::Result};
+use std::env;
 use structopt::StructOpt;
 
 mod claim;
@@ -15,6 +16,8 @@ mod send;
 mod submit;
 mod transfer;
 mod update;
+
+const RUST_LOG: &str = "RUST_LOG";
 
 #[derive(Debug, StructOpt)]
 pub enum Command {
@@ -39,9 +42,9 @@ pub struct Opt {
     /// Commands.
     #[structopt(subcommand)]
     pub command: Command,
-    /// Enable debug logs.
+    /// Enable verbose logs.
     #[structopt(short, long)]
-    pub debug: bool,
+    pub verbose: bool,
     /// Gear node rpc endpoint.
     #[structopt(short, long)]
     pub endpoint: Option<String>,
@@ -51,10 +54,24 @@ pub struct Opt {
 }
 
 impl Opt {
+    /// setup logs
+    fn setup_logs(&self) -> Result<()> {
+        if self.verbose {
+            if env::var(RUST_LOG).is_err() {
+                env::set_var(RUST_LOG, "debug");
+            }
+        }
+
+        env_logger::builder().try_init()?;
+        Ok(())
+    }
+
     /// run program
     pub async fn run() -> Result<()> {
-        Opt::from_args().exec().await?;
+        let opt = Opt::from_args();
 
+        opt.setup_logs()?;
+        opt.exec().await?;
         Ok(())
     }
 
@@ -65,8 +82,6 @@ impl Opt {
 
     /// Execute command.
     pub async fn exec(&self) -> Result<()> {
-        env_logger::builder().try_init()?;
-
         // # TODO
         //
         // Wrap `self.api` as closure into commands.
