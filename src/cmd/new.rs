@@ -1,6 +1,6 @@
 //! command new
 use crate::result::Result;
-use std::process::Command;
+use std::process::{self, Command};
 use structopt::StructOpt;
 
 const ORG: &str = "https://github.com/gear-dapps/";
@@ -40,7 +40,7 @@ impl New {
     }
 
     fn help() {
-        println!("AVAILABLE TEMPLATES: \n\t{}", TEMPLATES.join("\n\t"));
+        println!("Available templates:\n\t{}", TEMPLATES.join("\n\t"));
     }
 
     /// run command new
@@ -52,8 +52,7 @@ impl New {
                     .status()?
                     .success()
                 {
-                    Self::help();
-                    return Ok(());
+                    process::exit(1);
                 }
             } else {
                 crate::template::create(template)?;
