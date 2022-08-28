@@ -14,9 +14,9 @@ mod new;
 mod program;
 mod reply;
 mod send;
-mod submit;
 mod transfer;
 mod update;
+mod upload;
 
 #[derive(Debug, StructOpt)]
 pub enum Command {
@@ -30,7 +30,7 @@ pub enum Command {
     Program(program::Program),
     Reply(reply::Reply),
     Send(send::Send),
-    Submit(submit::Submit),
+    Upload(upload::Upload),
     Transfer(transfer::Transfer),
     Update(update::Update),
 }
@@ -63,7 +63,7 @@ impl Opt {
                 | Command::Deploy(_)
                 | Command::Reply(_)
                 | Command::Send(_)
-                | Command::Submit(_)
+                | Command::Upload(_)
                 | Command::Transfer(_) => {
                     let mut builder = Builder::from_env(Env::default().default_filter_or("info"));
                     builder
@@ -112,7 +112,7 @@ impl Opt {
             Command::Program(program) => program.exec(self.api().await?).await?,
             Command::Reply(reply) => reply.exec(self.api().await?).await?,
             Command::Send(send) => send.exec(self.api().await?).await?,
-            Command::Submit(submit) => submit.exec(self.api().await?).await?,
+            Command::Upload(upload) => upload.exec(self.api().await?).await?,
             Command::Transfer(transfer) => transfer.exec(self.api().await?).await?,
             Command::Update(update) => update.exec().await?,
         }

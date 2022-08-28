@@ -76,8 +76,8 @@ mod gear {
             self.ps(ex).await
         }
 
-        /// `pallet_gear::submit_code`
-        pub async fn submit_code(&self, params: calls::UploadCode) -> InBlock<'_> {
+        /// `pallet_gear::upload_code`
+        pub async fn upload_code(&self, params: calls::UploadCode) -> InBlock<'_> {
             let ex = self.runtime.tx().gear().upload_code(params.code)?;
 
             self.ps(ex).await
