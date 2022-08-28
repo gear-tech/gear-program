@@ -5,7 +5,7 @@ use log::LevelFilter;
 use structopt::StructOpt;
 
 mod claim;
-mod deploy;
+mod create;
 mod info;
 mod key;
 mod login;
@@ -21,7 +21,7 @@ mod upload;
 #[derive(Debug, StructOpt)]
 pub enum Command {
     Claim(claim::Claim),
-    Deploy(deploy::Deploy),
+    Create(create::Create),
     Info(info::Info),
     Key(key::Key),
     Login(login::Login),
@@ -60,7 +60,7 @@ impl Opt {
         } else {
             match &self.command {
                 Command::Claim(_)
-                | Command::Deploy(_)
+                | Command::Create(_)
                 | Command::Reply(_)
                 | Command::Send(_)
                 | Command::Upload(_)
@@ -103,7 +103,7 @@ impl Opt {
         // Wrap `self.api` as closure into commands.
         match &self.command {
             Command::Claim(claim) => claim.exec(self.api().await?).await?,
-            Command::Deploy(deploy) => deploy.exec(self.api().await?).await?,
+            Command::Create(deploy) => deploy.exec(self.api().await?).await?,
             Command::Info(info) => info.exec(self.api().await?).await?,
             Command::Key(key) => key.exec(self.passwd.as_deref())?,
             Command::Login(login) => login.exec()?,
