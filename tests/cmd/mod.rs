@@ -1,4 +1,4 @@
-mod deploy;
+mod create;
 mod info;
 mod key;
 mod meta;

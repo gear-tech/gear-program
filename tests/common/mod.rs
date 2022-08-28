@@ -33,7 +33,7 @@ pub fn gear(args: &[&str]) -> Result<Output> {
 }
 
 /// Creates a unique identifier by passing given argument to blake2b hash-function.
-fn hash(argument: &[u8]) -> [u8; 32] {
+pub fn hash(argument: &[u8]) -> [u8; 32] {
     let mut arr: [u8; 32] = Default::default();
 
     let blake2b_hash = blake2b::blake2b(32, &[], argument);
