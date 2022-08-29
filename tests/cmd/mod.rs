@@ -1,3 +1,4 @@
+mod claim;
 mod create;
 mod info;
 mod key;

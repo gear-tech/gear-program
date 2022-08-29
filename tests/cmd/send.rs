@@ -17,7 +17,11 @@ async fn test_command_send_works() -> Result<()> {
     let _ = common::gear(&["-e", &node.ws(), "send", &dest, "0x", "20000000000"])?;
     let mailbox = api.mailbox(common::alice_account_id(), 10).await?;
     assert_eq!(mailbox.len(), 2);
-    assert_eq!(mailbox[0].0.payload, messager::SEND_REPLY.encode());
+    assert!(mailbox
+        .into_iter()
+        .map(|mail| mail.0.payload)
+        .collect::<Vec<Vec<u8>>>()
+        .contains(&messager::SEND_REPLY.encode()));
 
     Ok(())
 }

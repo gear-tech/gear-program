@@ -88,14 +88,15 @@ pub fn wasm_path(name: &str) -> String {
     .to_string()
 }
 
-/// AccountId32 of //Alice
+/// AccountId32 of `addr`
 pub fn alice_account_id() -> AccountId32 {
-    AccountId32::from_ss58check(ALICE_SS58_ADDRESS).expect("Invalid address")
+    AccountId32::from_ss58check("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY")
+        .expect("Invalid address")
 }
 
 /// Create program messager
 pub async fn create_messager() -> Result<Node> {
-    login_as_alice().expect("login failed");
+    login_as_alice()?;
     let mut node = Node::dev()?;
     node.wait(logs::gear_node::IMPORTING_BLOCKS)?;
 
