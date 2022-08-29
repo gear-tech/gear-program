@@ -8,6 +8,7 @@ use std::{
     path::PathBuf,
     process::{Command, Output},
 };
+use subxt::{sp_core::crypto::Ss58Codec, sp_runtime::AccountId32};
 
 mod docker;
 pub mod logs;
@@ -16,6 +17,9 @@ mod port;
 mod result;
 pub mod spec_version;
 pub mod traits;
+
+const WASM_TARGET: &str = "target/wasm32-unknown-unknown/";
+pub const ALICE_SS58_ADDRESS: &str = "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY";
 
 /// Run binary `gear`
 pub fn gear(args: &[&str]) -> Result<Output> {
@@ -65,4 +69,47 @@ pub fn program_id(bin: &[u8], salt: &[u8]) -> [u8; 32] {
     argument.extend_from_slice(salt);
 
     hash(&argument).into()
+}
+
+/// Get wasm binary path
+pub fn wasm_path(name: &str) -> String {
+    ([
+        WASM_TARGET,
+        if cfg!(debug_assertions) {
+            "debug"
+        } else {
+            "release"
+        },
+        "/",
+        name,
+        ".opt.wasm",
+    ]
+    .concat())
+    .to_string()
+}
+
+/// AccountId32 of //Alice
+pub fn alice_account_id() -> AccountId32 {
+    AccountId32::from_ss58check(ALICE_SS58_ADDRESS).expect("Invalid address")
+}
+
+/// Create program messager
+pub async fn create_messager() -> Result<Node> {
+    login_as_alice().expect("login failed");
+    let mut node = Node::dev()?;
+    node.wait(logs::gear_node::IMPORTING_BLOCKS)?;
+
+    let messager = wasm_path("messager");
+    let _ = gear(&[
+        "-e",
+        &node.ws(),
+        "create",
+        &messager,
+        "0x",
+        "0x",
+        "0",
+        "10000000000",
+    ])?;
+
+    Ok(node)
 }
