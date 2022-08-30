@@ -14,6 +14,7 @@ readme = './README.md'
 [[bin]]
 path = "bin/gear.rs"
 name = "gear"
+required-features = [ "cli" ]
 
 [dependencies]
 anyhow = "1.0.60"
@@ -48,5 +49,6 @@ rand = "0.8.5"
 messager = { path = "./res/messager" }
 
 [features]
-default = []
+default = [ "cli" ]
+cli = []
 node-key = [ "libp2p" ]
