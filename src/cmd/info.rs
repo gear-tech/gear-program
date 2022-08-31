@@ -1,18 +1,49 @@
 //! command transfer
-use crate::{api::signer::Signer, result::Result};
+use crate::{
+    api::{
+        generated::api::runtime_types::{
+            gear_common::storage::primitives::Interval,
+            gear_core::message::{common::ReplyDetails, stored::StoredMessage},
+        },
+        signer::Signer,
+    },
+    result::{Error, Result},
+};
+use std::fmt;
 use structopt::StructOpt;
-use subxt::sp_core::{crypto::Ss58Codec, sr25519::Pair, Pair as PairT};
+use subxt::{
+    sp_core::{crypto::Ss58Codec, sr25519::Pair, Pair as PairT},
+    sp_runtime::AccountId32,
+};
 
 #[derive(Debug, StructOpt)]
 pub enum Action {
     Balance,
+    Mailbox {
+        /// The count of mails for fetching
+        count: u32,
+    },
 }
 
-impl Action {
-    /// run action
-    pub async fn exec(&self, signer: Signer, address: &str) -> Result<()> {
-        match self {
-            Action::Balance => Self::balance(signer, address).await,
+/// Get account info from ss58address.
+#[derive(Debug, StructOpt)]
+pub struct Info {
+    /// Info of this address, if none, will use the logged in account.
+    pub address: Option<String>,
+
+    /// Info of balance, mailbox, etc.
+    #[structopt(subcommand)]
+    pub action: Action,
+}
+
+impl Info {
+    /// execute command transfer
+    pub async fn exec(&self, signer: Signer) -> Result<()> {
+        let address = self.address.clone().unwrap_or(signer.address());
+
+        match self.action {
+            Action::Balance => Self::balance(signer, &address).await,
+            Action::Mailbox { count } => Self::mailbox(signer, &address, count).await,
         }
     }
 
@@ -33,24 +64,58 @@ impl Action {
 
         Ok(())
     }
+
+    /// Get mailbox of address
+    pub async fn mailbox(signer: Signer, address: &str, count: u32) -> Result<()> {
+        let mails = signer
+            .mailbox(
+                AccountId32::from_ss58check(address).map_err(|_| Error::InvalidPublic)?,
+                count,
+            )
+            .await?;
+
+        for t in mails.into_iter() {
+            log::info!("{:?}", Mail::from(t));
+        }
+        Ok(())
+    }
 }
 
-/// Get account info from ss58address.
-#[derive(Debug, StructOpt)]
-pub struct Info {
-    /// Info of this address
-    pub address: Option<String>,
-
-    /// Info of balance, mailbox, etc.
-    #[structopt(subcommand)]
-    pub action: Action,
+struct Mail {
+    message: StoredMessage,
+    interval: Interval<u32>,
 }
 
-impl Info {
-    /// execute command transfer
-    pub async fn exec(&self, signer: Signer) -> Result<()> {
-        let address = self.address.clone().unwrap_or(signer.address());
+impl From<(StoredMessage, Interval<u32>)> for Mail {
+    fn from(t: (StoredMessage, Interval<u32>)) -> Self {
+        Self {
+            message: t.0,
+            interval: t.1,
+        }
+    }
+}
 
-        self.action.exec(signer, &address).await
+impl fmt::Debug for Mail {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt.debug_struct("Mail")
+            .field("id", &hex::encode(self.message.id.0))
+            .field("source", &hex::encode(self.message.source.0))
+            .field("destination", &hex::encode(self.message.destination.0))
+            .field("payload", &hex::encode(&self.message.payload))
+            .field("value", &self.message.value.to_string())
+            .field("reply", &self.message.reply.as_ref().map(DebugReplyDetails))
+            .field("interval", &self.interval)
+            .finish()
+    }
+}
+
+struct DebugReplyDetails<'d>(pub &'d ReplyDetails);
+
+impl<'d> fmt::Debug for DebugReplyDetails<'d> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt.debug_struct("ReplyDetails")
+            .field("reply_to", &hex::encode(self.0.reply_to.0))
+            .field("exit_code", &self.0.exit_code.to_string())
+            .finish()
     }
 }
