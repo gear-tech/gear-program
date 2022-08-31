@@ -93,6 +93,7 @@ impl Signer {
     where
         Call: subxt::Call + Send + Sync,
     {
+        let before = self.balance().await?;
         let mut process = tx.sign_and_submit_then_watch_default(&self.signer).await?;
         log::info!("Submited extrinsic {}::{}", Call::PALLET, Call::FUNCTION);
 
@@ -110,10 +111,12 @@ impl Signer {
                     ),
                     TransactionStatus::Retracted(h) => {
                         log::info!("\tStatus: Retracted( {} )", h);
+                        self.log_balance_spent(before).await?;
                         break Err(status.into());
                     }
                     TransactionStatus::FinalityTimeout(h) => {
                         log::info!("\tStatus: FinalityTimeout( {} )", h);
+                        self.log_balance_spent(before).await?;
                         break Err(status.into());
                     }
                     TransactionStatus::Finalized(b) => {
@@ -131,19 +134,22 @@ impl Signer {
                             b.block_hash()
                         );
 
-                        self.capture_dispatch_info(&b).await?;
+                        self.log_balance_spent(before).await?;
                         return Ok(b);
                     }
                     TransactionStatus::Usurped(h) => {
                         log::info!("\tStatus: Usurped( {} )", h);
+                        self.log_balance_spent(before).await?;
                         break Err(status.into());
                     }
                     TransactionStatus::Dropped => {
                         log::info!("\tStatus: Dropped");
+                        self.log_balance_spent(before).await?;
                         break Err(status.into());
                     }
                     TransactionStatus::Invalid => {
                         log::info!("\tStatus: Invalid");
+                        self.log_balance_spent(before).await?;
                         break Err(status.into());
                     }
                 }

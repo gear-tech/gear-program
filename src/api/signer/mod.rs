@@ -6,12 +6,13 @@ use crate::{
 };
 use std::ops::{Deref, DerefMut};
 use subxt::{
-    sp_core::{sr25519::Pair, Pair as PairT},
+    sp_core::{crypto::Ss58Codec, sr25519::Pair, Pair as PairT},
     PairSigner,
 };
 
 mod calls;
 mod rpc;
+mod utils;
 
 /// gear api with signer
 pub struct Signer {
@@ -54,6 +55,11 @@ impl Signer {
         } else {
             Self::keyring(api, passwd)
         }
+    }
+
+    /// Get address of the current signer
+    pub fn address(&self) -> String {
+        self.signer.account_id().to_ss58check()
     }
 }
 
