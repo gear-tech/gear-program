@@ -32,7 +32,7 @@ macro_rules! construct_metadata {
     ($($meta:ident),+) => {
         /// Gear program metadata
         ///
-        /// See https://github.com/gear-tech/gear/blob/master/gstd/src/macros/metadata.rs.
+        /// See <https://github.com/gear-tech/gear/blob/master/gstd/src/macros/metadata.rs.>
         #[derive(Debug, Eq)]
         pub struct Metadata {
             $(

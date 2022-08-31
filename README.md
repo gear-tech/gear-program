@@ -33,7 +33,7 @@ $ cargo install gear-program
 Usages:
 
 ```sh
-$ gear 
+$ gear
 gear-program 0.1.3
 
 USAGE:
