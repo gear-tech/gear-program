@@ -17,9 +17,6 @@ AccountInfo {
 "#;
 
 const EXPECTED_MAILBOX: &str = r#"
-Mail {
-    id: "0xd29c74cb2f634999595744197ba2fd022b652c1f0ff9b96957e88fc377f23116",
-    source: "0x35146b3489795613ad4cfce3d540f173345ee96cc7a97e3676edd807fb787e28",
     destination: "0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
     payload: "0x",
     value: 1000000,
@@ -47,6 +44,6 @@ async fn test_action_mailbox_works() -> Result<()> {
     let node = common::create_messager().await?;
     let output = common::gear(&["-e", &node.ws(), "info", ALICE_SS58_ADDRESS, "mailbox"])?;
 
-    assert_eq!(EXPECTED_MAILBOX.trim(), output.stdout.convert().trim());
+    assert!(output.stdout.convert().contains(EXPECTED_MAILBOX.trim()));
     Ok(())
 }
