@@ -21,6 +21,7 @@ pub enum Action {
     Balance,
     Mailbox {
         /// The count of mails for fetching
+        #[structopt(default_value = "10", short, long)]
         count: u32,
     },
 }
@@ -39,7 +40,13 @@ pub struct Info {
 impl Info {
     /// execute command transfer
     pub async fn exec(&self, signer: Signer) -> Result<()> {
-        let address = self.address.clone().unwrap_or(signer.address());
+        let mut address = self.address.clone().unwrap_or(signer.address());
+        if address.starts_with("//") {
+            address = Pair::from_string(&address, None)
+                .expect("Parse development address failed")
+                .public()
+                .to_ss58check()
+        }
 
         match self.action {
             Action::Balance => Self::balance(signer, &address).await,
@@ -49,15 +56,6 @@ impl Info {
 
     /// Get balance of address
     pub async fn balance(signer: Signer, address: &str) -> Result<()> {
-        let address = if address.starts_with("//") {
-            Pair::from_string(&address, None)
-                .expect("Parse development address failed")
-                .public()
-                .to_ss58check()
-        } else {
-            address.into()
-        };
-
         let info = signer.info(&address).await?;
 
         println!("{info:#?}");
@@ -75,7 +73,7 @@ impl Info {
             .await?;
 
         for t in mails.into_iter() {
-            log::info!("{:?}", Mail::from(t));
+            println!("{:#?}", Mail::from(t));
         }
         Ok(())
     }
@@ -98,11 +96,20 @@ impl From<(StoredMessage, Interval<u32>)> for Mail {
 impl fmt::Debug for Mail {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         fmt.debug_struct("Mail")
-            .field("id", &hex::encode(self.message.id.0))
-            .field("source", &hex::encode(self.message.source.0))
-            .field("destination", &hex::encode(self.message.destination.0))
-            .field("payload", &hex::encode(&self.message.payload))
-            .field("value", &self.message.value.to_string())
+            .field("id", &["0x", &hex::encode(self.message.id.0)].concat())
+            .field(
+                "source",
+                &["0x", &hex::encode(self.message.source.0)].concat(),
+            )
+            .field(
+                "destination",
+                &["0x", &hex::encode(self.message.destination.0)].concat(),
+            )
+            .field(
+                "payload",
+                &["0x", &hex::encode(&self.message.payload)].concat(),
+            )
+            .field("value", &self.message.value)
             .field("reply", &self.message.reply.as_ref().map(DebugReplyDetails))
             .field("interval", &self.interval)
             .finish()
