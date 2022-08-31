@@ -5,12 +5,12 @@
 #![allow(dead_code)]
 #![allow(unused_imports)]
 
-mod env;
-mod executor;
-mod ext;
-mod funcs;
-mod registry;
-mod result;
+pub mod env;
+pub mod executor;
+pub mod ext;
+pub mod funcs;
+pub mod registry;
+pub mod result;
 mod tests;
 
 use crate::{
