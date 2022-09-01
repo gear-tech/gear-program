@@ -23,5 +23,5 @@ jobs:
 
       - name: Publish
         env:
-          CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
-        run: cargo publish --token "$CRATES_IO_TOKEN" --all-features
+          TOKEN: ${{ secrets.CRATES_IO_SECRET }}
+        run: cargo publish --token "$TOKEN" --all-features
