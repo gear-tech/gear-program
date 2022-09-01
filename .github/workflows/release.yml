@@ -1,14 +1,12 @@
 name: Release
 
 on:
-  # release:
-  #   types: [ released ]
-  pull_request:
-    branches: [ master ]
+  release:
+    types: [ released ]
 
 jobs:
   publish:
-    name: Publish new version on crate.io
+    name: crates.io
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,6 +22,4 @@ jobs:
       - name: Publish
         env:
           CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
-        run: |
-          cargo login "$CRATES_IO_TOKEN"
-          cargo publish -v --all-features
+        run: cargo publish --token "$CRATES_IO_TOKEN" --all-features
