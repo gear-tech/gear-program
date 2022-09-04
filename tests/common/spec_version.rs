@@ -11,7 +11,7 @@ pub const SPEC_VERSION_FIELD: &str = "spec_version:";
 
 /// # Example
 ///
-///  Native runtime: gear-node-1520 (gear-node-1.tx1.au1)
+///  Native runtime: gear-110 (gear-node-1.tx1.au1)
 pub const GEAR_NODE_SPEC_VERSION_PATTERN: &str = "Native runtime: gear-";
 
 /// Find spec version from file.

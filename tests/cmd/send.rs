@@ -5,6 +5,7 @@ use parity_scale_codec::Encode;
 
 #[tokio::test]
 async fn test_command_send_works() -> Result<()> {
+    env_logger::try_init();
     let node = common::create_messager().await?;
 
     // Get balance of the testing address
