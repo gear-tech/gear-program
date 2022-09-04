@@ -90,8 +90,8 @@ function main() {
     # 2. Get spec version from node logs.
     spec_version=''
     while [ ${#spec_version} -eq 0 ]; do
-        sleep 1
-        spec_version="$(docker logs ${pid} 2>&1 | grep -Eo 'gear-node-[0-9]{4}' | sed 's/.*-//')"
+        sleep 3
+        spec_version="$(docker logs ${pid} 2>&1 | grep -Eo 'gear-[0-9]{3}' | sed 's/.*-//')"
     done
 
     generate-header "${spec_version}" > "${GENERATED_RS}"
