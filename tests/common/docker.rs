@@ -49,12 +49,11 @@ impl Docker {
 
     /// Kill container.
     fn kill(&self) -> Result<()> {
-        assert!(Self::cmd()
+        let _ = Self::cmd()
             .args(&["rm", &self.0, "-f"])
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
-            .status()?
-            .success());
+            .status()?;
 
         Ok(())
     }

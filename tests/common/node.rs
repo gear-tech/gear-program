@@ -1,4 +1,4 @@
-use crate::common::{docker::Docker, logs::Logs, port, Error, Result};
+use crate::common::{docker::Docker, logs::Logs, port, Result};
 
 pub const GEAR_NODE_BIN_PATH: &str = "/usr/local/bin/gear-node";
 pub const GEAR_NODE_DOCKER_IMAGE: &str = "ghcr.io/gear-tech/node:latest";
@@ -40,15 +40,12 @@ impl Node {
 
     /// Wait for the block importing
     pub fn wait(&mut self, log: &str) -> Result<()> {
-        let mut logs: Vec<String> = Default::default();
-        for line in self.logs()? {
-            if line.contains(log) {
-                return Ok(());
+        loop {
+            for line in self.logs()? {
+                if line.contains(log) {
+                    return Ok(());
+                }
             }
-
-            logs.push(line.clone());
         }
-
-        Err(Error::Spawn(logs.join("\n")))
     }
 }
