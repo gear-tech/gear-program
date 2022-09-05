@@ -3,8 +3,9 @@
 # Generate and update gear-node api.
 
 readonly ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
+readonly RESOURCE_DIR="${ROOT_DIR}/res"
 readonly GEAR_NODE_DOCKER_IMAGE='ghcr.io/gear-tech/node:latest'
-readonly GEAR_NODE_BIN='/usr/local/bin/gear-node'
+readonly GEAR_NODE_BIN="${RESOURCE_DIR}/gear-node"
 readonly GENERATED_RS="${ROOT_DIR}/src/api/generated.rs"
 readonly RPC_PORT='9933'
 
@@ -36,13 +37,27 @@ USAGE:
 EOF
 }
 
+function download-gear() {
+    url='https://builds.gear.rs/gear-nightly-linux-x86_64.tar.xz'
+    if [[ "$(uname)" == 'Darwin' ]]; then
+        if [[ "$(uname -m)" == 'arm64' ]]; then
+            url='https://builds.gear.rs/gear-nightly-macos-m1.tar.gz'
+        else
+            url='https://builds.gear.rs/gear-nightly-macos-x86_64.tar.gz'
+        fi
+    fi
+
+    # Doesn't support Win for now.
+    curl "${url}" | tar xzvf - -C "${RESOURCE_DIR}"
+}
+
 #############################################################
 # Check if the required binaries are installed in the machine.
 ###############################################################
 function pre-check() {
-    if ! [ -x "$(command -v docker)" ]; then
-        echo 'command docker not found.';
-        exit 1
+    if ! [ -f "${GEAR_NODE_BIN}" ]; then
+        echo 'gear-node not found, downloading...';
+        download-gear
     fi
 
     if ! [ -x "$(command -v cargo)" ]; then
@@ -62,13 +77,30 @@ function pre-check() {
 }
 
 
-##########################
-# Run gear-node with docker.
-############################
-function gear-node() {
-    docker run -p ${RPC_PORT}:${RPC_PORT} -d \
-           ${GEAR_NODE_DOCKER_IMAGE} ${GEAR_NODE_BIN} \
-           --tmp --dev --rpc-port ${RPC_PORT} --unsafe-rpc-external
+################
+# Run gear-node.
+##################
+function spec-version() {
+    spec_version=''
+
+    # Pipe the stderr to read line in sub-shell
+    ${GEAR_NODE_BIN} --tmp --dev --rpc-port ${RPC_PORT} 2>&1 > /dev/null |
+        while [ "${spec_version}" == '' ] ; do
+            read -r line
+            if [[ "$line" == *"gear-"* ]]; then
+                spec_version="$(echo ${line} | grep -Eo 'gear-[0-9]{3}' | sed 's/.*-//')"
+                break
+            fi
+        done &
+
+    # TODO
+    #
+    # Optimize this double-while-loop if possible.
+    while ! [ "${spec_version}" == '' ]; do
+        kill -- -$!
+    done
+
+    echo "${spec-version}"
 }
 
 #########################################
@@ -83,21 +115,14 @@ function main() {
     # 0. Check if the required commands exist.
     pre-check
 
-    # 1. Run gear-node with docker.
-    docker pull "${GEAR_NODE_DOCKER_IMAGE}" >&2
-    pid=$(gear-node)
+    # 1. Run gear-node and capture stderr line by line
+    spec_version="$(spec-version)"
 
-    # 2. Get spec version from node logs.
-    spec_version=''
-    while [ ${#spec_version} -eq 0 ]; do
-        sleep 3
-        spec_version="$(docker logs ${pid} 2>&1 | grep -Eo 'gear-[0-9]{3}' | sed 's/.*-//')"
-    done
-
+    # 2. generate header and code
     generate-header "${spec_version}" > "${GENERATED_RS}"
     subxt codegen --url "http://0.0.0.0:${RPC_PORT}" | rustfmt --edition=2021 >> "${GENERATED_RS}"
 
-    docker kill "${pid}" &> /dev/null
+    kill -9 "${pid}" &> /dev/null
 
     echo "Updated gear-node api in ${GENERATED_RS}." >&2
     exit 0
