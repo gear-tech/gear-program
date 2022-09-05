@@ -13,7 +13,7 @@ fn check_spec_version() -> Result<()> {
     let line = node.wait(GEAR_NODE_SPEC_VERSION_PATTERN)?;
 
     let current_version =
-        spec_version::find(&File::open("src/api/generated.rs").expect("genreated.rs not found."))
+        spec_version::find(&File::open("src/api/generated.rs").expect("generated.rs not found."))
             .expect("Failed to parse spec_version from generated.rs");
 
     let latest_version: u16 =
