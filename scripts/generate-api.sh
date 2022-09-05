@@ -3,11 +3,11 @@
 # Generate and update gear-node api.
 
 readonly ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
-readonly RESOURCE_DIR="${ROOT_DIR}/res"
 readonly GEAR_NODE_DOCKER_IMAGE='ghcr.io/gear-tech/node:latest'
-readonly GEAR_NODE_BIN="${RESOURCE_DIR}/gear-node"
+readonly GEAR_NODE_BIN="${ROOT_DIR}/res/gear-node"
 readonly GENERATED_RS="${ROOT_DIR}/src/api/generated.rs"
 readonly RPC_PORT='9933'
+readonly SCRIPTS="${ROOT_DIR}/scripts"
 
 #################
 # Generated header
@@ -37,36 +37,23 @@ USAGE:
 EOF
 }
 
-function download-gear() {
-    url='https://builds.gear.rs/gear-nightly-linux-x86_64.tar.xz'
-    if [[ "$(uname)" == 'Darwin' ]]; then
-        if [[ "$(uname -m)" == 'arm64' ]]; then
-            url='https://builds.gear.rs/gear-nightly-macos-m1.tar.gz'
-        else
-            url='https://builds.gear.rs/gear-nightly-macos-x86_64.tar.gz'
-        fi
-    fi
-
-    # Doesn't support Win for now.
-    curl "${url}" | tar xzvf - -C "${RESOURCE_DIR}"
-}
-
 #############################################################
 # Check if the required binaries are installed in the machine.
 ###############################################################
 function pre-check() {
     if ! [ -f "${GEAR_NODE_BIN}" ]; then
         echo 'gear-node not found, downloading...';
-        download-gear
-    fi
-
-    if ! [ -x "$(command -v cargo)" ]; then
-        echo 'cargo not found, installing rust...';
-        curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal
+        "${SCRIPTS}/download-gear.sh ${GEAR_NODE_BIN}"
     fi
 
     if ! [ -x "$(command -v subxt)" ]; then
         echo 'subxt not found, installing subxt...';
+
+        if ! [ -x "$(command -v cargo)" ]; then
+            echo 'cargo not found, installing rust...';
+            curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal
+        fi
+
         cargo install subxt-cli
     fi
 
