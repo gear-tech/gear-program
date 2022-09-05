@@ -11,7 +11,7 @@ download-gear
 Download gear-node
 
 USAGE:
-    download-gear.sh <PATH>
+    download-gear.sh <DIRECTORY>
 EOF
 }
 
@@ -31,7 +31,7 @@ function download-gear() {
     fi
 
     if [ -n "$1" ]; then
-        curl "${url}" | tar xzvf - -C "$1/.."
+        curl "${url}" | tar xzvf - -C "$1"
     else
         usage
     fi

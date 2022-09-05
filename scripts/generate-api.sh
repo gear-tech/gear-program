@@ -43,7 +43,7 @@ EOF
 function pre-check() {
     if ! [ -f "${GEAR_NODE_BIN}" ]; then
         echo 'gear-node not found, downloading...';
-        "${SCRIPTS}/download-gear.sh ${GEAR_NODE_BIN}"
+        "${SCRIPTS}/download-gear.sh ${ROOT_DIR}/res"
     fi
 
     if ! [ -x "$(command -v subxt)" ]; then
@@ -76,6 +76,7 @@ function spec-version() {
             read -r line
             if [[ "$line" == *"gear-"* ]]; then
                 spec_version="$(echo ${line} | grep -Eo 'gear-[0-9]{3}' | sed 's/.*-//')"
+                echo ${spec_version}
                 break
             fi
         done &
@@ -86,8 +87,6 @@ function spec-version() {
     while ! [ "${spec_version}" == '' ]; do
         kill -- -$!
     done
-
-    echo "${spec-version}"
 }
 
 #########################################
@@ -108,8 +107,6 @@ function main() {
     # 2. generate header and code
     generate-header "${spec_version}" > "${GENERATED_RS}"
     subxt codegen --url "http://0.0.0.0:${RPC_PORT}" | rustfmt --edition=2021 >> "${GENERATED_RS}"
-
-    kill -9 "${pid}" &> /dev/null
 
     echo "Updated gear-node api in ${GENERATED_RS}." >&2
     exit 0
