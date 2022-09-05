@@ -31,7 +31,7 @@ function download-gear() {
     fi
 
     if [ -n "$1" ]; then
-        curl "${url}" | tar xf - -C "$1"
+        curl "${url}" | tar xfJ - -C "$1"
     else
         usage
     fi
