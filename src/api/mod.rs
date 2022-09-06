@@ -35,7 +35,7 @@ impl Api {
     pub async fn new_with_timeout(url: Option<&str>, timeout: Option<u64>) -> Result<Self> {
         let (tx, rx) = WsTransportClientBuilder::default()
             .connection_timeout(Duration::from_millis(timeout.unwrap_or(60_000)))
-            .build(Uri::from_str(&url.unwrap_or(DEFAULT_GEAR_ENDPOINT))?)
+            .build(Uri::from_str(url.unwrap_or(DEFAULT_GEAR_ENDPOINT))?)
             .await
             .map_err(|_| Error::Ws)?;
 
