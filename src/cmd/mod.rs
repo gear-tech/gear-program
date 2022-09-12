@@ -1,6 +1,7 @@
 //! commands
 #![cfg(feature = "cli")]
 use crate::{api::Api, result::Result};
+use anyhow::anyhow;
 use env_logger::{Builder, Env};
 use log::LevelFilter;
 use structopt::StructOpt;
@@ -18,6 +19,7 @@ pub mod send;
 pub mod transfer;
 pub mod update;
 pub mod upload;
+pub mod upload_program;
 
 /// Commands of cli `gear`
 #[derive(Debug, StructOpt)]
@@ -33,8 +35,22 @@ pub enum Command {
     Reply(reply::Reply),
     Send(send::Send),
     Upload(upload::Upload),
+    UploadProgram(upload_program::UploadProgram),
     Transfer(transfer::Transfer),
     Update(update::Update),
+}
+
+pub(crate) fn str_to_arr(string: &str) -> Result<[u8; 32]> {
+    let hex = hex::decode(string.trim_start_matches("0x"))?;
+
+    if hex.len() != 32 {
+        return Err(anyhow!("Incorrect id length").into());
+    }
+
+    let mut arr = [0; 32];
+    arr.copy_from_slice(&hex);
+
+    Ok(arr)
 }
 
 /// Entrypoint of cli `gear`
@@ -67,6 +83,7 @@ impl Opt {
                 | Command::Reply(_)
                 | Command::Send(_)
                 | Command::Upload(_)
+                | Command::UploadProgram(_)
                 | Command::Transfer(_) => {
                     let mut builder = Builder::from_env(Env::default().default_filter_or("info"));
                     builder
@@ -119,6 +136,7 @@ impl Opt {
                     Command::Info(info) => info.exec(signer).await?,
                     Command::Send(send) => send.exec(signer).await?,
                     Command::Upload(upload) => upload.exec(signer).await?,
+                    Command::UploadProgram(upload) => upload.exec(signer).await?,
                     Command::Transfer(transfer) => transfer.exec(signer).await?,
                     Command::Reply(reply) => reply.exec(signer).await?,
                     _ => unreachable!("Already matched"),

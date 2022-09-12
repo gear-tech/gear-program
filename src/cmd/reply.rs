@@ -1,15 +1,6 @@
 //! Command `reply`
-use crate::{
-    api::{
-        generated::api::{
-            gear::{calls::SendReply, Event as GearEvent},
-            runtime_types::gear_core::ids::MessageId,
-        },
-        signer::Signer,
-        Api,
-    },
-    result::Result,
-};
+use super::str_to_arr;
+use crate::{api::signer::Signer, result::Result};
 use structopt::StructOpt;
 
 /// Sends a reply message.
@@ -41,31 +32,15 @@ pub struct Reply {
 
 impl Reply {
     pub async fn exec(&self, signer: Signer) -> Result<()> {
-        let events = signer.events().await?;
-        let r = tokio::try_join!(
-            self.send_reply(&signer),
-            Api::wait_for(events, |event| {
-                matches!(event, GearEvent::MessagesDispatched { .. })
-            })
-        );
-
-        r?;
-
-        Ok(())
-    }
-
-    async fn send_reply(&self, signer: &Signer) -> Result<()> {
-        let mut reply_to_id = [0; 32];
-        reply_to_id
-            .copy_from_slice(hex::decode(self.reply_to_id.trim_start_matches("0x"))?.as_ref());
+        let reply_to_id = str_to_arr(&self.reply_to_id)?.into();
 
         signer
-            .send_reply(SendReply {
-                reply_to_id: MessageId(reply_to_id),
-                payload: hex::decode(self.payload.trim_start_matches("0x"))?,
-                gas_limit: self.gas_limit,
-                value: self.value,
-            })
+            .send_reply(
+                reply_to_id,
+                hex::decode(self.payload.trim_start_matches("0x"))?,
+                self.gas_limit,
+                self.value,
+            )
             .await?;
 
         Ok(())
