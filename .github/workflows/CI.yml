@@ -10,7 +10,6 @@ on:
 
 jobs:
   Build:
-    name: Gear Program
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -39,16 +38,13 @@ jobs:
           access_token: ${{ github.token }}
 
       - uses: actions/checkout@v1
+
       - uses: actions-rs/toolchain@v1
         with:
-          profile: minimal
-          toolchain: stable
           components: clippy
 
-      - uses: actions/checkout@v1
       - uses: actions-rs/toolchain@v1
         with:
-          profile: minimal
           toolchain: nightly
           components: fmt
 
