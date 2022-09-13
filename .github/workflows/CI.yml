@@ -9,7 +9,7 @@ on:
     - cron:  '0 0 * * *'
 
 jobs:
-  build_and_tests:
+  Build:
     name: Gear Program
     runs-on: ubuntu-latest
     steps:
@@ -30,7 +30,7 @@ jobs:
           ./scripts/download-gear.sh res
           cargo test --all --all-features
 
-  clippy:
+  Check:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -42,8 +42,8 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: stable
-          components: clippy
+          toolchain: stable, nightly
+          components: clippy, fmt
 
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
