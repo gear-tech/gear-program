@@ -1,5 +1,5 @@
 //! command `create`
-use super::str_to_arr;
+use crate::utils::{hex_to_hash, hex_to_vec};
 use crate::{api::signer::Signer, result::Result};
 use structopt::StructOpt;
 
@@ -27,8 +27,8 @@ pub struct Create {
 impl Create {
     /// Exec command submit
     pub async fn exec(&self, signer: Signer) -> Result<()> {
-        let code_id = str_to_arr(&self.code_id)?.into();
-        let payload = hex::decode(&self.init_payload.trim_start_matches("0x"))?;
+        let code_id = hex_to_hash(&self.code_id)?.into();
+        let payload = hex_to_vec(&self.init_payload)?;
 
         let gas = if self.gas_limit == 0 {
             signer
@@ -46,7 +46,7 @@ impl Create {
         signer
             .create_program(
                 code_id,
-                str_to_arr(&self.salt)?.into(),
+                hex_to_hash(&self.salt)?.into(),
                 payload,
                 gas_limit,
                 self.value,

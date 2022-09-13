@@ -1,7 +1,6 @@
 //! commands
 #![cfg(feature = "cli")]
 use crate::{api::Api, result::Result};
-use anyhow::anyhow;
 use env_logger::{Builder, Env};
 use log::LevelFilter;
 use structopt::StructOpt;
@@ -38,19 +37,6 @@ pub enum Command {
     UploadProgram(upload_program::UploadProgram),
     Transfer(transfer::Transfer),
     Update(update::Update),
-}
-
-pub(crate) fn str_to_arr(string: &str) -> Result<[u8; 32]> {
-    let hex = hex::decode(string.trim_start_matches("0x"))?;
-
-    if hex.len() != 32 {
-        return Err(anyhow!("Incorrect id length").into());
-    }
-
-    let mut arr = [0; 32];
-    arr.copy_from_slice(&hex);
-
-    Ok(arr)
 }
 
 /// Entrypoint of cli `gear`

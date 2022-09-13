@@ -1,6 +1,5 @@
 //! command `upload_program`
-use super::str_to_arr;
-use crate::{api::signer::Signer, result::Result};
+use crate::{api::signer::Signer, result::Result, utils};
 use std::{fs, path::PathBuf};
 use structopt::StructOpt;
 
@@ -29,7 +28,7 @@ impl UploadProgram {
     /// Exec command submit
     pub async fn exec(&self, signer: Signer) -> Result<()> {
         let code = fs::read(&self.code)?;
-        let payload = hex::decode(&self.init_payload.trim_start_matches("0x"))?;
+        let payload = utils::hex_to_vec(&self.init_payload)?;
 
         let gas = if self.gas_limit == 0 {
             signer
@@ -47,7 +46,7 @@ impl UploadProgram {
         signer
             .upload_program(
                 code,
-                str_to_arr(&self.salt)?.into(),
+                utils::hex_to_hash(&self.salt)?.into(),
                 payload,
                 gas_limit,
                 self.value,

@@ -134,6 +134,7 @@ type Extrinsic<'client, Call, Config> = SubmittableExtrinsic<
 >;
 
 impl Signer {
+    /// Propagates log::info for given status.
     pub(crate) fn log_status<Config>(
         &self,
         status: &TransactionStatus<Config, DispatchError, Event>,

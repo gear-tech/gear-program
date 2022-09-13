@@ -1,5 +1,5 @@
 //! Command `claim`
-use super::str_to_arr;
+use crate::utils::hex_to_hash;
 use crate::{api::signer::Signer, result::Result};
 use structopt::StructOpt;
 
@@ -12,7 +12,7 @@ pub struct Claim {
 
 impl Claim {
     pub async fn exec(&self, signer: Signer) -> Result<()> {
-        let message_id = str_to_arr(&self.message_id)?.into();
+        let message_id = hex_to_hash(&self.message_id)?.into();
 
         signer.claim_value(message_id).await?;
 

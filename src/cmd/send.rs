@@ -1,5 +1,5 @@
 //! Command `send`
-use super::str_to_arr;
+use crate::utils::hex_to_hash;
 use crate::{api::signer::Signer, result::Result};
 use structopt::StructOpt;
 
@@ -37,7 +37,7 @@ pub struct Send {
 
 impl Send {
     pub async fn exec(&self, signer: Signer) -> Result<()> {
-        let destination = str_to_arr(&self.destination)?.into();
+        let destination = hex_to_hash(&self.destination)?.into();
 
         signer
             .send_message(
