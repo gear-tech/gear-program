@@ -42,8 +42,15 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: stable, nightly
-          components: clippy, fmt
+          toolchain: stable
+          components: clippy
+
+      - uses: actions/checkout@v1
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          components: fmt
 
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
