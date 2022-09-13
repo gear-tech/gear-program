@@ -1,6 +1,5 @@
 //! Command `send`
-use crate::utils::hex_to_hash;
-use crate::{api::signer::Signer, result::Result};
+use crate::{api::signer::Signer, result::Result, utils};
 use structopt::StructOpt;
 
 /// Sends a message to a program or to another account.
@@ -37,12 +36,10 @@ pub struct Send {
 
 impl Send {
     pub async fn exec(&self, signer: Signer) -> Result<()> {
-        let destination = hex_to_hash(&self.destination)?.into();
-
         signer
             .send_message(
-                destination,
-                hex::decode(self.payload.trim_start_matches("0x"))?,
+                utils::hex_to_hash(&self.destination)?.into(),
+                utils::hex_to_vec(&self.payload)?,
                 self.gas_limit,
                 self.value,
             )

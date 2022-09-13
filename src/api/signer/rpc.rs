@@ -37,8 +37,8 @@ impl Signer {
                 rpc_params![
                     self.source(),
                     H256(code_id.into()),
-                    payload,
-                    value,
+                    hex::encode(payload),
+                    u64::try_from(value).unwrap_or(u64::MAX),
                     allow_other_panics,
                     at
                 ],
@@ -59,7 +59,14 @@ impl Signer {
         self.rpc()
             .request(
                 "gear_calculateInitUploadGas",
-                rpc_params![self.source(), code, payload, value, allow_other_panics, at],
+                rpc_params![
+                    self.source(),
+                    hex::encode(code),
+                    hex::encode(payload),
+                    u64::try_from(value).unwrap_or(u64::MAX),
+                    allow_other_panics,
+                    at
+                ],
             )
             .await
             .map_err(Into::into)
@@ -80,8 +87,8 @@ impl Signer {
                 rpc_params![
                     self.source(),
                     H256(destination.into()),
-                    payload,
-                    value,
+                    hex::encode(payload),
+                    u64::try_from(value).unwrap_or(u64::MAX),
                     allow_other_panics,
                     at
                 ],
@@ -107,8 +114,8 @@ impl Signer {
                     self.source(),
                     H256(message_id.into()),
                     exit_code,
-                    payload,
-                    value,
+                    hex::encode(payload),
+                    u64::try_from(value).unwrap_or(u64::MAX),
                     allow_other_panics,
                     at
                 ],

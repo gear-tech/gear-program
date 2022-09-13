@@ -102,7 +102,7 @@ pub async fn create_messager() -> Result<Node> {
     let _ = gear(&[
         "-e",
         &node.ws(),
-        "create",
+        "upload-program",
         &messager,
         "0x",
         "0x",

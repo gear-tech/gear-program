@@ -1,6 +1,5 @@
 //! Command `reply`
-use crate::utils::hex_to_hash;
-use crate::{api::signer::Signer, result::Result};
+use crate::{api::signer::Signer, result::Result, utils};
 use structopt::StructOpt;
 
 /// Sends a reply message.
@@ -32,12 +31,12 @@ pub struct Reply {
 
 impl Reply {
     pub async fn exec(&self, signer: Signer) -> Result<()> {
-        let reply_to_id = hex_to_hash(&self.reply_to_id)?.into();
+        let reply_to_id = utils::hex_to_hash(&self.reply_to_id)?.into();
 
         signer
             .send_reply(
                 reply_to_id,
-                hex::decode(self.payload.trim_start_matches("0x"))?,
+                utils::hex_to_vec(&self.payload)?,
                 self.gas_limit,
                 self.value,
             )

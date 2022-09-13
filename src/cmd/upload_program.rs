@@ -46,7 +46,7 @@ impl UploadProgram {
         signer
             .upload_program(
                 code,
-                utils::hex_to_hash(&self.salt)?.into(),
+                utils::hex_to_vec(&self.salt)?,
                 payload,
                 gas_limit,
                 self.value,
