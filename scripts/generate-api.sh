@@ -63,9 +63,9 @@ function pre-check() {
 
 
 #######################################
-# Run gear-node and generate file header.
+# Run gear-node and capture spec-version.
 ##########################################
-function generate-header() {
+function spec-version() {
     spec_version=''
 
     # Pipe the stderr to read line into sub-shell
@@ -74,12 +74,17 @@ function generate-header() {
             read -r line
             if [[ "$line" == *"gear-"* ]]; then
                 spec_version="$(echo ${line} | grep -Eo 'gear-[0-9]{3}' | sed 's/.*-//')"
-
-                # generate spec version header
-                generate-header "${spec_version}" > "${GENERATED_RS}"
+                echo "$spec_version"
                 break
             fi
         done &
+
+    # TODO
+    #
+    # Optimize this double-while-loop if possible.
+    while ! [ "${spec_version}" == '' ]; do
+        kill -- -$!
+    done
 }
 
 #########################################
@@ -94,11 +99,12 @@ function main() {
     # 0. Check if the required commands exist.
     pre-check
 
-    # 1. Run gear-node and generate api header
-    generate-header
+    # 1. Run gear-node and capture spec version
+    spec_version="$(spec-version)"
 
     # 2. generate code
     sleep 5
+    generate-header "${spec_version}" > "${GENERATED_RS}"
     subxt codegen --url "http://0.0.0.0:${RPC_PORT}" | rustfmt --edition=2021 >> "${GENERATED_RS}"
 
     echo "Updated gear-node api in ${GENERATED_RS}." >&2

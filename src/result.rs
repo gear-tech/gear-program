@@ -82,8 +82,8 @@ pub enum Error {
     ProgramNotFound(String),
     #[error("Program has been terminated.")]
     ProgramTerminated,
-    #[error("Unable to establish websocket connection")]
-    Ws,
+    #[error(transparent)]
+    Ws(#[from] jsonrpsee_client_transport::ws::WsHandshakeError),
     #[error("{0}")]
     Schnorrkel(schnorrkel::SignatureError),
     #[error(transparent)]

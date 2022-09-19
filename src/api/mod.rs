@@ -1,7 +1,7 @@
 //! Gear api
 use crate::{
     api::{config::GearConfig, generated::api::RuntimeApi, signer::Signer},
-    result::{Error, Result},
+    result::Result,
 };
 use core::ops::{Deref, DerefMut};
 use std::{str::FromStr, time::Duration};
@@ -36,8 +36,7 @@ impl Api {
         let (tx, rx) = WsTransportClientBuilder::default()
             .connection_timeout(Duration::from_millis(timeout.unwrap_or(60_000)))
             .build(Uri::from_str(url.unwrap_or(DEFAULT_GEAR_ENDPOINT))?)
-            .await
-            .map_err(|_| Error::Ws)?;
+            .await?;
 
         let rpc = RpcClientBuilder::default().build_with_tokio(tx, rx);
         let builder = ClientBuilder::new().set_client(rpc);
