@@ -2,7 +2,7 @@
 //!
 //! subxt codegen | rustfmt --edition=2021
 //!
-//! spec_version: 190
+//! spec_version: 210
 #![allow(clippy::all)]
 #![allow(missing_docs)]
 #[allow(dead_code, unused_imports, non_camel_case_types)]

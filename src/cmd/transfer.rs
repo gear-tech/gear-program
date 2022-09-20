@@ -27,6 +27,7 @@ impl Transfer {
         println!("From: {}", address.to_ss58check());
         println!("To: {}", self.destination);
         println!("Value: {}", self.value);
+
         signer
             .transfer(AccountId32::from_ss58check(&self.destination)?, self.value)
             .await?;
