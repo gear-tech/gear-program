@@ -47,7 +47,7 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
-          components: fmt
+          components: rustfmt
 
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
