@@ -48,6 +48,8 @@ jobs:
         with:
           toolchain: nightly
           components: rustfmt
+          target: [wasm32-unknown-unknown, x86_64-unknown-linux-gnu]
+
 
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
