@@ -48,7 +48,11 @@ jobs:
         with:
           toolchain: nightly
           components: rustfmt
-          target: [wasm32-unknown-unknown, x86_64-unknown-linux-gnu]
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          target: wasm32-unknown-unknown
 
 
       - name: Install Protoc
