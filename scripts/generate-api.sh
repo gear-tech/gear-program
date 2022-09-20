@@ -52,7 +52,7 @@ function pre-check() {
             curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal
         fi
 
-        cargo install subxt-cli
+        cargo install subxt-cli --version 0.22.0
     fi
 
     if ! [ -x "$(command -v rustfmt)" ]; then
