@@ -2,7 +2,7 @@
 //!
 //! subxt codegen | rustfmt --edition=2021
 //!
-//! spec_version: 190
+//! spec_version: 210
 #![allow(clippy::all)]
 #![allow(missing_docs)]
 #[allow(dead_code, unused_imports, non_camel_case_types)]
@@ -27,7 +27,7 @@ pub mod api {
         "GearPayment",
         "GearDebug",
     ];
-    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+    #[derive(:: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug)]
     pub enum Event {
         #[codec(index = 0)]
         System(system::Event),
@@ -58,134 +58,85 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct FillBlock {
                 pub ratio: runtime_types::sp_arithmetic::per_things::Perbill,
             }
-            impl ::subxt::Call for FillBlock {
-                const PALLET: &'static str = "System";
-                const FUNCTION: &'static str = "fill_block";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct Remark {
                 pub remark: ::std::vec::Vec<::core::primitive::u8>,
             }
-            impl ::subxt::Call for Remark {
-                const PALLET: &'static str = "System";
-                const FUNCTION: &'static str = "remark";
-            }
             #[derive(
-                :: subxt :: codec :: CompactAs,
-                :: subxt :: codec :: Decode,
-                :: subxt :: codec :: Encode,
+                :: subxt :: ext :: codec :: CompactAs,
+                :: subxt :: ext :: codec :: Decode,
+                :: subxt :: ext :: codec :: Encode,
                 Debug,
             )]
             pub struct SetHeapPages {
                 pub pages: ::core::primitive::u64,
             }
-            impl ::subxt::Call for SetHeapPages {
-                const PALLET: &'static str = "System";
-                const FUNCTION: &'static str = "set_heap_pages";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SetCode {
                 pub code: ::std::vec::Vec<::core::primitive::u8>,
             }
-            impl ::subxt::Call for SetCode {
-                const PALLET: &'static str = "System";
-                const FUNCTION: &'static str = "set_code";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SetCodeWithoutChecks {
                 pub code: ::std::vec::Vec<::core::primitive::u8>,
             }
-            impl ::subxt::Call for SetCodeWithoutChecks {
-                const PALLET: &'static str = "System";
-                const FUNCTION: &'static str = "set_code_without_checks";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SetStorage {
                 pub items: ::std::vec::Vec<(
                     ::std::vec::Vec<::core::primitive::u8>,
                     ::std::vec::Vec<::core::primitive::u8>,
                 )>,
             }
-            impl ::subxt::Call for SetStorage {
-                const PALLET: &'static str = "System";
-                const FUNCTION: &'static str = "set_storage";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct KillStorage {
                 pub keys: ::std::vec::Vec<::std::vec::Vec<::core::primitive::u8>>,
             }
-            impl ::subxt::Call for KillStorage {
-                const PALLET: &'static str = "System";
-                const FUNCTION: &'static str = "kill_storage";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct KillPrefix {
                 pub prefix: ::std::vec::Vec<::core::primitive::u8>,
                 pub subkeys: ::core::primitive::u32,
             }
-            impl ::subxt::Call for KillPrefix {
-                const PALLET: &'static str = "System";
-                const FUNCTION: &'static str = "kill_prefix";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct RemarkWithEvent {
                 pub remark: ::std::vec::Vec<::core::primitive::u8>,
             }
-            impl ::subxt::Call for RemarkWithEvent {
-                const PALLET: &'static str = "System";
-                const FUNCTION: &'static str = "remark_with_event";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "A dispatch that will fill the block weight up to the given ratio."]
                 pub fn fill_block(
                     &self,
                     ratio: runtime_types::sp_arithmetic::per_things::Perbill,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        FillBlock,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<FillBlock>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            228u8, 117u8, 251u8, 95u8, 47u8, 56u8, 32u8, 177u8, 191u8, 72u8, 75u8,
-                            23u8, 193u8, 175u8, 227u8, 218u8, 127u8, 94u8, 114u8, 110u8, 215u8,
-                            61u8, 162u8, 102u8, 73u8, 89u8, 218u8, 148u8, 59u8, 73u8, 59u8, 149u8,
-                        ]
-                    {
-                        let call = FillBlock { ratio };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<FillBlock> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "System",
+                        "fill_block",
+                        FillBlock { ratio },
+                        [
+                            48u8, 18u8, 205u8, 90u8, 222u8, 4u8, 20u8, 251u8, 173u8, 76u8, 167u8,
+                            4u8, 83u8, 203u8, 160u8, 89u8, 132u8, 218u8, 191u8, 145u8, 130u8,
+                            245u8, 177u8, 201u8, 169u8, 129u8, 173u8, 105u8, 88u8, 45u8, 136u8,
+                            191u8,
+                        ],
+                    )
                 }
                 #[doc = "Make some on-chain remark."]
                 #[doc = ""]
@@ -195,61 +146,34 @@ pub mod api {
                 pub fn remark(
                     &self,
                     remark: ::std::vec::Vec<::core::primitive::u8>,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<'a, T, X, Remark, DispatchError, root_mod::Event>,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<Remark>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            186u8, 79u8, 33u8, 199u8, 216u8, 115u8, 19u8, 146u8, 220u8, 174u8,
-                            98u8, 61u8, 179u8, 230u8, 40u8, 70u8, 22u8, 251u8, 77u8, 62u8, 133u8,
-                            80u8, 186u8, 70u8, 135u8, 172u8, 178u8, 241u8, 69u8, 106u8, 235u8,
-                            140u8,
-                        ]
-                    {
-                        let call = Remark { remark };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<Remark> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "System",
+                        "remark",
+                        Remark { remark },
+                        [
+                            101u8, 80u8, 195u8, 226u8, 224u8, 247u8, 60u8, 128u8, 3u8, 101u8, 51u8,
+                            147u8, 96u8, 126u8, 76u8, 230u8, 194u8, 227u8, 191u8, 73u8, 160u8,
+                            146u8, 87u8, 147u8, 243u8, 28u8, 228u8, 116u8, 224u8, 181u8, 129u8,
+                            160u8,
+                        ],
+                    )
                 }
                 #[doc = "Set the number of pages in the WebAssembly environment's heap."]
                 pub fn set_heap_pages(
                     &self,
                     pages: ::core::primitive::u64,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        SetHeapPages,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SetHeapPages>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            77u8, 138u8, 122u8, 55u8, 179u8, 101u8, 60u8, 137u8, 173u8, 39u8, 28u8,
-                            36u8, 237u8, 243u8, 232u8, 162u8, 76u8, 176u8, 135u8, 58u8, 60u8,
-                            177u8, 105u8, 136u8, 94u8, 53u8, 26u8, 31u8, 41u8, 156u8, 228u8, 241u8,
-                        ]
-                    {
-                        let call = SetHeapPages { pages };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<SetHeapPages> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "System",
+                        "set_heap_pages",
+                        SetHeapPages { pages },
+                        [
+                            43u8, 103u8, 128u8, 49u8, 156u8, 136u8, 11u8, 204u8, 80u8, 6u8, 244u8,
+                            86u8, 171u8, 44u8, 140u8, 225u8, 142u8, 198u8, 43u8, 87u8, 26u8, 45u8,
+                            125u8, 222u8, 165u8, 254u8, 172u8, 158u8, 39u8, 178u8, 86u8, 87u8,
+                        ],
+                    )
                 }
                 #[doc = "Set the new runtime code."]
                 #[doc = ""]
@@ -266,35 +190,17 @@ pub mod api {
                 pub fn set_code(
                     &self,
                     code: ::std::vec::Vec<::core::primitive::u8>,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        SetCode,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SetCode>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            35u8, 75u8, 103u8, 203u8, 91u8, 141u8, 77u8, 95u8, 37u8, 157u8, 107u8,
-                            240u8, 54u8, 242u8, 245u8, 205u8, 104u8, 165u8, 177u8, 37u8, 86u8,
-                            197u8, 28u8, 202u8, 121u8, 159u8, 18u8, 204u8, 237u8, 117u8, 141u8,
-                            131u8,
-                        ]
-                    {
-                        let call = SetCode { code };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<SetCode> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "System",
+                        "set_code",
+                        SetCode { code },
+                        [
+                            27u8, 104u8, 244u8, 205u8, 188u8, 254u8, 121u8, 13u8, 106u8, 120u8,
+                            244u8, 108u8, 97u8, 84u8, 100u8, 68u8, 26u8, 69u8, 93u8, 128u8, 107u8,
+                            4u8, 3u8, 142u8, 13u8, 134u8, 196u8, 62u8, 113u8, 181u8, 14u8, 40u8,
+                        ],
+                    )
                 }
                 #[doc = "Set the new runtime code without doing any checks of the given `code`."]
                 #[doc = ""]
@@ -308,35 +214,17 @@ pub mod api {
                 pub fn set_code_without_checks(
                     &self,
                     code: ::std::vec::Vec<::core::primitive::u8>,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        SetCodeWithoutChecks,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SetCodeWithoutChecks>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            150u8, 148u8, 119u8, 129u8, 77u8, 216u8, 135u8, 187u8, 127u8, 24u8,
-                            238u8, 15u8, 227u8, 229u8, 191u8, 217u8, 106u8, 129u8, 149u8, 79u8,
-                            154u8, 78u8, 53u8, 159u8, 89u8, 69u8, 103u8, 197u8, 93u8, 161u8, 134u8,
-                            17u8,
-                        ]
-                    {
-                        let call = SetCodeWithoutChecks { code };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<SetCodeWithoutChecks> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "System",
+                        "set_code_without_checks",
+                        SetCodeWithoutChecks { code },
+                        [
+                            102u8, 160u8, 125u8, 235u8, 30u8, 23u8, 45u8, 239u8, 112u8, 148u8,
+                            159u8, 158u8, 42u8, 93u8, 206u8, 94u8, 80u8, 250u8, 66u8, 195u8, 60u8,
+                            40u8, 142u8, 169u8, 183u8, 80u8, 80u8, 96u8, 3u8, 231u8, 99u8, 216u8,
+                        ],
+                    )
                 }
                 #[doc = "Set some items of storage."]
                 pub fn set_storage(
@@ -345,69 +233,34 @@ pub mod api {
                         ::std::vec::Vec<::core::primitive::u8>,
                         ::std::vec::Vec<::core::primitive::u8>,
                     )>,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        SetStorage,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SetStorage>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            197u8, 12u8, 119u8, 205u8, 152u8, 103u8, 211u8, 170u8, 146u8, 253u8,
-                            25u8, 56u8, 180u8, 146u8, 74u8, 75u8, 38u8, 108u8, 212u8, 154u8, 23u8,
-                            22u8, 148u8, 175u8, 107u8, 186u8, 222u8, 13u8, 149u8, 132u8, 204u8,
-                            217u8,
-                        ]
-                    {
-                        let call = SetStorage { items };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<SetStorage> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "System",
+                        "set_storage",
+                        SetStorage { items },
+                        [
+                            74u8, 43u8, 106u8, 255u8, 50u8, 151u8, 192u8, 155u8, 14u8, 90u8, 19u8,
+                            45u8, 165u8, 16u8, 235u8, 242u8, 21u8, 131u8, 33u8, 172u8, 119u8, 78u8,
+                            140u8, 10u8, 107u8, 202u8, 122u8, 235u8, 181u8, 191u8, 22u8, 116u8,
+                        ],
+                    )
                 }
                 #[doc = "Kill some items from storage."]
                 pub fn kill_storage(
                     &self,
                     keys: ::std::vec::Vec<::std::vec::Vec<::core::primitive::u8>>,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        KillStorage,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<KillStorage>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            154u8, 115u8, 185u8, 20u8, 126u8, 90u8, 222u8, 131u8, 199u8, 57u8,
-                            184u8, 226u8, 43u8, 245u8, 161u8, 176u8, 194u8, 123u8, 139u8, 97u8,
-                            97u8, 94u8, 47u8, 64u8, 204u8, 96u8, 190u8, 94u8, 216u8, 237u8, 69u8,
-                            51u8,
-                        ]
-                    {
-                        let call = KillStorage { keys };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<KillStorage> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "System",
+                        "kill_storage",
+                        KillStorage { keys },
+                        [
+                            174u8, 174u8, 13u8, 174u8, 75u8, 138u8, 128u8, 235u8, 222u8, 216u8,
+                            85u8, 18u8, 198u8, 1u8, 138u8, 70u8, 19u8, 108u8, 209u8, 41u8, 228u8,
+                            67u8, 130u8, 230u8, 160u8, 207u8, 11u8, 180u8, 139u8, 242u8, 41u8,
+                            15u8,
+                        ],
+                    )
                 }
                 #[doc = "Kill all storage items with a key that starts with the given prefix."]
                 #[doc = ""]
@@ -417,68 +270,35 @@ pub mod api {
                     &self,
                     prefix: ::std::vec::Vec<::core::primitive::u8>,
                     subkeys: ::core::primitive::u32,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        KillPrefix,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<KillPrefix>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            214u8, 101u8, 191u8, 241u8, 1u8, 241u8, 144u8, 116u8, 246u8, 199u8,
-                            159u8, 249u8, 155u8, 164u8, 220u8, 221u8, 75u8, 33u8, 204u8, 3u8,
-                            255u8, 201u8, 187u8, 238u8, 181u8, 213u8, 41u8, 105u8, 234u8, 120u8,
-                            202u8, 115u8,
-                        ]
-                    {
-                        let call = KillPrefix { prefix, subkeys };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<KillPrefix> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "System",
+                        "kill_prefix",
+                        KillPrefix { prefix, subkeys },
+                        [
+                            203u8, 116u8, 217u8, 42u8, 154u8, 215u8, 77u8, 217u8, 13u8, 22u8,
+                            193u8, 2u8, 128u8, 115u8, 179u8, 115u8, 187u8, 218u8, 129u8, 34u8,
+                            80u8, 4u8, 173u8, 120u8, 92u8, 35u8, 237u8, 112u8, 201u8, 207u8, 200u8,
+                            48u8,
+                        ],
+                    )
                 }
                 #[doc = "Make some on-chain remark and emit event."]
                 pub fn remark_with_event(
                     &self,
                     remark: ::std::vec::Vec<::core::primitive::u8>,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        RemarkWithEvent,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<RemarkWithEvent>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            171u8, 82u8, 75u8, 237u8, 69u8, 197u8, 223u8, 125u8, 123u8, 51u8,
-                            241u8, 35u8, 202u8, 210u8, 227u8, 109u8, 1u8, 241u8, 255u8, 63u8, 33u8,
-                            115u8, 156u8, 239u8, 97u8, 76u8, 193u8, 35u8, 74u8, 199u8, 43u8, 255u8,
-                        ]
-                    {
-                        let call = RemarkWithEvent { remark };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<RemarkWithEvent> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "System",
+                        "remark_with_event",
+                        RemarkWithEvent { remark },
+                        [
+                            123u8, 225u8, 180u8, 179u8, 144u8, 74u8, 27u8, 85u8, 101u8, 75u8,
+                            134u8, 44u8, 181u8, 25u8, 183u8, 158u8, 14u8, 213u8, 56u8, 225u8,
+                            136u8, 88u8, 26u8, 114u8, 178u8, 43u8, 176u8, 43u8, 240u8, 84u8, 116u8,
+                            46u8,
+                        ],
+                    )
                 }
             }
         }
@@ -486,650 +306,347 @@ pub mod api {
         pub type Event = runtime_types::frame_system::pallet::Event;
         pub mod events {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "An extrinsic completed successfully."]
             pub struct ExtrinsicSuccess {
-                pub dispatch_info: runtime_types::frame_support::weights::DispatchInfo,
+                pub dispatch_info: runtime_types::frame_support::dispatch::DispatchInfo,
             }
-            impl ::subxt::Event for ExtrinsicSuccess {
+            impl ::subxt::events::StaticEvent for ExtrinsicSuccess {
                 const PALLET: &'static str = "System";
                 const EVENT: &'static str = "ExtrinsicSuccess";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "An extrinsic failed."]
             pub struct ExtrinsicFailed {
                 pub dispatch_error: runtime_types::sp_runtime::DispatchError,
-                pub dispatch_info: runtime_types::frame_support::weights::DispatchInfo,
+                pub dispatch_info: runtime_types::frame_support::dispatch::DispatchInfo,
             }
-            impl ::subxt::Event for ExtrinsicFailed {
+            impl ::subxt::events::StaticEvent for ExtrinsicFailed {
                 const PALLET: &'static str = "System";
                 const EVENT: &'static str = "ExtrinsicFailed";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "`:code` was updated."]
             pub struct CodeUpdated;
-            impl ::subxt::Event for CodeUpdated {
+            impl ::subxt::events::StaticEvent for CodeUpdated {
                 const PALLET: &'static str = "System";
                 const EVENT: &'static str = "CodeUpdated";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "A new account was created."]
             pub struct NewAccount {
-                pub account: ::subxt::sp_core::crypto::AccountId32,
+                pub account: ::subxt::ext::sp_core::crypto::AccountId32,
             }
-            impl ::subxt::Event for NewAccount {
+            impl ::subxt::events::StaticEvent for NewAccount {
                 const PALLET: &'static str = "System";
                 const EVENT: &'static str = "NewAccount";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "An account was reaped."]
             pub struct KilledAccount {
-                pub account: ::subxt::sp_core::crypto::AccountId32,
+                pub account: ::subxt::ext::sp_core::crypto::AccountId32,
             }
-            impl ::subxt::Event for KilledAccount {
+            impl ::subxt::events::StaticEvent for KilledAccount {
                 const PALLET: &'static str = "System";
                 const EVENT: &'static str = "KilledAccount";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "On on-chain remark happened."]
             pub struct Remarked {
-                pub sender: ::subxt::sp_core::crypto::AccountId32,
-                pub hash: ::subxt::sp_core::H256,
+                pub sender: ::subxt::ext::sp_core::crypto::AccountId32,
+                pub hash: ::subxt::ext::sp_core::H256,
             }
-            impl ::subxt::Event for Remarked {
+            impl ::subxt::events::StaticEvent for Remarked {
                 const PALLET: &'static str = "System";
                 const EVENT: &'static str = "Remarked";
             }
         }
         pub mod storage {
             use super::runtime_types;
-            pub struct Account<'a>(pub &'a ::subxt::sp_core::crypto::AccountId32);
-            impl ::subxt::StorageEntry for Account<'_> {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "Account";
-                type Value = runtime_types::frame_system::AccountInfo<
-                    ::core::primitive::u32,
-                    runtime_types::pallet_balances::AccountData<::core::primitive::u128>,
-                >;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Blake2_128Concat,
-                    )])
-                }
-            }
-            pub struct ExtrinsicCount;
-            impl ::subxt::StorageEntry for ExtrinsicCount {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "ExtrinsicCount";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct BlockWeight;
-            impl ::subxt::StorageEntry for BlockWeight {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "BlockWeight";
-                type Value =
-                    runtime_types::frame_support::weights::PerDispatchClass<::core::primitive::u64>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct AllExtrinsicsLen;
-            impl ::subxt::StorageEntry for AllExtrinsicsLen {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "AllExtrinsicsLen";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct BlockHash<'a>(pub &'a ::core::primitive::u32);
-            impl ::subxt::StorageEntry for BlockHash<'_> {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "BlockHash";
-                type Value = ::subxt::sp_core::H256;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Twox64Concat,
-                    )])
-                }
-            }
-            pub struct ExtrinsicData<'a>(pub &'a ::core::primitive::u32);
-            impl ::subxt::StorageEntry for ExtrinsicData<'_> {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "ExtrinsicData";
-                type Value = ::std::vec::Vec<::core::primitive::u8>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Twox64Concat,
-                    )])
-                }
-            }
-            pub struct Number;
-            impl ::subxt::StorageEntry for Number {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "Number";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct ParentHash;
-            impl ::subxt::StorageEntry for ParentHash {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "ParentHash";
-                type Value = ::subxt::sp_core::H256;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Digest;
-            impl ::subxt::StorageEntry for Digest {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "Digest";
-                type Value = runtime_types::sp_runtime::generic::digest::Digest;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Events;
-            impl ::subxt::StorageEntry for Events {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "Events";
-                type Value = ::std::vec::Vec<
-                    runtime_types::frame_system::EventRecord<
-                        runtime_types::gear_runtime::Event,
-                        ::subxt::sp_core::H256,
-                    >,
-                >;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct EventCount;
-            impl ::subxt::StorageEntry for EventCount {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "EventCount";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct EventTopics<'a>(pub &'a ::subxt::sp_core::H256);
-            impl ::subxt::StorageEntry for EventTopics<'_> {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "EventTopics";
-                type Value = ::std::vec::Vec<(::core::primitive::u32, ::core::primitive::u32)>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Blake2_128Concat,
-                    )])
-                }
-            }
-            pub struct LastRuntimeUpgrade;
-            impl ::subxt::StorageEntry for LastRuntimeUpgrade {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "LastRuntimeUpgrade";
-                type Value = runtime_types::frame_system::LastRuntimeUpgradeInfo;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct UpgradedToU32RefCount;
-            impl ::subxt::StorageEntry for UpgradedToU32RefCount {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "UpgradedToU32RefCount";
-                type Value = ::core::primitive::bool;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct UpgradedToTripleRefCount;
-            impl ::subxt::StorageEntry for UpgradedToTripleRefCount {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "UpgradedToTripleRefCount";
-                type Value = ::core::primitive::bool;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct ExecutionPhase;
-            impl ::subxt::StorageEntry for ExecutionPhase {
-                const PALLET: &'static str = "System";
-                const STORAGE: &'static str = "ExecutionPhase";
-                type Value = runtime_types::frame_system::Phase;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 #[doc = " The full account information for a particular account ID."]
                 pub fn account(
                     &self,
-                    _0: &'a ::subxt::sp_core::crypto::AccountId32,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
+                    _0: impl ::std::borrow::Borrow<::subxt::ext::sp_core::crypto::AccountId32>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
                         runtime_types::frame_system::AccountInfo<
                             ::core::primitive::u32,
                             runtime_types::pallet_balances::AccountData<::core::primitive::u128>,
                         >,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Account>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                224u8, 184u8, 2u8, 14u8, 38u8, 177u8, 223u8, 98u8, 223u8, 15u8,
-                                130u8, 23u8, 212u8, 69u8, 61u8, 165u8, 171u8, 61u8, 171u8, 57u8,
-                                88u8, 71u8, 168u8, 172u8, 54u8, 91u8, 109u8, 231u8, 169u8, 167u8,
-                                195u8, 46u8,
-                            ]
-                        {
-                            let entry = Account(_0);
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "Account",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Blake2_128Concat,
+                        )],
+                        [
+                            176u8, 187u8, 21u8, 220u8, 159u8, 204u8, 127u8, 14u8, 21u8, 69u8, 77u8,
+                            114u8, 230u8, 141u8, 107u8, 79u8, 23u8, 16u8, 174u8, 243u8, 252u8,
+                            42u8, 65u8, 120u8, 229u8, 38u8, 210u8, 255u8, 22u8, 40u8, 109u8, 223u8,
+                        ],
+                    )
                 }
                 #[doc = " The full account information for a particular account ID."]
-                pub fn account_iter(
+                pub fn account_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, Account<'a>>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::frame_system::AccountInfo<
+                            ::core::primitive::u32,
+                            runtime_types::pallet_balances::AccountData<::core::primitive::u128>,
+                        >,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Account>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                224u8, 184u8, 2u8, 14u8, 38u8, 177u8, 223u8, 98u8, 223u8, 15u8,
-                                130u8, 23u8, 212u8, 69u8, 61u8, 165u8, 171u8, 61u8, 171u8, 57u8,
-                                88u8, 71u8, 168u8, 172u8, 54u8, 91u8, 109u8, 231u8, 169u8, 167u8,
-                                195u8, 46u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    (),
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "Account",
+                        Vec::new(),
+                        [
+                            176u8, 187u8, 21u8, 220u8, 159u8, 204u8, 127u8, 14u8, 21u8, 69u8, 77u8,
+                            114u8, 230u8, 141u8, 107u8, 79u8, 23u8, 16u8, 174u8, 243u8, 252u8,
+                            42u8, 65u8, 120u8, 229u8, 38u8, 210u8, 255u8, 22u8, 40u8, 109u8, 223u8,
+                        ],
+                    )
                 }
                 #[doc = " Total extrinsics count for the current block."]
                 pub fn extrinsic_count(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::core::primitive::u32>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<ExtrinsicCount>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                223u8, 60u8, 201u8, 120u8, 36u8, 44u8, 180u8, 210u8, 242u8, 53u8,
-                                222u8, 154u8, 123u8, 176u8, 249u8, 8u8, 225u8, 28u8, 232u8, 4u8,
-                                136u8, 41u8, 151u8, 82u8, 189u8, 149u8, 49u8, 166u8, 139u8, 9u8,
-                                163u8, 231u8,
-                            ]
-                        {
-                            let entry = ExtrinsicCount;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "ExtrinsicCount",
+                        vec![],
+                        [
+                            223u8, 60u8, 201u8, 120u8, 36u8, 44u8, 180u8, 210u8, 242u8, 53u8,
+                            222u8, 154u8, 123u8, 176u8, 249u8, 8u8, 225u8, 28u8, 232u8, 4u8, 136u8,
+                            41u8, 151u8, 82u8, 189u8, 149u8, 49u8, 166u8, 139u8, 9u8, 163u8, 231u8,
+                        ],
+                    )
                 }
                 #[doc = " The current weight for the block."]
                 pub fn block_weight(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        runtime_types::frame_support::weights::PerDispatchClass<
-                            ::core::primitive::u64,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::frame_support::dispatch::PerDispatchClass<
+                            runtime_types::sp_weights::weight_v2::Weight,
                         >,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<BlockWeight>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                2u8, 236u8, 190u8, 174u8, 244u8, 98u8, 194u8, 168u8, 89u8, 208u8,
-                                7u8, 45u8, 175u8, 171u8, 177u8, 121u8, 215u8, 190u8, 184u8, 195u8,
-                                49u8, 133u8, 44u8, 1u8, 181u8, 215u8, 89u8, 84u8, 255u8, 16u8,
-                                57u8, 152u8,
-                            ]
-                        {
-                            let entry = BlockWeight;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "BlockWeight",
+                        vec![],
+                        [
+                            25u8, 97u8, 54u8, 87u8, 196u8, 64u8, 243u8, 40u8, 63u8, 215u8, 225u8,
+                            108u8, 83u8, 110u8, 180u8, 62u8, 160u8, 84u8, 65u8, 29u8, 225u8, 34u8,
+                            221u8, 108u8, 242u8, 129u8, 215u8, 27u8, 28u8, 158u8, 72u8, 250u8,
+                        ],
+                    )
                 }
                 #[doc = " Total length (in bytes) for all extrinsics put together, for the current block."]
                 pub fn all_extrinsics_len(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::core::primitive::u32>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<AllExtrinsicsLen>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                202u8, 145u8, 209u8, 225u8, 40u8, 220u8, 174u8, 74u8, 93u8, 164u8,
-                                254u8, 248u8, 254u8, 192u8, 32u8, 117u8, 96u8, 149u8, 53u8, 145u8,
-                                219u8, 64u8, 234u8, 18u8, 217u8, 200u8, 203u8, 141u8, 145u8, 28u8,
-                                134u8, 60u8,
-                            ]
-                        {
-                            let entry = AllExtrinsicsLen;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "AllExtrinsicsLen",
+                        vec![],
+                        [
+                            202u8, 145u8, 209u8, 225u8, 40u8, 220u8, 174u8, 74u8, 93u8, 164u8,
+                            254u8, 248u8, 254u8, 192u8, 32u8, 117u8, 96u8, 149u8, 53u8, 145u8,
+                            219u8, 64u8, 234u8, 18u8, 217u8, 200u8, 203u8, 141u8, 145u8, 28u8,
+                            134u8, 60u8,
+                        ],
+                    )
                 }
                 #[doc = " Map of block numbers to block hashes."]
                 pub fn block_hash(
                     &self,
-                    _0: &'a ::core::primitive::u32,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::subxt::sp_core::H256, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<BlockHash>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                24u8, 99u8, 146u8, 142u8, 205u8, 166u8, 4u8, 32u8, 218u8, 213u8,
-                                24u8, 236u8, 45u8, 116u8, 145u8, 204u8, 27u8, 141u8, 169u8, 249u8,
-                                111u8, 141u8, 37u8, 136u8, 45u8, 73u8, 167u8, 217u8, 118u8, 206u8,
-                                246u8, 120u8,
-                            ]
-                        {
-                            let entry = BlockHash(_0);
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    _0: impl ::std::borrow::Borrow<::core::primitive::u32>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::subxt::ext::sp_core::H256>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "BlockHash",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Twox64Concat,
+                        )],
+                        [
+                            50u8, 112u8, 176u8, 239u8, 175u8, 18u8, 205u8, 20u8, 241u8, 195u8,
+                            21u8, 228u8, 186u8, 57u8, 200u8, 25u8, 38u8, 44u8, 106u8, 20u8, 168u8,
+                            80u8, 76u8, 235u8, 12u8, 51u8, 137u8, 149u8, 200u8, 4u8, 220u8, 237u8,
+                        ],
+                    )
                 }
                 #[doc = " Map of block numbers to block hashes."]
-                pub fn block_hash_iter(
+                pub fn block_hash_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, BlockHash<'a>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<BlockHash>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                24u8, 99u8, 146u8, 142u8, 205u8, 166u8, 4u8, 32u8, 218u8, 213u8,
-                                24u8, 236u8, 45u8, 116u8, 145u8, 204u8, 27u8, 141u8, 169u8, 249u8,
-                                111u8, 141u8, 37u8, 136u8, 45u8, 73u8, 167u8, 217u8, 118u8, 206u8,
-                                246u8, 120u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::subxt::ext::sp_core::H256>,
+                    (),
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "BlockHash",
+                        Vec::new(),
+                        [
+                            50u8, 112u8, 176u8, 239u8, 175u8, 18u8, 205u8, 20u8, 241u8, 195u8,
+                            21u8, 228u8, 186u8, 57u8, 200u8, 25u8, 38u8, 44u8, 106u8, 20u8, 168u8,
+                            80u8, 76u8, 235u8, 12u8, 51u8, 137u8, 149u8, 200u8, 4u8, 220u8, 237u8,
+                        ],
+                    )
                 }
                 #[doc = " Extrinsics data for the current block (maps an extrinsic's index to its data)."]
                 pub fn extrinsic_data(
                     &self,
-                    _0: &'a ::core::primitive::u32,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::std::vec::Vec<::core::primitive::u8>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<ExtrinsicData>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                210u8, 224u8, 211u8, 186u8, 118u8, 210u8, 185u8, 194u8, 238u8,
-                                211u8, 254u8, 73u8, 67u8, 184u8, 31u8, 229u8, 168u8, 125u8, 98u8,
-                                23u8, 241u8, 59u8, 49u8, 86u8, 126u8, 9u8, 114u8, 163u8, 160u8,
-                                62u8, 50u8, 67u8,
-                            ]
-                        {
-                            let entry = ExtrinsicData(_0);
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    _0: impl ::std::borrow::Borrow<::core::primitive::u32>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::std::vec::Vec<::core::primitive::u8>>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "ExtrinsicData",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Twox64Concat,
+                        )],
+                        [
+                            210u8, 224u8, 211u8, 186u8, 118u8, 210u8, 185u8, 194u8, 238u8, 211u8,
+                            254u8, 73u8, 67u8, 184u8, 31u8, 229u8, 168u8, 125u8, 98u8, 23u8, 241u8,
+                            59u8, 49u8, 86u8, 126u8, 9u8, 114u8, 163u8, 160u8, 62u8, 50u8, 67u8,
+                        ],
+                    )
                 }
                 #[doc = " Extrinsics data for the current block (maps an extrinsic's index to its data)."]
-                pub fn extrinsic_data_iter(
+                pub fn extrinsic_data_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, ExtrinsicData<'a>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<ExtrinsicData>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                210u8, 224u8, 211u8, 186u8, 118u8, 210u8, 185u8, 194u8, 238u8,
-                                211u8, 254u8, 73u8, 67u8, 184u8, 31u8, 229u8, 168u8, 125u8, 98u8,
-                                23u8, 241u8, 59u8, 49u8, 86u8, 126u8, 9u8, 114u8, 163u8, 160u8,
-                                62u8, 50u8, 67u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::std::vec::Vec<::core::primitive::u8>>,
+                    (),
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "ExtrinsicData",
+                        Vec::new(),
+                        [
+                            210u8, 224u8, 211u8, 186u8, 118u8, 210u8, 185u8, 194u8, 238u8, 211u8,
+                            254u8, 73u8, 67u8, 184u8, 31u8, 229u8, 168u8, 125u8, 98u8, 23u8, 241u8,
+                            59u8, 49u8, 86u8, 126u8, 9u8, 114u8, 163u8, 160u8, 62u8, 50u8, 67u8,
+                        ],
+                    )
                 }
                 #[doc = " The current block number being processed. Set by `execute_block`."]
                 pub fn number(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Number>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                228u8, 96u8, 102u8, 190u8, 252u8, 130u8, 239u8, 172u8, 126u8,
-                                235u8, 246u8, 139u8, 208u8, 15u8, 88u8, 245u8, 141u8, 232u8, 43u8,
-                                204u8, 36u8, 87u8, 211u8, 141u8, 187u8, 68u8, 236u8, 70u8, 193u8,
-                                235u8, 164u8, 191u8,
-                            ]
-                        {
-                            let entry = Number;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "Number",
+                        vec![],
+                        [
+                            228u8, 96u8, 102u8, 190u8, 252u8, 130u8, 239u8, 172u8, 126u8, 235u8,
+                            246u8, 139u8, 208u8, 15u8, 88u8, 245u8, 141u8, 232u8, 43u8, 204u8,
+                            36u8, 87u8, 211u8, 141u8, 187u8, 68u8, 236u8, 70u8, 193u8, 235u8,
+                            164u8, 191u8,
+                        ],
+                    )
                 }
                 #[doc = " Hash of the previous block."]
                 pub fn parent_hash(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::subxt::sp_core::H256, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<ParentHash>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                194u8, 221u8, 147u8, 22u8, 68u8, 141u8, 32u8, 6u8, 202u8, 39u8,
-                                164u8, 184u8, 69u8, 126u8, 190u8, 101u8, 215u8, 27u8, 127u8, 157u8,
-                                200u8, 69u8, 170u8, 139u8, 232u8, 27u8, 254u8, 181u8, 183u8, 105u8,
-                                111u8, 177u8,
-                            ]
-                        {
-                            let entry = ParentHash;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::subxt::ext::sp_core::H256>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "ParentHash",
+                        vec![],
+                        [
+                            232u8, 206u8, 177u8, 119u8, 38u8, 57u8, 233u8, 50u8, 225u8, 49u8,
+                            169u8, 176u8, 210u8, 51u8, 231u8, 176u8, 234u8, 186u8, 188u8, 112u8,
+                            15u8, 152u8, 195u8, 232u8, 201u8, 97u8, 208u8, 249u8, 9u8, 163u8, 69u8,
+                            36u8,
+                        ],
+                    )
                 }
                 #[doc = " Digest of the current block, also part of the block header."]
                 pub fn digest(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
                         runtime_types::sp_runtime::generic::digest::Digest,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Digest>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                10u8, 176u8, 13u8, 228u8, 226u8, 42u8, 210u8, 151u8, 107u8, 212u8,
-                                136u8, 15u8, 38u8, 182u8, 225u8, 12u8, 250u8, 56u8, 193u8, 243u8,
-                                219u8, 113u8, 95u8, 233u8, 21u8, 229u8, 125u8, 146u8, 92u8, 250u8,
-                                32u8, 168u8,
-                            ]
-                        {
-                            let entry = Digest;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "Digest",
+                        vec![],
+                        [
+                            83u8, 141u8, 200u8, 132u8, 182u8, 55u8, 197u8, 122u8, 13u8, 159u8,
+                            31u8, 42u8, 60u8, 191u8, 89u8, 221u8, 242u8, 47u8, 199u8, 213u8, 48u8,
+                            216u8, 131u8, 168u8, 245u8, 82u8, 56u8, 190u8, 62u8, 69u8, 96u8, 37u8,
+                        ],
+                    )
                 }
                 #[doc = " Events deposited for the current block."]
                 #[doc = ""]
@@ -1140,74 +657,50 @@ pub mod api {
                 #[doc = " just in case someone still reads them from within the runtime."]
                 pub fn events(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
                         ::std::vec::Vec<
                             runtime_types::frame_system::EventRecord<
-                                runtime_types::gear_runtime::Event,
-                                ::subxt::sp_core::H256,
+                                runtime_types::gear_runtime::RuntimeEvent,
+                                ::subxt::ext::sp_core::H256,
                             >,
                         >,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Events>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                197u8, 249u8, 76u8, 180u8, 105u8, 84u8, 33u8, 75u8, 254u8, 86u8,
-                                235u8, 80u8, 238u8, 43u8, 77u8, 253u8, 80u8, 58u8, 111u8, 106u8,
-                                60u8, 72u8, 244u8, 213u8, 92u8, 237u8, 49u8, 174u8, 201u8, 90u8,
-                                27u8, 196u8,
-                            ]
-                        {
-                            let entry = Events;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "Events",
+                        vec![],
+                        [
+                            78u8, 65u8, 43u8, 74u8, 197u8, 56u8, 229u8, 121u8, 75u8, 242u8, 77u8,
+                            189u8, 152u8, 184u8, 53u8, 155u8, 77u8, 188u8, 90u8, 3u8, 14u8, 202u8,
+                            64u8, 218u8, 89u8, 89u8, 137u8, 215u8, 110u8, 165u8, 10u8, 187u8,
+                        ],
+                    )
                 }
                 #[doc = " The number of events in the `Events<T>` list."]
                 pub fn event_count(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<EventCount>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                236u8, 93u8, 90u8, 177u8, 250u8, 211u8, 138u8, 187u8, 26u8, 208u8,
-                                203u8, 113u8, 221u8, 233u8, 227u8, 9u8, 249u8, 25u8, 202u8, 185u8,
-                                161u8, 144u8, 167u8, 104u8, 127u8, 187u8, 38u8, 18u8, 52u8, 61u8,
-                                66u8, 112u8,
-                            ]
-                        {
-                            let entry = EventCount;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "EventCount",
+                        vec![],
+                        [
+                            236u8, 93u8, 90u8, 177u8, 250u8, 211u8, 138u8, 187u8, 26u8, 208u8,
+                            203u8, 113u8, 221u8, 233u8, 227u8, 9u8, 249u8, 25u8, 202u8, 185u8,
+                            161u8, 144u8, 167u8, 104u8, 127u8, 187u8, 38u8, 18u8, 52u8, 61u8, 66u8,
+                            112u8,
+                        ],
+                    )
                 }
                 #[doc = " Mapping between a topic (represented by T::Hash) and a vector of indexes"]
                 #[doc = " of events in the `<Events<T>>` list."]
@@ -1221,38 +714,29 @@ pub mod api {
                 #[doc = " no notification will be triggered thus the event might be lost."]
                 pub fn event_topics(
                     &self,
-                    _0: &'a ::subxt::sp_core::H256,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
+                    _0: impl ::std::borrow::Borrow<::subxt::ext::sp_core::H256>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
                         ::std::vec::Vec<(::core::primitive::u32, ::core::primitive::u32)>,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<EventTopics>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                231u8, 73u8, 172u8, 223u8, 210u8, 145u8, 151u8, 102u8, 73u8, 23u8,
-                                140u8, 55u8, 97u8, 40u8, 219u8, 239u8, 229u8, 177u8, 72u8, 41u8,
-                                93u8, 178u8, 7u8, 209u8, 57u8, 86u8, 153u8, 252u8, 86u8, 152u8,
-                                245u8, 179u8,
-                            ]
-                        {
-                            let entry = EventTopics(_0);
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "EventTopics",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Blake2_128Concat,
+                        )],
+                        [
+                            205u8, 90u8, 142u8, 190u8, 176u8, 37u8, 94u8, 82u8, 98u8, 1u8, 129u8,
+                            63u8, 246u8, 101u8, 130u8, 58u8, 216u8, 16u8, 139u8, 196u8, 154u8,
+                            111u8, 110u8, 178u8, 24u8, 44u8, 183u8, 176u8, 232u8, 82u8, 223u8,
+                            38u8,
+                        ],
+                    )
                 }
                 #[doc = " Mapping between a topic (represented by T::Hash) and a vector of indexes"]
                 #[doc = " of events in the `<Events<T>>` list."]
@@ -1264,331 +748,225 @@ pub mod api {
                 #[doc = " The value has the type `(T::BlockNumber, EventIndex)` because if we used only just"]
                 #[doc = " the `EventIndex` then in case if the topic has the same contents on the next block"]
                 #[doc = " no notification will be triggered thus the event might be lost."]
-                pub fn event_topics_iter(
+                pub fn event_topics_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, EventTopics<'a>>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        ::std::vec::Vec<(::core::primitive::u32, ::core::primitive::u32)>,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<EventTopics>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                231u8, 73u8, 172u8, 223u8, 210u8, 145u8, 151u8, 102u8, 73u8, 23u8,
-                                140u8, 55u8, 97u8, 40u8, 219u8, 239u8, 229u8, 177u8, 72u8, 41u8,
-                                93u8, 178u8, 7u8, 209u8, 57u8, 86u8, 153u8, 252u8, 86u8, 152u8,
-                                245u8, 179u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    (),
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "EventTopics",
+                        Vec::new(),
+                        [
+                            205u8, 90u8, 142u8, 190u8, 176u8, 37u8, 94u8, 82u8, 98u8, 1u8, 129u8,
+                            63u8, 246u8, 101u8, 130u8, 58u8, 216u8, 16u8, 139u8, 196u8, 154u8,
+                            111u8, 110u8, 178u8, 24u8, 44u8, 183u8, 176u8, 232u8, 82u8, 223u8,
+                            38u8,
+                        ],
+                    )
                 }
                 #[doc = " Stores the `spec_version` and `spec_name` of when the last runtime upgrade happened."]
                 pub fn last_runtime_upgrade(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<runtime_types::frame_system::LastRuntimeUpgradeInfo>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::frame_system::LastRuntimeUpgradeInfo,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<LastRuntimeUpgrade>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                219u8, 153u8, 158u8, 38u8, 45u8, 65u8, 151u8, 137u8, 53u8, 76u8,
-                                11u8, 181u8, 218u8, 248u8, 125u8, 190u8, 100u8, 240u8, 173u8, 75u8,
-                                179u8, 137u8, 198u8, 197u8, 248u8, 185u8, 118u8, 58u8, 42u8, 165u8,
-                                125u8, 119u8,
-                            ]
-                        {
-                            let entry = LastRuntimeUpgrade;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "LastRuntimeUpgrade",
+                        vec![],
+                        [
+                            52u8, 37u8, 117u8, 111u8, 57u8, 130u8, 196u8, 14u8, 99u8, 77u8, 91u8,
+                            126u8, 178u8, 249u8, 78u8, 34u8, 9u8, 194u8, 92u8, 105u8, 113u8, 81u8,
+                            185u8, 127u8, 245u8, 184u8, 60u8, 29u8, 234u8, 182u8, 96u8, 196u8,
+                        ],
+                    )
                 }
                 #[doc = " True if we have upgraded so that `type RefCount` is `u32`. False (default) if not."]
                 pub fn upgraded_to_u32_ref_count(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::bool, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<UpgradedToU32RefCount>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                171u8, 88u8, 244u8, 92u8, 122u8, 67u8, 27u8, 18u8, 59u8, 175u8,
-                                175u8, 178u8, 20u8, 150u8, 213u8, 59u8, 222u8, 141u8, 32u8, 107u8,
-                                3u8, 114u8, 83u8, 250u8, 180u8, 233u8, 152u8, 54u8, 187u8, 99u8,
-                                131u8, 204u8,
-                            ]
-                        {
-                            let entry = UpgradedToU32RefCount;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::bool>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "UpgradedToU32RefCount",
+                        vec![],
+                        [
+                            171u8, 88u8, 244u8, 92u8, 122u8, 67u8, 27u8, 18u8, 59u8, 175u8, 175u8,
+                            178u8, 20u8, 150u8, 213u8, 59u8, 222u8, 141u8, 32u8, 107u8, 3u8, 114u8,
+                            83u8, 250u8, 180u8, 233u8, 152u8, 54u8, 187u8, 99u8, 131u8, 204u8,
+                        ],
+                    )
                 }
                 #[doc = " True if we have upgraded so that AccountInfo contains three types of `RefCount`. False"]
                 #[doc = " (default) if not."]
                 pub fn upgraded_to_triple_ref_count(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::bool, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<UpgradedToTripleRefCount>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                90u8, 33u8, 56u8, 86u8, 90u8, 101u8, 89u8, 133u8, 203u8, 56u8,
-                                201u8, 210u8, 244u8, 232u8, 150u8, 18u8, 51u8, 105u8, 14u8, 230u8,
-                                103u8, 155u8, 246u8, 99u8, 53u8, 207u8, 225u8, 128u8, 186u8, 76u8,
-                                40u8, 185u8,
-                            ]
-                        {
-                            let entry = UpgradedToTripleRefCount;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::bool>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "UpgradedToTripleRefCount",
+                        vec![],
+                        [
+                            90u8, 33u8, 56u8, 86u8, 90u8, 101u8, 89u8, 133u8, 203u8, 56u8, 201u8,
+                            210u8, 244u8, 232u8, 150u8, 18u8, 51u8, 105u8, 14u8, 230u8, 103u8,
+                            155u8, 246u8, 99u8, 53u8, 207u8, 225u8, 128u8, 186u8, 76u8, 40u8,
+                            185u8,
+                        ],
+                    )
                 }
                 #[doc = " The execution phase of the block."]
                 pub fn execution_phase(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<runtime_types::frame_system::Phase>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<ExecutionPhase>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                174u8, 13u8, 230u8, 220u8, 239u8, 161u8, 172u8, 122u8, 188u8, 95u8,
-                                141u8, 118u8, 91u8, 158u8, 111u8, 145u8, 243u8, 173u8, 226u8,
-                                212u8, 187u8, 118u8, 94u8, 132u8, 221u8, 244u8, 61u8, 148u8, 217u8,
-                                30u8, 238u8, 225u8,
-                            ]
-                        {
-                            let entry = ExecutionPhase;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::frame_system::Phase>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "System",
+                        "ExecutionPhase",
+                        vec![],
+                        [
+                            230u8, 183u8, 221u8, 135u8, 226u8, 223u8, 55u8, 104u8, 138u8, 224u8,
+                            103u8, 156u8, 222u8, 99u8, 203u8, 199u8, 164u8, 168u8, 193u8, 133u8,
+                            201u8, 155u8, 63u8, 95u8, 17u8, 206u8, 165u8, 123u8, 161u8, 33u8,
+                            172u8, 93u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod constants {
             use super::runtime_types;
-            pub struct ConstantsApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct ConstantsApi;
+            impl ConstantsApi {
                 #[doc = " Block & extrinsics weights: base values and limits."]
                 pub fn block_weights(
                     &self,
-                ) -> ::core::result::Result<
-                    runtime_types::frame_system::limits::BlockWeights,
-                    ::subxt::BasicError,
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::frame_system::limits::BlockWeights,
+                    >,
                 > {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("System", "BlockWeights")?
-                        == [
-                            61u8, 210u8, 174u8, 24u8, 75u8, 154u8, 115u8, 207u8, 239u8, 61u8,
-                            145u8, 194u8, 147u8, 99u8, 92u8, 152u8, 163u8, 128u8, 208u8, 33u8,
-                            197u8, 117u8, 46u8, 202u8, 155u8, 100u8, 84u8, 21u8, 166u8, 69u8, 55u8,
-                            213u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("System")?;
-                        let constant = pallet.constant("BlockWeights")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "System",
+                        "BlockWeights",
+                        [
+                            64u8, 123u8, 136u8, 20u8, 38u8, 151u8, 254u8, 81u8, 251u8, 41u8, 4u8,
+                            87u8, 167u8, 25u8, 149u8, 3u8, 17u8, 65u8, 145u8, 192u8, 195u8, 87u8,
+                            182u8, 78u8, 104u8, 147u8, 9u8, 56u8, 146u8, 20u8, 47u8, 22u8,
+                        ],
+                    )
                 }
                 #[doc = " The maximum length of a block (in bytes)."]
                 pub fn block_length(
                     &self,
-                ) -> ::core::result::Result<
-                    runtime_types::frame_system::limits::BlockLength,
-                    ::subxt::BasicError,
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::frame_system::limits::BlockLength,
+                    >,
                 > {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("System", "BlockLength")?
-                        == [
-                            109u8, 246u8, 183u8, 136u8, 56u8, 208u8, 155u8, 52u8, 130u8, 30u8,
-                            57u8, 175u8, 82u8, 73u8, 48u8, 133u8, 50u8, 222u8, 105u8, 196u8, 77u8,
-                            130u8, 30u8, 200u8, 95u8, 165u8, 149u8, 42u8, 119u8, 23u8, 58u8, 217u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("System")?;
-                        let constant = pallet.constant("BlockLength")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "System",
+                        "BlockLength",
+                        [
+                            116u8, 184u8, 225u8, 228u8, 207u8, 203u8, 4u8, 220u8, 234u8, 198u8,
+                            150u8, 108u8, 205u8, 87u8, 194u8, 131u8, 229u8, 51u8, 140u8, 4u8, 47u8,
+                            12u8, 200u8, 144u8, 153u8, 62u8, 51u8, 39u8, 138u8, 205u8, 203u8,
+                            236u8,
+                        ],
+                    )
                 }
                 #[doc = " Maximum number of block number to block hash mappings to keep (oldest pruned first)."]
                 pub fn block_hash_count(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("System", "BlockHashCount")?
-                        == [
-                            123u8, 126u8, 182u8, 103u8, 71u8, 187u8, 233u8, 8u8, 47u8, 226u8,
-                            159u8, 139u8, 0u8, 59u8, 190u8, 135u8, 189u8, 77u8, 190u8, 81u8, 39u8,
-                            198u8, 224u8, 219u8, 70u8, 143u8, 6u8, 132u8, 196u8, 61u8, 117u8,
-                            194u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("System")?;
-                        let constant = pallet.constant("BlockHashCount")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "System",
+                        "BlockHashCount",
+                        [
+                            98u8, 252u8, 116u8, 72u8, 26u8, 180u8, 225u8, 83u8, 200u8, 157u8,
+                            125u8, 151u8, 53u8, 76u8, 168u8, 26u8, 10u8, 9u8, 98u8, 68u8, 9u8,
+                            178u8, 197u8, 113u8, 31u8, 79u8, 200u8, 90u8, 203u8, 100u8, 41u8,
+                            145u8,
+                        ],
+                    )
                 }
                 #[doc = " The weight of runtime database operations the runtime can invoke."]
                 pub fn db_weight(
                     &self,
-                ) -> ::core::result::Result<
-                    runtime_types::frame_support::weights::RuntimeDbWeight,
-                    ::subxt::BasicError,
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::sp_weights::RuntimeDbWeight>,
                 > {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("System", "DbWeight")?
-                        == [
-                            203u8, 8u8, 106u8, 152u8, 74u8, 132u8, 2u8, 132u8, 244u8, 106u8, 147u8,
-                            12u8, 93u8, 80u8, 61u8, 158u8, 172u8, 178u8, 228u8, 125u8, 213u8,
-                            102u8, 75u8, 210u8, 64u8, 185u8, 204u8, 84u8, 10u8, 164u8, 204u8, 62u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("System")?;
-                        let constant = pallet.constant("DbWeight")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "System",
+                        "DbWeight",
+                        [
+                            124u8, 162u8, 190u8, 149u8, 49u8, 177u8, 162u8, 231u8, 62u8, 167u8,
+                            199u8, 181u8, 43u8, 232u8, 185u8, 116u8, 195u8, 51u8, 233u8, 223u8,
+                            20u8, 129u8, 246u8, 13u8, 65u8, 180u8, 64u8, 9u8, 157u8, 59u8, 245u8,
+                            118u8,
+                        ],
+                    )
                 }
                 #[doc = " Get the chain's current version."]
                 pub fn version(
                     &self,
-                ) -> ::core::result::Result<
-                    runtime_types::sp_version::RuntimeVersion,
-                    ::subxt::BasicError,
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::sp_version::RuntimeVersion>,
                 > {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("System", "Version")?
-                        == [
-                            213u8, 190u8, 28u8, 139u8, 149u8, 85u8, 78u8, 148u8, 240u8, 74u8,
-                            231u8, 209u8, 103u8, 196u8, 123u8, 223u8, 220u8, 80u8, 88u8, 177u8,
-                            175u8, 238u8, 153u8, 94u8, 17u8, 89u8, 28u8, 49u8, 231u8, 200u8, 136u8,
-                            60u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("System")?;
-                        let constant = pallet.constant("Version")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "System",
+                        "Version",
+                        [
+                            93u8, 98u8, 57u8, 243u8, 229u8, 8u8, 234u8, 231u8, 72u8, 230u8, 139u8,
+                            47u8, 63u8, 181u8, 17u8, 2u8, 220u8, 231u8, 104u8, 237u8, 185u8, 143u8,
+                            165u8, 253u8, 188u8, 76u8, 147u8, 12u8, 170u8, 26u8, 74u8, 200u8,
+                        ],
+                    )
                 }
-                #[doc = " The designated SS85 prefix of this chain."]
+                #[doc = " The designated SS58 prefix of this chain."]
                 #[doc = ""]
                 #[doc = " This replaces the \"ss58Format\" property declared in the chain spec. Reason is"]
                 #[doc = " that the runtime should know about the prefix in order to make use of it as"]
                 #[doc = " an identifier of the chain."]
                 pub fn ss58_prefix(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u16, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("System", "SS58Prefix")?
-                        == [
-                            197u8, 217u8, 49u8, 68u8, 82u8, 238u8, 120u8, 50u8, 91u8, 58u8, 6u8,
-                            156u8, 40u8, 1u8, 241u8, 213u8, 141u8, 74u8, 83u8, 115u8, 117u8, 41u8,
-                            119u8, 50u8, 140u8, 136u8, 163u8, 185u8, 34u8, 190u8, 60u8, 97u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("System")?;
-                        let constant = pallet.constant("SS58Prefix")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u16>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "System",
+                        "SS58Prefix",
+                        [
+                            116u8, 33u8, 2u8, 170u8, 181u8, 147u8, 171u8, 169u8, 167u8, 227u8,
+                            41u8, 144u8, 11u8, 236u8, 82u8, 100u8, 74u8, 60u8, 184u8, 72u8, 169u8,
+                            90u8, 208u8, 135u8, 15u8, 117u8, 10u8, 123u8, 128u8, 193u8, 29u8, 70u8,
+                        ],
+                    )
                 }
             }
         }
@@ -1601,30 +979,15 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct Set {
                 #[codec(compact)]
                 pub now: ::core::primitive::u64,
             }
-            impl ::subxt::Call for Set {
-                const PALLET: &'static str = "Timestamp";
-                const FUNCTION: &'static str = "set";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "Set the current time."]
                 #[doc = ""]
                 #[doc = "This call should be invoked exactly once per block. It will panic at the finalization"]
@@ -1644,157 +1007,89 @@ pub mod api {
                 pub fn set(
                     &self,
                     now: ::core::primitive::u64,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<'a, T, X, Set, DispatchError, root_mod::Event>,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<Set>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            191u8, 73u8, 102u8, 150u8, 65u8, 157u8, 172u8, 194u8, 7u8, 72u8, 1u8,
-                            35u8, 54u8, 99u8, 245u8, 139u8, 40u8, 136u8, 245u8, 53u8, 167u8, 100u8,
-                            143u8, 244u8, 160u8, 5u8, 18u8, 130u8, 77u8, 160u8, 227u8, 51u8,
-                        ]
-                    {
-                        let call = Set { now };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<Set> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Timestamp",
+                        "set",
+                        Set { now },
+                        [
+                            6u8, 97u8, 172u8, 236u8, 118u8, 238u8, 228u8, 114u8, 15u8, 115u8,
+                            102u8, 85u8, 66u8, 151u8, 16u8, 33u8, 187u8, 17u8, 166u8, 88u8, 127u8,
+                            214u8, 182u8, 51u8, 168u8, 88u8, 43u8, 101u8, 185u8, 8u8, 1u8, 28u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod storage {
             use super::runtime_types;
-            pub struct Now;
-            impl ::subxt::StorageEntry for Now {
-                const PALLET: &'static str = "Timestamp";
-                const STORAGE: &'static str = "Now";
-                type Value = ::core::primitive::u64;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct DidUpdate;
-            impl ::subxt::StorageEntry for DidUpdate {
-                const PALLET: &'static str = "Timestamp";
-                const STORAGE: &'static str = "DidUpdate";
-                type Value = ::core::primitive::bool;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 #[doc = " Current time for the current block."]
                 pub fn now(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Now>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                148u8, 53u8, 50u8, 54u8, 13u8, 161u8, 57u8, 150u8, 16u8, 83u8,
-                                144u8, 221u8, 59u8, 75u8, 158u8, 130u8, 39u8, 123u8, 106u8, 134u8,
-                                202u8, 185u8, 83u8, 85u8, 60u8, 41u8, 120u8, 96u8, 210u8, 34u8,
-                                2u8, 250u8,
-                            ]
-                        {
-                            let entry = Now;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Timestamp",
+                        "Now",
+                        vec![],
+                        [
+                            148u8, 53u8, 50u8, 54u8, 13u8, 161u8, 57u8, 150u8, 16u8, 83u8, 144u8,
+                            221u8, 59u8, 75u8, 158u8, 130u8, 39u8, 123u8, 106u8, 134u8, 202u8,
+                            185u8, 83u8, 85u8, 60u8, 41u8, 120u8, 96u8, 210u8, 34u8, 2u8, 250u8,
+                        ],
+                    )
                 }
                 #[doc = " Did the timestamp get updated in this block?"]
                 pub fn did_update(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::bool, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<DidUpdate>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                70u8, 13u8, 92u8, 186u8, 80u8, 151u8, 167u8, 90u8, 158u8, 232u8,
-                                175u8, 13u8, 103u8, 135u8, 2u8, 78u8, 16u8, 6u8, 39u8, 158u8,
-                                167u8, 85u8, 27u8, 47u8, 122u8, 73u8, 127u8, 26u8, 35u8, 168u8,
-                                72u8, 204u8,
-                            ]
-                        {
-                            let entry = DidUpdate;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::bool>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Timestamp",
+                        "DidUpdate",
+                        vec![],
+                        [
+                            70u8, 13u8, 92u8, 186u8, 80u8, 151u8, 167u8, 90u8, 158u8, 232u8, 175u8,
+                            13u8, 103u8, 135u8, 2u8, 78u8, 16u8, 6u8, 39u8, 158u8, 167u8, 85u8,
+                            27u8, 47u8, 122u8, 73u8, 127u8, 26u8, 35u8, 168u8, 72u8, 204u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod constants {
             use super::runtime_types;
-            pub struct ConstantsApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct ConstantsApi;
+            impl ConstantsApi {
                 #[doc = " The minimum period between blocks. Beware that this is different to the *expected*"]
                 #[doc = " period that the block production apparatus provides. Your chosen consensus system will"]
                 #[doc = " generally work with this to determine a sensible block time. e.g. For Aura, it will be"]
                 #[doc = " double this period on default settings."]
                 pub fn minimum_period(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Timestamp", "MinimumPeriod")?
-                        == [
-                            165u8, 135u8, 23u8, 183u8, 91u8, 172u8, 150u8, 136u8, 95u8, 86u8,
-                            147u8, 140u8, 246u8, 4u8, 120u8, 240u8, 185u8, 105u8, 207u8, 11u8,
-                            222u8, 134u8, 117u8, 167u8, 95u8, 62u8, 50u8, 157u8, 52u8, 108u8, 7u8,
-                            150u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Timestamp")?;
-                        let constant = pallet.constant("MinimumPeriod")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Timestamp",
+                        "MinimumPeriod",
+                        [
+                            128u8, 214u8, 205u8, 242u8, 181u8, 142u8, 124u8, 231u8, 190u8, 146u8,
+                            59u8, 226u8, 157u8, 101u8, 103u8, 117u8, 249u8, 65u8, 18u8, 191u8,
+                            103u8, 119u8, 53u8, 85u8, 81u8, 96u8, 220u8, 42u8, 184u8, 239u8, 42u8,
+                            246u8,
+                        ],
+                    )
                 }
             }
         }
@@ -1807,7 +1102,9 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SetUncles {
                 pub new_uncles: ::std::vec::Vec<
                     runtime_types::sp_runtime::generic::header::Header<
@@ -1816,25 +1113,8 @@ pub mod api {
                     >,
                 >,
             }
-            impl ::subxt::Call for SetUncles {
-                const PALLET: &'static str = "Authorship";
-                const FUNCTION: &'static str = "set_uncles";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "Provide a set of uncles."]
                 pub fn set_uncles(
                     &self,
@@ -1844,221 +1124,119 @@ pub mod api {
                             runtime_types::sp_runtime::traits::BlakeTwo256,
                         >,
                     >,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        SetUncles,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SetUncles>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            5u8, 56u8, 71u8, 152u8, 103u8, 232u8, 101u8, 171u8, 200u8, 2u8, 177u8,
-                            102u8, 0u8, 93u8, 210u8, 90u8, 56u8, 151u8, 5u8, 235u8, 227u8, 197u8,
-                            189u8, 248u8, 2u8, 71u8, 49u8, 220u8, 212u8, 253u8, 235u8, 67u8,
-                        ]
-                    {
-                        let call = SetUncles { new_uncles };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<SetUncles> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Authorship",
+                        "set_uncles",
+                        SetUncles { new_uncles },
+                        [
+                            181u8, 70u8, 222u8, 83u8, 154u8, 215u8, 200u8, 64u8, 154u8, 228u8,
+                            115u8, 247u8, 117u8, 89u8, 229u8, 102u8, 128u8, 189u8, 90u8, 60u8,
+                            223u8, 19u8, 111u8, 172u8, 5u8, 223u8, 132u8, 37u8, 235u8, 119u8, 42u8,
+                            64u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod storage {
             use super::runtime_types;
-            pub struct Uncles;
-            impl ::subxt::StorageEntry for Uncles {
-                const PALLET: &'static str = "Authorship";
-                const STORAGE: &'static str = "Uncles";
-                type Value = runtime_types::sp_runtime::bounded::bounded_vec::BoundedVec<
-                    runtime_types::pallet_authorship::UncleEntryItem<
-                        ::core::primitive::u32,
-                        ::subxt::sp_core::H256,
-                        ::subxt::sp_core::crypto::AccountId32,
-                    >,
-                >;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Author;
-            impl ::subxt::StorageEntry for Author {
-                const PALLET: &'static str = "Authorship";
-                const STORAGE: &'static str = "Author";
-                type Value = ::subxt::sp_core::crypto::AccountId32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct DidSetUncles;
-            impl ::subxt::StorageEntry for DidSetUncles {
-                const PALLET: &'static str = "Authorship";
-                const STORAGE: &'static str = "DidSetUncles";
-                type Value = ::core::primitive::bool;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 #[doc = " Uncles"]
                 pub fn uncles(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        runtime_types::sp_runtime::bounded::bounded_vec::BoundedVec<
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_core::bounded::bounded_vec::BoundedVec<
                             runtime_types::pallet_authorship::UncleEntryItem<
                                 ::core::primitive::u32,
-                                ::subxt::sp_core::H256,
-                                ::subxt::sp_core::crypto::AccountId32,
+                                ::subxt::ext::sp_core::H256,
+                                ::subxt::ext::sp_core::crypto::AccountId32,
                             >,
                         >,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Uncles>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                104u8, 166u8, 142u8, 139u8, 46u8, 63u8, 163u8, 183u8, 45u8, 77u8,
-                                156u8, 44u8, 228u8, 57u8, 253u8, 230u8, 103u8, 119u8, 145u8, 135u8,
-                                251u8, 182u8, 144u8, 165u8, 127u8, 150u8, 127u8, 185u8, 146u8,
-                                228u8, 91u8, 163u8,
-                            ]
-                        {
-                            let entry = Uncles;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Authorship",
+                        "Uncles",
+                        vec![],
+                        [
+                            193u8, 226u8, 196u8, 151u8, 233u8, 82u8, 60u8, 164u8, 27u8, 156u8,
+                            231u8, 51u8, 79u8, 134u8, 170u8, 166u8, 71u8, 120u8, 250u8, 255u8,
+                            52u8, 168u8, 74u8, 199u8, 122u8, 253u8, 248u8, 178u8, 39u8, 233u8,
+                            132u8, 67u8,
+                        ],
+                    )
                 }
                 #[doc = " Author of current block."]
                 pub fn author(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::subxt::sp_core::crypto::AccountId32>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Author>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                191u8, 57u8, 3u8, 242u8, 220u8, 123u8, 103u8, 215u8, 149u8, 120u8,
-                                20u8, 139u8, 146u8, 234u8, 180u8, 105u8, 129u8, 128u8, 114u8,
-                                147u8, 114u8, 236u8, 23u8, 21u8, 15u8, 250u8, 180u8, 19u8, 177u8,
-                                145u8, 77u8, 228u8,
-                            ]
-                        {
-                            let entry = Author;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::subxt::ext::sp_core::crypto::AccountId32>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Authorship",
+                        "Author",
+                        vec![],
+                        [
+                            149u8, 42u8, 33u8, 147u8, 190u8, 207u8, 174u8, 227u8, 190u8, 110u8,
+                            25u8, 131u8, 5u8, 167u8, 237u8, 188u8, 188u8, 33u8, 177u8, 126u8,
+                            181u8, 49u8, 126u8, 118u8, 46u8, 128u8, 154u8, 95u8, 15u8, 91u8, 103u8,
+                            113u8,
+                        ],
+                    )
                 }
                 #[doc = " Whether uncles were already set in this block."]
                 pub fn did_set_uncles(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::bool, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<DidSetUncles>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                64u8, 3u8, 208u8, 187u8, 50u8, 45u8, 37u8, 88u8, 163u8, 226u8,
-                                37u8, 126u8, 232u8, 107u8, 156u8, 187u8, 29u8, 15u8, 53u8, 46u8,
-                                28u8, 73u8, 83u8, 123u8, 14u8, 244u8, 243u8, 43u8, 245u8, 143u8,
-                                15u8, 115u8,
-                            ]
-                        {
-                            let entry = DidSetUncles;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::bool>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Authorship",
+                        "DidSetUncles",
+                        vec![],
+                        [
+                            64u8, 3u8, 208u8, 187u8, 50u8, 45u8, 37u8, 88u8, 163u8, 226u8, 37u8,
+                            126u8, 232u8, 107u8, 156u8, 187u8, 29u8, 15u8, 53u8, 46u8, 28u8, 73u8,
+                            83u8, 123u8, 14u8, 244u8, 243u8, 43u8, 245u8, 143u8, 15u8, 115u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod constants {
             use super::runtime_types;
-            pub struct ConstantsApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct ConstantsApi;
+            impl ConstantsApi {
                 #[doc = " The number of blocks back we should accept uncles."]
                 #[doc = " This means that we will deal with uncle-parents that are"]
                 #[doc = " `UncleGenerations + 1` before `now`."]
                 pub fn uncle_generations(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Authorship", "UncleGenerations")?
-                        == [
-                            0u8, 72u8, 57u8, 175u8, 222u8, 143u8, 191u8, 33u8, 163u8, 157u8, 202u8,
-                            83u8, 186u8, 103u8, 162u8, 103u8, 227u8, 158u8, 239u8, 212u8, 205u8,
-                            193u8, 226u8, 138u8, 5u8, 220u8, 221u8, 42u8, 7u8, 146u8, 173u8, 205u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Authorship")?;
-                        let constant = pallet.constant("UncleGenerations")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Authorship",
+                        "UncleGenerations",
+                        [
+                            98u8, 252u8, 116u8, 72u8, 26u8, 180u8, 225u8, 83u8, 200u8, 157u8,
+                            125u8, 151u8, 53u8, 76u8, 168u8, 26u8, 10u8, 9u8, 98u8, 68u8, 9u8,
+                            178u8, 197u8, 113u8, 31u8, 79u8, 200u8, 90u8, 203u8, 100u8, 41u8,
+                            145u8,
+                        ],
+                    )
                 }
             }
         }
@@ -2071,7 +1249,9 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ReportEquivocation {
                 pub equivocation_proof: ::std::boxed::Box<
                     runtime_types::sp_consensus_slots::EquivocationProof<
@@ -2084,11 +1264,9 @@ pub mod api {
                 >,
                 pub key_owner_proof: runtime_types::sp_core::Void,
             }
-            impl ::subxt::Call for ReportEquivocation {
-                const PALLET: &'static str = "Babe";
-                const FUNCTION: &'static str = "report_equivocation";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ReportEquivocationUnsigned {
                 pub equivocation_proof: ::std::boxed::Box<
                     runtime_types::sp_consensus_slots::EquivocationProof<
@@ -2101,33 +1279,14 @@ pub mod api {
                 >,
                 pub key_owner_proof: runtime_types::sp_core::Void,
             }
-            impl ::subxt::Call for ReportEquivocationUnsigned {
-                const PALLET: &'static str = "Babe";
-                const FUNCTION: &'static str = "report_equivocation_unsigned";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct PlanConfigChange {
                 pub config: runtime_types::sp_consensus_babe::digests::NextConfigDescriptor,
             }
-            impl ::subxt::Call for PlanConfigChange {
-                const PALLET: &'static str = "Babe";
-                const FUNCTION: &'static str = "plan_config_change";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "Report authority equivocation/misbehavior. This method will verify"]
                 #[doc = "the equivocation proof and validate the given key ownership proof"]
                 #[doc = "against the extracted offender. If both are valid, the offence will"]
@@ -2142,38 +1301,20 @@ pub mod api {
                         runtime_types::sp_consensus_babe::app::Public,
                     >,
                     key_owner_proof: runtime_types::sp_core::Void,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        ReportEquivocation,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<ReportEquivocation>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            116u8, 212u8, 9u8, 134u8, 44u8, 167u8, 207u8, 224u8, 210u8, 252u8,
-                            70u8, 123u8, 210u8, 202u8, 211u8, 96u8, 123u8, 67u8, 252u8, 58u8,
-                            222u8, 243u8, 182u8, 71u8, 43u8, 153u8, 209u8, 92u8, 142u8, 148u8,
-                            57u8, 75u8,
-                        ]
-                    {
-                        let call = ReportEquivocation {
+                ) -> ::subxt::tx::StaticTxPayload<ReportEquivocation> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Babe",
+                        "report_equivocation",
+                        ReportEquivocation {
                             equivocation_proof: ::std::boxed::Box::new(equivocation_proof),
                             key_owner_proof,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            208u8, 106u8, 7u8, 218u8, 222u8, 213u8, 44u8, 55u8, 38u8, 214u8, 187u8,
+                            89u8, 102u8, 188u8, 167u8, 188u8, 123u8, 61u8, 165u8, 62u8, 182u8,
+                            59u8, 8u8, 41u8, 207u8, 211u8, 70u8, 16u8, 107u8, 92u8, 41u8, 226u8,
+                        ],
+                    )
                 }
                 #[doc = "Report authority equivocation/misbehavior. This method will verify"]
                 #[doc = "the equivocation proof and validate the given key ownership proof"]
@@ -2193,37 +1334,20 @@ pub mod api {
                         runtime_types::sp_consensus_babe::app::Public,
                     >,
                     key_owner_proof: runtime_types::sp_core::Void,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        ReportEquivocationUnsigned,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<ReportEquivocationUnsigned>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            93u8, 238u8, 20u8, 159u8, 219u8, 138u8, 205u8, 234u8, 53u8, 85u8, 53u8,
-                            11u8, 15u8, 248u8, 126u8, 237u8, 1u8, 62u8, 182u8, 214u8, 0u8, 96u8,
-                            198u8, 62u8, 96u8, 173u8, 251u8, 203u8, 48u8, 75u8, 95u8, 245u8,
-                        ]
-                    {
-                        let call = ReportEquivocationUnsigned {
+                ) -> ::subxt::tx::StaticTxPayload<ReportEquivocationUnsigned> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Babe",
+                        "report_equivocation_unsigned",
+                        ReportEquivocationUnsigned {
                             equivocation_proof: ::std::boxed::Box::new(equivocation_proof),
                             key_owner_proof,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            240u8, 94u8, 233u8, 199u8, 204u8, 244u8, 25u8, 54u8, 72u8, 135u8,
+                            189u8, 245u8, 242u8, 35u8, 45u8, 242u8, 56u8, 243u8, 250u8, 44u8, 73u8,
+                            38u8, 248u8, 161u8, 6u8, 178u8, 126u8, 41u8, 49u8, 210u8, 140u8, 103u8,
+                        ],
+                    )
                 }
                 #[doc = "Plan an epoch config change. The epoch config change is recorded and will be enacted on"]
                 #[doc = "the next call to `enact_epoch_change`. The config will be activated one epoch after."]
@@ -2232,344 +1356,111 @@ pub mod api {
                 pub fn plan_config_change(
                     &self,
                     config: runtime_types::sp_consensus_babe::digests::NextConfigDescriptor,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        PlanConfigChange,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<PlanConfigChange>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            215u8, 121u8, 90u8, 87u8, 178u8, 247u8, 114u8, 53u8, 174u8, 28u8, 20u8,
-                            33u8, 139u8, 216u8, 13u8, 187u8, 74u8, 198u8, 38u8, 28u8, 175u8, 13u8,
-                            73u8, 132u8, 103u8, 78u8, 217u8, 207u8, 113u8, 169u8, 42u8, 103u8,
-                        ]
-                    {
-                        let call = PlanConfigChange { config };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<PlanConfigChange> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Babe",
+                        "plan_config_change",
+                        PlanConfigChange { config },
+                        [
+                            229u8, 157u8, 41u8, 58u8, 56u8, 4u8, 52u8, 107u8, 104u8, 20u8, 42u8,
+                            110u8, 1u8, 17u8, 45u8, 196u8, 30u8, 135u8, 63u8, 46u8, 40u8, 137u8,
+                            209u8, 37u8, 24u8, 108u8, 251u8, 189u8, 77u8, 208u8, 74u8, 32u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod storage {
             use super::runtime_types;
-            pub struct EpochIndex;
-            impl ::subxt::StorageEntry for EpochIndex {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "EpochIndex";
-                type Value = ::core::primitive::u64;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Authorities;
-            impl ::subxt::StorageEntry for Authorities {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "Authorities";
-                type Value =
-                    runtime_types::sp_runtime::bounded::weak_bounded_vec::WeakBoundedVec<(
-                        runtime_types::sp_consensus_babe::app::Public,
-                        ::core::primitive::u64,
-                    )>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct GenesisSlot;
-            impl ::subxt::StorageEntry for GenesisSlot {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "GenesisSlot";
-                type Value = runtime_types::sp_consensus_slots::Slot;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct CurrentSlot;
-            impl ::subxt::StorageEntry for CurrentSlot {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "CurrentSlot";
-                type Value = runtime_types::sp_consensus_slots::Slot;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Randomness;
-            impl ::subxt::StorageEntry for Randomness {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "Randomness";
-                type Value = [::core::primitive::u8; 32usize];
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct PendingEpochConfigChange;
-            impl ::subxt::StorageEntry for PendingEpochConfigChange {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "PendingEpochConfigChange";
-                type Value = runtime_types::sp_consensus_babe::digests::NextConfigDescriptor;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct NextRandomness;
-            impl ::subxt::StorageEntry for NextRandomness {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "NextRandomness";
-                type Value = [::core::primitive::u8; 32usize];
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct NextAuthorities;
-            impl ::subxt::StorageEntry for NextAuthorities {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "NextAuthorities";
-                type Value =
-                    runtime_types::sp_runtime::bounded::weak_bounded_vec::WeakBoundedVec<(
-                        runtime_types::sp_consensus_babe::app::Public,
-                        ::core::primitive::u64,
-                    )>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct SegmentIndex;
-            impl ::subxt::StorageEntry for SegmentIndex {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "SegmentIndex";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct UnderConstruction<'a>(pub &'a ::core::primitive::u32);
-            impl ::subxt::StorageEntry for UnderConstruction<'_> {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "UnderConstruction";
-                type Value = runtime_types::sp_runtime::bounded::bounded_vec::BoundedVec<
-                    [::core::primitive::u8; 32usize],
-                >;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Twox64Concat,
-                    )])
-                }
-            }
-            pub struct Initialized;
-            impl ::subxt::StorageEntry for Initialized {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "Initialized";
-                type Value =
-                    ::core::option::Option<runtime_types::sp_consensus_babe::digests::PreDigest>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct AuthorVrfRandomness;
-            impl ::subxt::StorageEntry for AuthorVrfRandomness {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "AuthorVrfRandomness";
-                type Value = ::core::option::Option<[::core::primitive::u8; 32usize]>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct EpochStart;
-            impl ::subxt::StorageEntry for EpochStart {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "EpochStart";
-                type Value = (::core::primitive::u32, ::core::primitive::u32);
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Lateness;
-            impl ::subxt::StorageEntry for Lateness {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "Lateness";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct EpochConfig;
-            impl ::subxt::StorageEntry for EpochConfig {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "EpochConfig";
-                type Value = runtime_types::sp_consensus_babe::BabeEpochConfiguration;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct NextEpochConfig;
-            impl ::subxt::StorageEntry for NextEpochConfig {
-                const PALLET: &'static str = "Babe";
-                const STORAGE: &'static str = "NextEpochConfig";
-                type Value = runtime_types::sp_consensus_babe::BabeEpochConfiguration;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 #[doc = " Current epoch index."]
                 pub fn epoch_index(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<EpochIndex>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                51u8, 27u8, 91u8, 156u8, 118u8, 99u8, 46u8, 219u8, 190u8, 147u8,
-                                205u8, 23u8, 106u8, 169u8, 121u8, 218u8, 208u8, 235u8, 135u8,
-                                127u8, 243u8, 41u8, 55u8, 243u8, 235u8, 122u8, 57u8, 86u8, 37u8,
-                                90u8, 208u8, 71u8,
-                            ]
-                        {
-                            let entry = EpochIndex;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "EpochIndex",
+                        vec![],
+                        [
+                            51u8, 27u8, 91u8, 156u8, 118u8, 99u8, 46u8, 219u8, 190u8, 147u8, 205u8,
+                            23u8, 106u8, 169u8, 121u8, 218u8, 208u8, 235u8, 135u8, 127u8, 243u8,
+                            41u8, 55u8, 243u8, 235u8, 122u8, 57u8, 86u8, 37u8, 90u8, 208u8, 71u8,
+                        ],
+                    )
                 }
                 #[doc = " Current epoch authorities."]
                 pub fn authorities(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        runtime_types::sp_runtime::bounded::weak_bounded_vec::WeakBoundedVec<(
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_core::bounded::weak_bounded_vec::WeakBoundedVec<(
                             runtime_types::sp_consensus_babe::app::Public,
                             ::core::primitive::u64,
                         )>,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Authorities>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                39u8, 102u8, 251u8, 125u8, 230u8, 247u8, 174u8, 255u8, 2u8, 81u8,
-                                86u8, 69u8, 182u8, 92u8, 191u8, 163u8, 66u8, 181u8, 247u8, 9u8,
-                                57u8, 154u8, 239u8, 34u8, 25u8, 139u8, 119u8, 4u8, 131u8, 124u8,
-                                135u8, 240u8,
-                            ]
-                        {
-                            let entry = Authorities;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "Authorities",
+                        vec![],
+                        [
+                            61u8, 8u8, 133u8, 111u8, 169u8, 120u8, 0u8, 213u8, 31u8, 159u8, 204u8,
+                            212u8, 18u8, 205u8, 93u8, 84u8, 140u8, 108u8, 136u8, 209u8, 234u8,
+                            107u8, 145u8, 9u8, 204u8, 224u8, 105u8, 9u8, 238u8, 241u8, 65u8, 30u8,
+                        ],
+                    )
                 }
                 #[doc = " The slot at which the first epoch actually started. This is 0"]
                 #[doc = " until the first block of the chain."]
                 pub fn genesis_slot(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        runtime_types::sp_consensus_slots::Slot,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<GenesisSlot>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                136u8, 244u8, 7u8, 142u8, 224u8, 33u8, 144u8, 186u8, 155u8, 144u8,
-                                68u8, 81u8, 241u8, 57u8, 40u8, 207u8, 35u8, 39u8, 28u8, 41u8,
-                                210u8, 213u8, 53u8, 195u8, 175u8, 119u8, 6u8, 175u8, 100u8, 192u8,
-                                180u8, 73u8,
-                            ]
-                        {
-                            let entry = GenesisSlot;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::sp_consensus_slots::Slot>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "GenesisSlot",
+                        vec![],
+                        [
+                            234u8, 127u8, 243u8, 100u8, 124u8, 160u8, 66u8, 248u8, 48u8, 218u8,
+                            61u8, 52u8, 54u8, 142u8, 158u8, 77u8, 32u8, 63u8, 156u8, 39u8, 94u8,
+                            255u8, 192u8, 238u8, 170u8, 118u8, 58u8, 42u8, 199u8, 61u8, 199u8,
+                            77u8,
+                        ],
+                    )
                 }
                 #[doc = " Current slot number."]
                 pub fn current_slot(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        runtime_types::sp_consensus_slots::Slot,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<CurrentSlot>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                233u8, 102u8, 77u8, 99u8, 103u8, 50u8, 151u8, 229u8, 46u8, 226u8,
-                                181u8, 37u8, 117u8, 204u8, 234u8, 120u8, 116u8, 166u8, 80u8, 188u8,
-                                92u8, 154u8, 137u8, 150u8, 79u8, 164u8, 29u8, 203u8, 2u8, 51u8,
-                                123u8, 104u8,
-                            ]
-                        {
-                            let entry = CurrentSlot;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::sp_consensus_slots::Slot>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "CurrentSlot",
+                        vec![],
+                        [
+                            139u8, 237u8, 185u8, 137u8, 251u8, 179u8, 69u8, 167u8, 133u8, 168u8,
+                            204u8, 64u8, 178u8, 123u8, 92u8, 250u8, 119u8, 190u8, 208u8, 178u8,
+                            208u8, 176u8, 124u8, 187u8, 74u8, 165u8, 33u8, 78u8, 161u8, 206u8, 8u8,
+                            108u8,
+                        ],
+                    )
                 }
                 #[doc = " The epoch randomness for the *current* epoch."]
                 #[doc = ""]
@@ -2583,147 +1474,91 @@ pub mod api {
                 #[doc = " adversary, for purposes such as public-coin zero-knowledge proofs."]
                 pub fn randomness(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        [::core::primitive::u8; 32usize],
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Randomness>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                191u8, 197u8, 25u8, 164u8, 104u8, 248u8, 247u8, 193u8, 244u8, 60u8,
-                                181u8, 195u8, 248u8, 90u8, 41u8, 199u8, 82u8, 123u8, 72u8, 126u8,
-                                18u8, 17u8, 128u8, 215u8, 34u8, 251u8, 227u8, 70u8, 166u8, 10u8,
-                                104u8, 140u8,
-                            ]
-                        {
-                            let entry = Randomness;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<[::core::primitive::u8; 32usize]>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "Randomness",
+                        vec![],
+                        [
+                            191u8, 197u8, 25u8, 164u8, 104u8, 248u8, 247u8, 193u8, 244u8, 60u8,
+                            181u8, 195u8, 248u8, 90u8, 41u8, 199u8, 82u8, 123u8, 72u8, 126u8, 18u8,
+                            17u8, 128u8, 215u8, 34u8, 251u8, 227u8, 70u8, 166u8, 10u8, 104u8,
+                            140u8,
+                        ],
+                    )
                 }
                 #[doc = " Pending epoch configuration change that will be applied when the next epoch is enacted."]
                 pub fn pending_epoch_config_change(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<
-                            runtime_types::sp_consensus_babe::digests::NextConfigDescriptor,
-                        >,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_consensus_babe::digests::NextConfigDescriptor,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<PendingEpochConfigChange>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                98u8, 52u8, 22u8, 32u8, 76u8, 196u8, 89u8, 78u8, 119u8, 181u8,
-                                17u8, 49u8, 220u8, 159u8, 195u8, 74u8, 33u8, 59u8, 15u8, 104u8,
-                                26u8, 111u8, 165u8, 68u8, 147u8, 14u8, 86u8, 94u8, 250u8, 167u8,
-                                146u8, 82u8,
-                            ]
-                        {
-                            let entry = PendingEpochConfigChange;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "PendingEpochConfigChange",
+                        vec![],
+                        [
+                            4u8, 201u8, 0u8, 204u8, 47u8, 246u8, 4u8, 185u8, 163u8, 242u8, 242u8,
+                            152u8, 29u8, 222u8, 71u8, 127u8, 49u8, 203u8, 206u8, 180u8, 244u8,
+                            50u8, 80u8, 49u8, 199u8, 97u8, 3u8, 170u8, 156u8, 139u8, 106u8, 113u8,
+                        ],
+                    )
                 }
                 #[doc = " Next epoch randomness."]
                 pub fn next_randomness(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        [::core::primitive::u8; 32usize],
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<NextRandomness>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                185u8, 98u8, 45u8, 109u8, 253u8, 38u8, 238u8, 221u8, 240u8, 29u8,
-                                38u8, 107u8, 118u8, 117u8, 131u8, 115u8, 21u8, 255u8, 203u8, 81u8,
-                                243u8, 251u8, 91u8, 60u8, 163u8, 202u8, 125u8, 193u8, 173u8, 234u8,
-                                166u8, 92u8,
-                            ]
-                        {
-                            let entry = NextRandomness;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<[::core::primitive::u8; 32usize]>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "NextRandomness",
+                        vec![],
+                        [
+                            185u8, 98u8, 45u8, 109u8, 253u8, 38u8, 238u8, 221u8, 240u8, 29u8, 38u8,
+                            107u8, 118u8, 117u8, 131u8, 115u8, 21u8, 255u8, 203u8, 81u8, 243u8,
+                            251u8, 91u8, 60u8, 163u8, 202u8, 125u8, 193u8, 173u8, 234u8, 166u8,
+                            92u8,
+                        ],
+                    )
                 }
                 #[doc = " Next epoch authorities."]
                 pub fn next_authorities(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        runtime_types::sp_runtime::bounded::weak_bounded_vec::WeakBoundedVec<(
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_core::bounded::weak_bounded_vec::WeakBoundedVec<(
                             runtime_types::sp_consensus_babe::app::Public,
                             ::core::primitive::u64,
                         )>,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<NextAuthorities>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                211u8, 175u8, 218u8, 0u8, 212u8, 114u8, 210u8, 137u8, 146u8, 135u8,
-                                78u8, 133u8, 85u8, 253u8, 140u8, 242u8, 101u8, 155u8, 159u8, 8u8,
-                                217u8, 176u8, 234u8, 143u8, 212u8, 103u8, 198u8, 94u8, 121u8,
-                                111u8, 56u8, 89u8,
-                            ]
-                        {
-                            let entry = NextAuthorities;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "NextAuthorities",
+                        vec![],
+                        [
+                            201u8, 193u8, 164u8, 18u8, 155u8, 253u8, 124u8, 163u8, 143u8, 73u8,
+                            212u8, 20u8, 241u8, 108u8, 110u8, 5u8, 171u8, 66u8, 224u8, 208u8, 10u8,
+                            65u8, 148u8, 164u8, 1u8, 12u8, 216u8, 83u8, 20u8, 226u8, 254u8, 183u8,
+                        ],
+                    )
                 }
                 #[doc = " Randomness under construction."]
                 #[doc = ""]
@@ -2736,146 +1571,100 @@ pub mod api {
                 #[doc = " epoch."]
                 pub fn segment_index(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<SegmentIndex>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                128u8, 45u8, 87u8, 58u8, 174u8, 152u8, 241u8, 156u8, 56u8, 192u8,
-                                19u8, 45u8, 75u8, 160u8, 35u8, 253u8, 145u8, 11u8, 178u8, 81u8,
-                                114u8, 117u8, 112u8, 107u8, 163u8, 208u8, 240u8, 151u8, 102u8,
-                                176u8, 246u8, 5u8,
-                            ]
-                        {
-                            let entry = SegmentIndex;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "SegmentIndex",
+                        vec![],
+                        [
+                            128u8, 45u8, 87u8, 58u8, 174u8, 152u8, 241u8, 156u8, 56u8, 192u8, 19u8,
+                            45u8, 75u8, 160u8, 35u8, 253u8, 145u8, 11u8, 178u8, 81u8, 114u8, 117u8,
+                            112u8, 107u8, 163u8, 208u8, 240u8, 151u8, 102u8, 176u8, 246u8, 5u8,
+                        ],
+                    )
                 }
                 #[doc = " TWOX-NOTE: `SegmentIndex` is an increasing integer, so this is okay."]
                 pub fn under_construction(
                     &self,
-                    _0: &'a ::core::primitive::u32,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        runtime_types::sp_runtime::bounded::bounded_vec::BoundedVec<
+                    _0: impl ::std::borrow::Borrow<::core::primitive::u32>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_core::bounded::bounded_vec::BoundedVec<
                             [::core::primitive::u8; 32usize],
                         >,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<UnderConstruction>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                12u8, 167u8, 30u8, 96u8, 161u8, 63u8, 210u8, 63u8, 91u8, 199u8,
-                                188u8, 78u8, 254u8, 255u8, 253u8, 202u8, 203u8, 26u8, 4u8, 105u8,
-                                76u8, 125u8, 191u8, 245u8, 32u8, 97u8, 127u8, 129u8, 167u8, 80u8,
-                                210u8, 123u8,
-                            ]
-                        {
-                            let entry = UnderConstruction(_0);
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "UnderConstruction",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Twox64Concat,
+                        )],
+                        [
+                            180u8, 4u8, 149u8, 245u8, 231u8, 92u8, 99u8, 170u8, 254u8, 172u8,
+                            182u8, 3u8, 152u8, 156u8, 132u8, 196u8, 140u8, 97u8, 7u8, 84u8, 220u8,
+                            89u8, 195u8, 177u8, 235u8, 51u8, 98u8, 144u8, 73u8, 238u8, 59u8, 164u8,
+                        ],
+                    )
                 }
                 #[doc = " TWOX-NOTE: `SegmentIndex` is an increasing integer, so this is okay."]
-                pub fn under_construction_iter(
+                pub fn under_construction_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, UnderConstruction<'a>>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_core::bounded::bounded_vec::BoundedVec<
+                            [::core::primitive::u8; 32usize],
+                        >,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<UnderConstruction>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                12u8, 167u8, 30u8, 96u8, 161u8, 63u8, 210u8, 63u8, 91u8, 199u8,
-                                188u8, 78u8, 254u8, 255u8, 253u8, 202u8, 203u8, 26u8, 4u8, 105u8,
-                                76u8, 125u8, 191u8, 245u8, 32u8, 97u8, 127u8, 129u8, 167u8, 80u8,
-                                210u8, 123u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    (),
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "UnderConstruction",
+                        Vec::new(),
+                        [
+                            180u8, 4u8, 149u8, 245u8, 231u8, 92u8, 99u8, 170u8, 254u8, 172u8,
+                            182u8, 3u8, 152u8, 156u8, 132u8, 196u8, 140u8, 97u8, 7u8, 84u8, 220u8,
+                            89u8, 195u8, 177u8, 235u8, 51u8, 98u8, 144u8, 73u8, 238u8, 59u8, 164u8,
+                        ],
+                    )
                 }
                 #[doc = " Temporary value (cleared at block finalization) which is `Some`"]
                 #[doc = " if per-block initialization has already been called for current block."]
                 pub fn initialized(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
                         ::core::option::Option<
-                            ::core::option::Option<
-                                runtime_types::sp_consensus_babe::digests::PreDigest,
-                            >,
+                            runtime_types::sp_consensus_babe::digests::PreDigest,
                         >,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Initialized>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                174u8, 23u8, 254u8, 52u8, 114u8, 235u8, 65u8, 46u8, 39u8, 97u8,
-                                238u8, 243u8, 237u8, 138u8, 142u8, 85u8, 114u8, 69u8, 58u8, 172u8,
-                                7u8, 238u8, 110u8, 153u8, 22u8, 122u8, 117u8, 149u8, 113u8, 221u8,
-                                127u8, 225u8,
-                            ]
-                        {
-                            let entry = Initialized;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "Initialized",
+                        vec![],
+                        [
+                            142u8, 101u8, 250u8, 113u8, 93u8, 201u8, 157u8, 18u8, 166u8, 153u8,
+                            59u8, 197u8, 107u8, 247u8, 124u8, 110u8, 202u8, 67u8, 62u8, 57u8,
+                            186u8, 134u8, 49u8, 182u8, 149u8, 44u8, 255u8, 85u8, 87u8, 177u8,
+                            149u8, 121u8,
+                        ],
+                    )
                 }
                 #[doc = " This field should always be populated during block processing unless"]
                 #[doc = " secondary plain slots are enabled (which don't contain a VRF output)."]
@@ -2883,37 +1672,25 @@ pub mod api {
                 #[doc = " It is set in `on_finalize`, before it will contain the value from the last block."]
                 pub fn author_vrf_randomness(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
                         ::core::option::Option<[::core::primitive::u8; 32usize]>,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<AuthorVrfRandomness>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                66u8, 235u8, 74u8, 252u8, 222u8, 135u8, 19u8, 28u8, 74u8, 191u8,
-                                170u8, 197u8, 207u8, 127u8, 77u8, 121u8, 138u8, 138u8, 110u8,
-                                187u8, 34u8, 14u8, 230u8, 43u8, 241u8, 241u8, 63u8, 163u8, 53u8,
-                                179u8, 250u8, 247u8,
-                            ]
-                        {
-                            let entry = AuthorVrfRandomness;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "AuthorVrfRandomness",
+                        vec![],
+                        [
+                            66u8, 235u8, 74u8, 252u8, 222u8, 135u8, 19u8, 28u8, 74u8, 191u8, 170u8,
+                            197u8, 207u8, 127u8, 77u8, 121u8, 138u8, 138u8, 110u8, 187u8, 34u8,
+                            14u8, 230u8, 43u8, 241u8, 241u8, 63u8, 163u8, 53u8, 179u8, 250u8,
+                            247u8,
+                        ],
+                    )
                 }
                 #[doc = " The block numbers when the last and current epoch have started, respectively `N-1` and"]
                 #[doc = " `N`."]
@@ -2922,37 +1699,26 @@ pub mod api {
                 #[doc = " slots, which may be skipped, the block numbers may not line up with the slot numbers."]
                 pub fn epoch_start(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        (::core::primitive::u32, ::core::primitive::u32),
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<EpochStart>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                196u8, 39u8, 241u8, 20u8, 150u8, 180u8, 136u8, 4u8, 195u8, 205u8,
-                                218u8, 10u8, 130u8, 131u8, 168u8, 243u8, 207u8, 249u8, 58u8, 195u8,
-                                177u8, 119u8, 110u8, 243u8, 241u8, 3u8, 245u8, 56u8, 157u8, 5u8,
-                                68u8, 60u8,
-                            ]
-                        {
-                            let entry = EpochStart;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<(
+                        ::core::primitive::u32,
+                        ::core::primitive::u32,
+                    )>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "EpochStart",
+                        vec![],
+                        [
+                            196u8, 39u8, 241u8, 20u8, 150u8, 180u8, 136u8, 4u8, 195u8, 205u8,
+                            218u8, 10u8, 130u8, 131u8, 168u8, 243u8, 207u8, 249u8, 58u8, 195u8,
+                            177u8, 119u8, 110u8, 243u8, 241u8, 3u8, 245u8, 56u8, 157u8, 5u8, 68u8,
+                            60u8,
+                        ],
+                    )
                 }
                 #[doc = " How late the current block is compared to its parent."]
                 #[doc = ""]
@@ -2961,146 +1727,96 @@ pub mod api {
                 #[doc = " execution context should always yield zero."]
                 pub fn lateness(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Lateness>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                229u8, 230u8, 224u8, 89u8, 49u8, 213u8, 198u8, 236u8, 144u8, 56u8,
-                                193u8, 234u8, 62u8, 242u8, 191u8, 199u8, 105u8, 131u8, 74u8, 63u8,
-                                75u8, 1u8, 210u8, 49u8, 3u8, 128u8, 18u8, 77u8, 219u8, 146u8, 60u8,
-                                88u8,
-                            ]
-                        {
-                            let entry = Lateness;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "Lateness",
+                        vec![],
+                        [
+                            229u8, 230u8, 224u8, 89u8, 49u8, 213u8, 198u8, 236u8, 144u8, 56u8,
+                            193u8, 234u8, 62u8, 242u8, 191u8, 199u8, 105u8, 131u8, 74u8, 63u8,
+                            75u8, 1u8, 210u8, 49u8, 3u8, 128u8, 18u8, 77u8, 219u8, 146u8, 60u8,
+                            88u8,
+                        ],
+                    )
                 }
                 #[doc = " The configuration for the current epoch. Should never be `None` as it is initialized in"]
                 #[doc = " genesis."]
                 pub fn epoch_config(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<
-                            runtime_types::sp_consensus_babe::BabeEpochConfiguration,
-                        >,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_consensus_babe::BabeEpochConfiguration,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<EpochConfig>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                169u8, 189u8, 214u8, 159u8, 181u8, 232u8, 243u8, 4u8, 113u8, 24u8,
-                                221u8, 229u8, 27u8, 35u8, 3u8, 121u8, 136u8, 88u8, 187u8, 193u8,
-                                207u8, 153u8, 223u8, 225u8, 166u8, 183u8, 53u8, 3u8, 162u8, 207u8,
-                                88u8, 133u8,
-                            ]
-                        {
-                            let entry = EpochConfig;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "EpochConfig",
+                        vec![],
+                        [
+                            41u8, 118u8, 141u8, 244u8, 72u8, 17u8, 125u8, 203u8, 43u8, 153u8,
+                            203u8, 119u8, 117u8, 223u8, 123u8, 133u8, 73u8, 235u8, 130u8, 21u8,
+                            160u8, 167u8, 16u8, 173u8, 177u8, 35u8, 117u8, 97u8, 149u8, 49u8,
+                            220u8, 24u8,
+                        ],
+                    )
                 }
                 #[doc = " The configuration for the next epoch, `None` if the config will not change"]
                 #[doc = " (you can fallback to `EpochConfig` instead in that case)."]
                 pub fn next_epoch_config(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<
-                            runtime_types::sp_consensus_babe::BabeEpochConfiguration,
-                        >,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_consensus_babe::BabeEpochConfiguration,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<NextEpochConfig>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                239u8, 125u8, 203u8, 223u8, 161u8, 107u8, 232u8, 54u8, 158u8,
-                                100u8, 244u8, 140u8, 119u8, 58u8, 253u8, 245u8, 73u8, 236u8, 50u8,
-                                67u8, 228u8, 162u8, 166u8, 168u8, 162u8, 152u8, 239u8, 246u8,
-                                153u8, 223u8, 109u8, 121u8,
-                            ]
-                        {
-                            let entry = NextEpochConfig;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Babe",
+                        "NextEpochConfig",
+                        vec![],
+                        [
+                            111u8, 182u8, 144u8, 180u8, 92u8, 146u8, 102u8, 249u8, 196u8, 229u8,
+                            226u8, 30u8, 25u8, 198u8, 133u8, 9u8, 136u8, 95u8, 11u8, 151u8, 139u8,
+                            156u8, 105u8, 228u8, 181u8, 12u8, 175u8, 148u8, 174u8, 33u8, 233u8,
+                            228u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod constants {
             use super::runtime_types;
-            pub struct ConstantsApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct ConstantsApi;
+            impl ConstantsApi {
                 #[doc = " The amount of time, in slots, that each epoch should last."]
                 #[doc = " NOTE: Currently it is not possible to change the epoch duration after"]
                 #[doc = " the chain has started. Attempting to do so will brick block production."]
                 pub fn epoch_duration(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Babe", "EpochDuration")?
-                        == [
-                            39u8, 145u8, 239u8, 15u8, 44u8, 200u8, 117u8, 2u8, 134u8, 209u8, 175u8,
-                            251u8, 113u8, 234u8, 139u8, 176u8, 188u8, 161u8, 4u8, 84u8, 128u8,
-                            62u8, 56u8, 236u8, 222u8, 126u8, 121u8, 163u8, 115u8, 168u8, 134u8,
-                            239u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Babe")?;
-                        let constant = pallet.constant("EpochDuration")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Babe",
+                        "EpochDuration",
+                        [
+                            128u8, 214u8, 205u8, 242u8, 181u8, 142u8, 124u8, 231u8, 190u8, 146u8,
+                            59u8, 226u8, 157u8, 101u8, 103u8, 117u8, 249u8, 65u8, 18u8, 191u8,
+                            103u8, 119u8, 53u8, 85u8, 81u8, 96u8, 220u8, 42u8, 184u8, 239u8, 42u8,
+                            246u8,
+                        ],
+                    )
                 }
                 #[doc = " The expected average block time at which BABE should be creating"]
                 #[doc = " blocks. Since BABE is probabilistic it is not trivial to figure out"]
@@ -3109,47 +1825,36 @@ pub mod api {
                 #[doc = " the probability of a slot being empty)."]
                 pub fn expected_block_time(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Babe", "ExpectedBlockTime")?
-                        == [
-                            139u8, 151u8, 129u8, 195u8, 148u8, 92u8, 49u8, 64u8, 34u8, 11u8, 237u8,
-                            189u8, 177u8, 91u8, 6u8, 253u8, 139u8, 120u8, 121u8, 176u8, 56u8,
-                            183u8, 49u8, 22u8, 45u8, 108u8, 30u8, 253u8, 190u8, 154u8, 72u8, 74u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Babe")?;
-                        let constant = pallet.constant("ExpectedBlockTime")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Babe",
+                        "ExpectedBlockTime",
+                        [
+                            128u8, 214u8, 205u8, 242u8, 181u8, 142u8, 124u8, 231u8, 190u8, 146u8,
+                            59u8, 226u8, 157u8, 101u8, 103u8, 117u8, 249u8, 65u8, 18u8, 191u8,
+                            103u8, 119u8, 53u8, 85u8, 81u8, 96u8, 220u8, 42u8, 184u8, 239u8, 42u8,
+                            246u8,
+                        ],
+                    )
                 }
                 #[doc = " Max number of authorities allowed"]
                 pub fn max_authorities(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Babe", "MaxAuthorities")?
-                        == [
-                            80u8, 201u8, 93u8, 114u8, 100u8, 205u8, 172u8, 38u8, 174u8, 71u8,
-                            187u8, 161u8, 148u8, 83u8, 7u8, 73u8, 176u8, 100u8, 128u8, 71u8, 233u8,
-                            163u8, 89u8, 171u8, 100u8, 247u8, 111u8, 44u8, 173u8, 82u8, 34u8,
-                            159u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Babe")?;
-                        let constant = pallet.constant("MaxAuthorities")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Babe",
+                        "MaxAuthorities",
+                        [
+                            98u8, 252u8, 116u8, 72u8, 26u8, 180u8, 225u8, 83u8, 200u8, 157u8,
+                            125u8, 151u8, 53u8, 76u8, 168u8, 26u8, 10u8, 9u8, 98u8, 68u8, 9u8,
+                            178u8, 197u8, 113u8, 31u8, 79u8, 200u8, 90u8, 203u8, 100u8, 41u8,
+                            145u8,
+                        ],
+                    )
                 }
             }
         }
@@ -3162,58 +1867,39 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ReportEquivocation {
                 pub equivocation_proof: ::std::boxed::Box<
                     runtime_types::sp_finality_grandpa::EquivocationProof<
-                        ::subxt::sp_core::H256,
+                        ::subxt::ext::sp_core::H256,
                         ::core::primitive::u32,
                     >,
                 >,
                 pub key_owner_proof: runtime_types::sp_core::Void,
             }
-            impl ::subxt::Call for ReportEquivocation {
-                const PALLET: &'static str = "Grandpa";
-                const FUNCTION: &'static str = "report_equivocation";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ReportEquivocationUnsigned {
                 pub equivocation_proof: ::std::boxed::Box<
                     runtime_types::sp_finality_grandpa::EquivocationProof<
-                        ::subxt::sp_core::H256,
+                        ::subxt::ext::sp_core::H256,
                         ::core::primitive::u32,
                     >,
                 >,
                 pub key_owner_proof: runtime_types::sp_core::Void,
             }
-            impl ::subxt::Call for ReportEquivocationUnsigned {
-                const PALLET: &'static str = "Grandpa";
-                const FUNCTION: &'static str = "report_equivocation_unsigned";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct NoteStalled {
                 pub delay: ::core::primitive::u32,
                 pub best_finalized_block_number: ::core::primitive::u32,
             }
-            impl ::subxt::Call for NoteStalled {
-                const PALLET: &'static str = "Grandpa";
-                const FUNCTION: &'static str = "note_stalled";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "Report voter equivocation/misbehavior. This method will verify the"]
                 #[doc = "equivocation proof and validate the given key ownership proof"]
                 #[doc = "against the extracted offender. If both are valid, the offence"]
@@ -3221,41 +1907,24 @@ pub mod api {
                 pub fn report_equivocation(
                     &self,
                     equivocation_proof: runtime_types::sp_finality_grandpa::EquivocationProof<
-                        ::subxt::sp_core::H256,
+                        ::subxt::ext::sp_core::H256,
                         ::core::primitive::u32,
                     >,
                     key_owner_proof: runtime_types::sp_core::Void,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        ReportEquivocation,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<ReportEquivocation>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            255u8, 59u8, 201u8, 1u8, 171u8, 157u8, 232u8, 62u8, 75u8, 212u8, 86u8,
-                            247u8, 132u8, 32u8, 114u8, 38u8, 121u8, 205u8, 61u8, 241u8, 16u8,
-                            241u8, 178u8, 191u8, 52u8, 33u8, 34u8, 110u8, 18u8, 6u8, 216u8, 130u8,
-                        ]
-                    {
-                        let call = ReportEquivocation {
+                ) -> ::subxt::tx::StaticTxPayload<ReportEquivocation> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Grandpa",
+                        "report_equivocation",
+                        ReportEquivocation {
                             equivocation_proof: ::std::boxed::Box::new(equivocation_proof),
                             key_owner_proof,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            99u8, 59u8, 234u8, 30u8, 150u8, 187u8, 133u8, 167u8, 92u8, 34u8, 231u8,
+                            208u8, 141u8, 40u8, 182u8, 200u8, 82u8, 198u8, 254u8, 56u8, 72u8, 77u8,
+                            41u8, 186u8, 80u8, 213u8, 78u8, 214u8, 215u8, 225u8, 187u8, 28u8,
+                        ],
+                    )
                 }
                 #[doc = "Report voter equivocation/misbehavior. This method will verify the"]
                 #[doc = "equivocation proof and validate the given key ownership proof"]
@@ -3269,42 +1938,24 @@ pub mod api {
                 pub fn report_equivocation_unsigned(
                     &self,
                     equivocation_proof: runtime_types::sp_finality_grandpa::EquivocationProof<
-                        ::subxt::sp_core::H256,
+                        ::subxt::ext::sp_core::H256,
                         ::core::primitive::u32,
                     >,
                     key_owner_proof: runtime_types::sp_core::Void,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        ReportEquivocationUnsigned,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<ReportEquivocationUnsigned>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            193u8, 179u8, 43u8, 34u8, 77u8, 194u8, 203u8, 216u8, 112u8, 101u8,
-                            70u8, 127u8, 136u8, 123u8, 163u8, 143u8, 83u8, 137u8, 142u8, 226u8,
-                            5u8, 100u8, 225u8, 32u8, 7u8, 195u8, 78u8, 76u8, 85u8, 114u8, 76u8,
-                            109u8,
-                        ]
-                    {
-                        let call = ReportEquivocationUnsigned {
+                ) -> ::subxt::tx::StaticTxPayload<ReportEquivocationUnsigned> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Grandpa",
+                        "report_equivocation_unsigned",
+                        ReportEquivocationUnsigned {
                             equivocation_proof: ::std::boxed::Box::new(equivocation_proof),
                             key_owner_proof,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            145u8, 84u8, 164u8, 4u8, 14u8, 22u8, 157u8, 100u8, 5u8, 21u8, 60u8,
+                            65u8, 183u8, 32u8, 212u8, 33u8, 183u8, 167u8, 54u8, 57u8, 204u8, 4u8,
+                            28u8, 71u8, 250u8, 151u8, 1u8, 206u8, 222u8, 102u8, 89u8, 55u8,
+                        ],
+                    )
                 }
                 #[doc = "Note that the current authority set of the GRANDPA finality gadget has stalled."]
                 #[doc = ""]
@@ -3322,45 +1973,31 @@ pub mod api {
                     &self,
                     delay: ::core::primitive::u32,
                     best_finalized_block_number: ::core::primitive::u32,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        NoteStalled,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<NoteStalled>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            227u8, 98u8, 249u8, 158u8, 96u8, 124u8, 72u8, 188u8, 27u8, 215u8, 73u8,
-                            62u8, 103u8, 79u8, 38u8, 48u8, 212u8, 88u8, 233u8, 187u8, 11u8, 95u8,
-                            39u8, 247u8, 55u8, 184u8, 228u8, 102u8, 13u8, 251u8, 52u8, 206u8,
-                        ]
-                    {
-                        let call = NoteStalled {
+                ) -> ::subxt::tx::StaticTxPayload<NoteStalled> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Grandpa",
+                        "note_stalled",
+                        NoteStalled {
                             delay,
                             best_finalized_block_number,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            197u8, 236u8, 137u8, 32u8, 46u8, 200u8, 144u8, 13u8, 89u8, 181u8,
+                            235u8, 73u8, 167u8, 131u8, 174u8, 93u8, 42u8, 136u8, 238u8, 59u8,
+                            129u8, 60u8, 83u8, 100u8, 5u8, 182u8, 99u8, 250u8, 145u8, 180u8, 1u8,
+                            199u8,
+                        ],
+                    )
                 }
             }
         }
-        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
         pub type Event = runtime_types::pallet_grandpa::pallet::Event;
         pub mod events {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "New authority set has been applied."]
             pub struct NewAuthorities {
                 pub authority_set: ::std::vec::Vec<(
@@ -3368,268 +2005,143 @@ pub mod api {
                     ::core::primitive::u64,
                 )>,
             }
-            impl ::subxt::Event for NewAuthorities {
+            impl ::subxt::events::StaticEvent for NewAuthorities {
                 const PALLET: &'static str = "Grandpa";
                 const EVENT: &'static str = "NewAuthorities";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Current authority set has been paused."]
             pub struct Paused;
-            impl ::subxt::Event for Paused {
+            impl ::subxt::events::StaticEvent for Paused {
                 const PALLET: &'static str = "Grandpa";
                 const EVENT: &'static str = "Paused";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Current authority set has been resumed."]
             pub struct Resumed;
-            impl ::subxt::Event for Resumed {
+            impl ::subxt::events::StaticEvent for Resumed {
                 const PALLET: &'static str = "Grandpa";
                 const EVENT: &'static str = "Resumed";
             }
         }
         pub mod storage {
             use super::runtime_types;
-            pub struct State;
-            impl ::subxt::StorageEntry for State {
-                const PALLET: &'static str = "Grandpa";
-                const STORAGE: &'static str = "State";
-                type Value = runtime_types::pallet_grandpa::StoredState<::core::primitive::u32>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct PendingChange;
-            impl ::subxt::StorageEntry for PendingChange {
-                const PALLET: &'static str = "Grandpa";
-                const STORAGE: &'static str = "PendingChange";
-                type Value =
-                    runtime_types::pallet_grandpa::StoredPendingChange<::core::primitive::u32>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct NextForced;
-            impl ::subxt::StorageEntry for NextForced {
-                const PALLET: &'static str = "Grandpa";
-                const STORAGE: &'static str = "NextForced";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Stalled;
-            impl ::subxt::StorageEntry for Stalled {
-                const PALLET: &'static str = "Grandpa";
-                const STORAGE: &'static str = "Stalled";
-                type Value = (::core::primitive::u32, ::core::primitive::u32);
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct CurrentSetId;
-            impl ::subxt::StorageEntry for CurrentSetId {
-                const PALLET: &'static str = "Grandpa";
-                const STORAGE: &'static str = "CurrentSetId";
-                type Value = ::core::primitive::u64;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct SetIdSession<'a>(pub &'a ::core::primitive::u64);
-            impl ::subxt::StorageEntry for SetIdSession<'_> {
-                const PALLET: &'static str = "Grandpa";
-                const STORAGE: &'static str = "SetIdSession";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Twox64Concat,
-                    )])
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 #[doc = " State of the current authority set."]
                 pub fn state(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
                         runtime_types::pallet_grandpa::StoredState<::core::primitive::u32>,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<State>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                159u8, 75u8, 78u8, 23u8, 98u8, 89u8, 239u8, 230u8, 192u8, 67u8,
-                                139u8, 222u8, 151u8, 237u8, 216u8, 20u8, 235u8, 247u8, 180u8, 24u8,
-                                64u8, 160u8, 58u8, 15u8, 205u8, 191u8, 120u8, 68u8, 32u8, 5u8,
-                                161u8, 106u8,
-                            ]
-                        {
-                            let entry = State;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Grandpa",
+                        "State",
+                        vec![],
+                        [
+                            211u8, 149u8, 114u8, 217u8, 206u8, 194u8, 115u8, 67u8, 12u8, 218u8,
+                            246u8, 213u8, 208u8, 29u8, 216u8, 104u8, 2u8, 39u8, 123u8, 172u8,
+                            252u8, 210u8, 52u8, 129u8, 147u8, 237u8, 244u8, 68u8, 252u8, 169u8,
+                            97u8, 148u8,
+                        ],
+                    )
                 }
                 #[doc = " Pending change: (signaled at, scheduled change)."]
                 pub fn pending_change(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<
-                            runtime_types::pallet_grandpa::StoredPendingChange<
-                                ::core::primitive::u32,
-                            >,
-                        >,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::pallet_grandpa::StoredPendingChange<::core::primitive::u32>,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<PendingChange>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                128u8, 176u8, 209u8, 41u8, 231u8, 111u8, 205u8, 198u8, 154u8, 44u8,
-                                228u8, 231u8, 44u8, 110u8, 74u8, 9u8, 31u8, 86u8, 128u8, 244u8,
-                                112u8, 21u8, 120u8, 176u8, 50u8, 213u8, 122u8, 46u8, 85u8, 255u8,
-                                40u8, 173u8,
-                            ]
-                        {
-                            let entry = PendingChange;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Grandpa",
+                        "PendingChange",
+                        vec![],
+                        [
+                            178u8, 24u8, 140u8, 7u8, 8u8, 196u8, 18u8, 58u8, 3u8, 226u8, 181u8,
+                            47u8, 155u8, 160u8, 70u8, 12u8, 75u8, 189u8, 38u8, 255u8, 104u8, 141u8,
+                            64u8, 34u8, 134u8, 201u8, 102u8, 21u8, 75u8, 81u8, 218u8, 60u8,
+                        ],
+                    )
                 }
                 #[doc = " next block number where we can force a change."]
                 pub fn next_forced(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::core::primitive::u32>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<NextForced>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                99u8, 43u8, 245u8, 201u8, 60u8, 9u8, 122u8, 99u8, 188u8, 29u8,
-                                67u8, 6u8, 193u8, 133u8, 179u8, 67u8, 202u8, 208u8, 62u8, 179u8,
-                                19u8, 169u8, 196u8, 119u8, 107u8, 75u8, 100u8, 3u8, 121u8, 18u8,
-                                80u8, 156u8,
-                            ]
-                        {
-                            let entry = NextForced;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Grandpa",
+                        "NextForced",
+                        vec![],
+                        [
+                            99u8, 43u8, 245u8, 201u8, 60u8, 9u8, 122u8, 99u8, 188u8, 29u8, 67u8,
+                            6u8, 193u8, 133u8, 179u8, 67u8, 202u8, 208u8, 62u8, 179u8, 19u8, 169u8,
+                            196u8, 119u8, 107u8, 75u8, 100u8, 3u8, 121u8, 18u8, 80u8, 156u8,
+                        ],
+                    )
                 }
                 #[doc = " `true` if we are currently stalled."]
                 pub fn stalled(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<(::core::primitive::u32, ::core::primitive::u32)>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Stalled>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                219u8, 8u8, 37u8, 78u8, 150u8, 55u8, 0u8, 57u8, 201u8, 170u8,
-                                186u8, 189u8, 56u8, 161u8, 44u8, 15u8, 53u8, 178u8, 224u8, 208u8,
-                                231u8, 109u8, 14u8, 209u8, 57u8, 205u8, 237u8, 153u8, 231u8, 156u8,
-                                24u8, 185u8,
-                            ]
-                        {
-                            let entry = Stalled;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<(
+                        ::core::primitive::u32,
+                        ::core::primitive::u32,
+                    )>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Grandpa",
+                        "Stalled",
+                        vec![],
+                        [
+                            219u8, 8u8, 37u8, 78u8, 150u8, 55u8, 0u8, 57u8, 201u8, 170u8, 186u8,
+                            189u8, 56u8, 161u8, 44u8, 15u8, 53u8, 178u8, 224u8, 208u8, 231u8,
+                            109u8, 14u8, 209u8, 57u8, 205u8, 237u8, 153u8, 231u8, 156u8, 24u8,
+                            185u8,
+                        ],
+                    )
                 }
                 #[doc = " The number of changes (both in terms of keys and underlying economic responsibilities)"]
                 #[doc = " in the \"set\" of Grandpa validators from genesis."]
                 pub fn current_set_id(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<CurrentSetId>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                129u8, 7u8, 62u8, 101u8, 199u8, 60u8, 56u8, 33u8, 54u8, 158u8,
-                                20u8, 178u8, 244u8, 145u8, 189u8, 197u8, 157u8, 163u8, 116u8, 36u8,
-                                105u8, 52u8, 149u8, 244u8, 108u8, 94u8, 109u8, 111u8, 244u8, 137u8,
-                                7u8, 108u8,
-                            ]
-                        {
-                            let entry = CurrentSetId;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Grandpa",
+                        "CurrentSetId",
+                        vec![],
+                        [
+                            129u8, 7u8, 62u8, 101u8, 199u8, 60u8, 56u8, 33u8, 54u8, 158u8, 20u8,
+                            178u8, 244u8, 145u8, 189u8, 197u8, 157u8, 163u8, 116u8, 36u8, 105u8,
+                            52u8, 149u8, 244u8, 108u8, 94u8, 109u8, 111u8, 244u8, 137u8, 7u8,
+                            108u8,
+                        ],
+                    )
                 }
                 #[doc = " A mapping from grandpa set ID to the index of the *most recent* session for which its"]
                 #[doc = " members were responsible."]
@@ -3637,109 +2149,74 @@ pub mod api {
                 #[doc = " TWOX-NOTE: `SetId` is not under user control."]
                 pub fn set_id_session(
                     &self,
-                    _0: &'a ::core::primitive::u64,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::core::primitive::u32>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<SetIdSession>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                91u8, 175u8, 145u8, 127u8, 242u8, 81u8, 13u8, 231u8, 110u8, 11u8,
-                                166u8, 169u8, 103u8, 146u8, 123u8, 133u8, 157u8, 15u8, 33u8, 234u8,
-                                108u8, 13u8, 88u8, 115u8, 254u8, 9u8, 145u8, 199u8, 102u8, 47u8,
-                                53u8, 134u8,
-                            ]
-                        {
-                            let entry = SetIdSession(_0);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    _0: impl ::std::borrow::Borrow<::core::primitive::u64>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Grandpa",
+                        "SetIdSession",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Twox64Concat,
+                        )],
+                        [
+                            91u8, 175u8, 145u8, 127u8, 242u8, 81u8, 13u8, 231u8, 110u8, 11u8,
+                            166u8, 169u8, 103u8, 146u8, 123u8, 133u8, 157u8, 15u8, 33u8, 234u8,
+                            108u8, 13u8, 88u8, 115u8, 254u8, 9u8, 145u8, 199u8, 102u8, 47u8, 53u8,
+                            134u8,
+                        ],
+                    )
                 }
                 #[doc = " A mapping from grandpa set ID to the index of the *most recent* session for which its"]
                 #[doc = " members were responsible."]
                 #[doc = ""]
                 #[doc = " TWOX-NOTE: `SetId` is not under user control."]
-                pub fn set_id_session_iter(
+                pub fn set_id_session_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, SetIdSession<'a>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<SetIdSession>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                91u8, 175u8, 145u8, 127u8, 242u8, 81u8, 13u8, 231u8, 110u8, 11u8,
-                                166u8, 169u8, 103u8, 146u8, 123u8, 133u8, 157u8, 15u8, 33u8, 234u8,
-                                108u8, 13u8, 88u8, 115u8, 254u8, 9u8, 145u8, 199u8, 102u8, 47u8,
-                                53u8, 134u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Grandpa",
+                        "SetIdSession",
+                        Vec::new(),
+                        [
+                            91u8, 175u8, 145u8, 127u8, 242u8, 81u8, 13u8, 231u8, 110u8, 11u8,
+                            166u8, 169u8, 103u8, 146u8, 123u8, 133u8, 157u8, 15u8, 33u8, 234u8,
+                            108u8, 13u8, 88u8, 115u8, 254u8, 9u8, 145u8, 199u8, 102u8, 47u8, 53u8,
+                            134u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod constants {
             use super::runtime_types;
-            pub struct ConstantsApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct ConstantsApi;
+            impl ConstantsApi {
                 #[doc = " Max Authorities in use"]
                 pub fn max_authorities(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Grandpa", "MaxAuthorities")?
-                        == [
-                            80u8, 201u8, 93u8, 114u8, 100u8, 205u8, 172u8, 38u8, 174u8, 71u8,
-                            187u8, 161u8, 148u8, 83u8, 7u8, 73u8, 176u8, 100u8, 128u8, 71u8, 233u8,
-                            163u8, 89u8, 171u8, 100u8, 247u8, 111u8, 44u8, 173u8, 82u8, 34u8,
-                            159u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Grandpa")?;
-                        let constant = pallet.constant("MaxAuthorities")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Grandpa",
+                        "MaxAuthorities",
+                        [
+                            98u8, 252u8, 116u8, 72u8, 26u8, 180u8, 225u8, 83u8, 200u8, 157u8,
+                            125u8, 151u8, 53u8, 76u8, 168u8, 26u8, 10u8, 9u8, 98u8, 68u8, 9u8,
+                            178u8, 197u8, 113u8, 31u8, 79u8, 200u8, 90u8, 203u8, 100u8, 41u8,
+                            145u8,
+                        ],
+                    )
                 }
             }
         }
@@ -3752,89 +2229,78 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct Transfer {
-                pub dest:
-                    ::subxt::sp_runtime::MultiAddress<::subxt::sp_core::crypto::AccountId32, ()>,
+                pub dest: ::subxt::ext::sp_runtime::MultiAddress<
+                    ::subxt::ext::sp_core::crypto::AccountId32,
+                    (),
+                >,
                 #[codec(compact)]
                 pub value: ::core::primitive::u128,
             }
-            impl ::subxt::Call for Transfer {
-                const PALLET: &'static str = "Balances";
-                const FUNCTION: &'static str = "transfer";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SetBalance {
-                pub who:
-                    ::subxt::sp_runtime::MultiAddress<::subxt::sp_core::crypto::AccountId32, ()>,
+                pub who: ::subxt::ext::sp_runtime::MultiAddress<
+                    ::subxt::ext::sp_core::crypto::AccountId32,
+                    (),
+                >,
                 #[codec(compact)]
                 pub new_free: ::core::primitive::u128,
                 #[codec(compact)]
                 pub new_reserved: ::core::primitive::u128,
             }
-            impl ::subxt::Call for SetBalance {
-                const PALLET: &'static str = "Balances";
-                const FUNCTION: &'static str = "set_balance";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ForceTransfer {
-                pub source:
-                    ::subxt::sp_runtime::MultiAddress<::subxt::sp_core::crypto::AccountId32, ()>,
-                pub dest:
-                    ::subxt::sp_runtime::MultiAddress<::subxt::sp_core::crypto::AccountId32, ()>,
+                pub source: ::subxt::ext::sp_runtime::MultiAddress<
+                    ::subxt::ext::sp_core::crypto::AccountId32,
+                    (),
+                >,
+                pub dest: ::subxt::ext::sp_runtime::MultiAddress<
+                    ::subxt::ext::sp_core::crypto::AccountId32,
+                    (),
+                >,
                 #[codec(compact)]
                 pub value: ::core::primitive::u128,
             }
-            impl ::subxt::Call for ForceTransfer {
-                const PALLET: &'static str = "Balances";
-                const FUNCTION: &'static str = "force_transfer";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct TransferKeepAlive {
-                pub dest:
-                    ::subxt::sp_runtime::MultiAddress<::subxt::sp_core::crypto::AccountId32, ()>,
+                pub dest: ::subxt::ext::sp_runtime::MultiAddress<
+                    ::subxt::ext::sp_core::crypto::AccountId32,
+                    (),
+                >,
                 #[codec(compact)]
                 pub value: ::core::primitive::u128,
             }
-            impl ::subxt::Call for TransferKeepAlive {
-                const PALLET: &'static str = "Balances";
-                const FUNCTION: &'static str = "transfer_keep_alive";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct TransferAll {
-                pub dest:
-                    ::subxt::sp_runtime::MultiAddress<::subxt::sp_core::crypto::AccountId32, ()>,
+                pub dest: ::subxt::ext::sp_runtime::MultiAddress<
+                    ::subxt::ext::sp_core::crypto::AccountId32,
+                    (),
+                >,
                 pub keep_alive: ::core::primitive::bool,
             }
-            impl ::subxt::Call for TransferAll {
-                const PALLET: &'static str = "Balances";
-                const FUNCTION: &'static str = "transfer_all";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ForceUnreserve {
-                pub who:
-                    ::subxt::sp_runtime::MultiAddress<::subxt::sp_core::crypto::AccountId32, ()>,
+                pub who: ::subxt::ext::sp_runtime::MultiAddress<
+                    ::subxt::ext::sp_core::crypto::AccountId32,
+                    (),
+                >,
                 pub amount: ::core::primitive::u128,
             }
-            impl ::subxt::Call for ForceUnreserve {
-                const PALLET: &'static str = "Balances";
-                const FUNCTION: &'static str = "force_unreserve";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "Transfer some liquid free balance to another account."]
                 #[doc = ""]
                 #[doc = "`transfer` will set the `FreeBalance` of the sender and receiver."]
@@ -3862,39 +2328,23 @@ pub mod api {
                 #[doc = "# </weight>"]
                 pub fn transfer(
                     &self,
-                    dest: ::subxt::sp_runtime::MultiAddress<
-                        ::subxt::sp_core::crypto::AccountId32,
+                    dest: ::subxt::ext::sp_runtime::MultiAddress<
+                        ::subxt::ext::sp_core::crypto::AccountId32,
                         (),
                     >,
                     value: ::core::primitive::u128,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        Transfer,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<Transfer>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            250u8, 8u8, 164u8, 186u8, 80u8, 220u8, 134u8, 247u8, 142u8, 121u8,
-                            34u8, 22u8, 169u8, 39u8, 6u8, 93u8, 72u8, 47u8, 44u8, 107u8, 9u8, 98u8,
-                            203u8, 190u8, 136u8, 55u8, 251u8, 78u8, 216u8, 150u8, 98u8, 118u8,
-                        ]
-                    {
-                        let call = Transfer { dest, value };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<Transfer> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Balances",
+                        "transfer",
+                        Transfer { dest, value },
+                        [
+                            111u8, 222u8, 32u8, 56u8, 171u8, 77u8, 252u8, 29u8, 194u8, 155u8,
+                            200u8, 192u8, 198u8, 81u8, 23u8, 115u8, 236u8, 91u8, 218u8, 114u8,
+                            107u8, 141u8, 138u8, 100u8, 237u8, 21u8, 58u8, 172u8, 3u8, 20u8, 216u8,
+                            38u8,
+                        ],
+                    )
                 }
                 #[doc = "Set the balances of a given account."]
                 #[doc = ""]
@@ -3906,44 +2356,28 @@ pub mod api {
                 #[doc = "The dispatch origin for this call is `root`."]
                 pub fn set_balance(
                     &self,
-                    who: ::subxt::sp_runtime::MultiAddress<
-                        ::subxt::sp_core::crypto::AccountId32,
+                    who: ::subxt::ext::sp_runtime::MultiAddress<
+                        ::subxt::ext::sp_core::crypto::AccountId32,
                         (),
                     >,
                     new_free: ::core::primitive::u128,
                     new_reserved: ::core::primitive::u128,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        SetBalance,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SetBalance>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            232u8, 6u8, 27u8, 131u8, 163u8, 72u8, 148u8, 197u8, 14u8, 239u8, 94u8,
-                            1u8, 32u8, 94u8, 17u8, 14u8, 123u8, 82u8, 39u8, 233u8, 77u8, 20u8,
-                            40u8, 139u8, 222u8, 137u8, 103u8, 18u8, 126u8, 63u8, 200u8, 149u8,
-                        ]
-                    {
-                        let call = SetBalance {
+                ) -> ::subxt::tx::StaticTxPayload<SetBalance> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Balances",
+                        "set_balance",
+                        SetBalance {
                             who,
                             new_free,
                             new_reserved,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            234u8, 215u8, 97u8, 98u8, 243u8, 199u8, 57u8, 76u8, 59u8, 161u8, 118u8,
+                            207u8, 34u8, 197u8, 198u8, 61u8, 231u8, 210u8, 169u8, 235u8, 150u8,
+                            137u8, 173u8, 49u8, 28u8, 77u8, 84u8, 149u8, 143u8, 210u8, 139u8,
+                            193u8,
+                        ],
+                    )
                 }
                 #[doc = "Exactly as `transfer`, except the origin must be root and the source account may be"]
                 #[doc = "specified."]
@@ -3953,48 +2387,31 @@ pub mod api {
                 #[doc = "# </weight>"]
                 pub fn force_transfer(
                     &self,
-                    source: ::subxt::sp_runtime::MultiAddress<
-                        ::subxt::sp_core::crypto::AccountId32,
+                    source: ::subxt::ext::sp_runtime::MultiAddress<
+                        ::subxt::ext::sp_core::crypto::AccountId32,
                         (),
                     >,
-                    dest: ::subxt::sp_runtime::MultiAddress<
-                        ::subxt::sp_core::crypto::AccountId32,
+                    dest: ::subxt::ext::sp_runtime::MultiAddress<
+                        ::subxt::ext::sp_core::crypto::AccountId32,
                         (),
                     >,
                     value: ::core::primitive::u128,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        ForceTransfer,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<ForceTransfer>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            120u8, 66u8, 111u8, 84u8, 176u8, 241u8, 214u8, 118u8, 219u8, 75u8,
-                            127u8, 222u8, 45u8, 33u8, 204u8, 147u8, 126u8, 214u8, 101u8, 190u8,
-                            37u8, 37u8, 159u8, 166u8, 61u8, 143u8, 22u8, 32u8, 15u8, 83u8, 221u8,
-                            230u8,
-                        ]
-                    {
-                        let call = ForceTransfer {
+                ) -> ::subxt::tx::StaticTxPayload<ForceTransfer> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Balances",
+                        "force_transfer",
+                        ForceTransfer {
                             source,
                             dest,
                             value,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            79u8, 174u8, 212u8, 108u8, 184u8, 33u8, 170u8, 29u8, 232u8, 254u8,
+                            195u8, 218u8, 221u8, 134u8, 57u8, 99u8, 6u8, 70u8, 181u8, 227u8, 56u8,
+                            239u8, 243u8, 158u8, 157u8, 245u8, 36u8, 162u8, 11u8, 237u8, 147u8,
+                            15u8,
+                        ],
+                    )
                 }
                 #[doc = "Same as the [`transfer`] call, but with a check that the transfer will not kill the"]
                 #[doc = "origin account."]
@@ -4004,39 +2421,23 @@ pub mod api {
                 #[doc = "[`transfer`]: struct.Pallet.html#method.transfer"]
                 pub fn transfer_keep_alive(
                     &self,
-                    dest: ::subxt::sp_runtime::MultiAddress<
-                        ::subxt::sp_core::crypto::AccountId32,
+                    dest: ::subxt::ext::sp_runtime::MultiAddress<
+                        ::subxt::ext::sp_core::crypto::AccountId32,
                         (),
                     >,
                     value: ::core::primitive::u128,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        TransferKeepAlive,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<TransferKeepAlive>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            111u8, 233u8, 125u8, 71u8, 223u8, 141u8, 112u8, 94u8, 157u8, 11u8,
-                            88u8, 7u8, 239u8, 145u8, 247u8, 183u8, 245u8, 87u8, 157u8, 35u8, 49u8,
-                            91u8, 54u8, 103u8, 101u8, 76u8, 110u8, 94u8, 81u8, 170u8, 153u8, 209u8,
-                        ]
-                    {
-                        let call = TransferKeepAlive { dest, value };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<TransferKeepAlive> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Balances",
+                        "transfer_keep_alive",
+                        TransferKeepAlive { dest, value },
+                        [
+                            112u8, 179u8, 75u8, 168u8, 193u8, 221u8, 9u8, 82u8, 190u8, 113u8,
+                            253u8, 13u8, 130u8, 134u8, 170u8, 216u8, 136u8, 111u8, 242u8, 220u8,
+                            202u8, 112u8, 47u8, 79u8, 73u8, 244u8, 226u8, 59u8, 240u8, 188u8,
+                            210u8, 208u8,
+                        ],
+                    )
                 }
                 #[doc = "Transfer the entire transferable balance from the caller account."]
                 #[doc = ""]
@@ -4057,295 +2458,204 @@ pub mod api {
                 #[doc = "  #</weight>"]
                 pub fn transfer_all(
                     &self,
-                    dest: ::subxt::sp_runtime::MultiAddress<
-                        ::subxt::sp_core::crypto::AccountId32,
+                    dest: ::subxt::ext::sp_runtime::MultiAddress<
+                        ::subxt::ext::sp_core::crypto::AccountId32,
                         (),
                     >,
                     keep_alive: ::core::primitive::bool,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        TransferAll,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<TransferAll>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            240u8, 165u8, 185u8, 144u8, 24u8, 149u8, 15u8, 46u8, 60u8, 147u8, 19u8,
-                            187u8, 96u8, 24u8, 150u8, 53u8, 151u8, 232u8, 200u8, 164u8, 176u8,
-                            167u8, 8u8, 23u8, 63u8, 135u8, 68u8, 110u8, 5u8, 21u8, 35u8, 78u8,
-                        ]
-                    {
-                        let call = TransferAll { dest, keep_alive };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<TransferAll> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Balances",
+                        "transfer_all",
+                        TransferAll { dest, keep_alive },
+                        [
+                            46u8, 129u8, 29u8, 177u8, 221u8, 107u8, 245u8, 69u8, 238u8, 126u8,
+                            145u8, 26u8, 219u8, 208u8, 14u8, 80u8, 149u8, 1u8, 214u8, 63u8, 67u8,
+                            201u8, 144u8, 45u8, 129u8, 145u8, 174u8, 71u8, 238u8, 113u8, 208u8,
+                            34u8,
+                        ],
+                    )
                 }
                 #[doc = "Unreserve some balance from a user by force."]
                 #[doc = ""]
                 #[doc = "Can only be called by ROOT."]
                 pub fn force_unreserve(
                     &self,
-                    who: ::subxt::sp_runtime::MultiAddress<
-                        ::subxt::sp_core::crypto::AccountId32,
+                    who: ::subxt::ext::sp_runtime::MultiAddress<
+                        ::subxt::ext::sp_core::crypto::AccountId32,
                         (),
                     >,
                     amount: ::core::primitive::u128,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        ForceUnreserve,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<ForceUnreserve>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            106u8, 42u8, 48u8, 136u8, 41u8, 155u8, 214u8, 112u8, 99u8, 122u8,
-                            202u8, 250u8, 95u8, 60u8, 182u8, 13u8, 25u8, 149u8, 212u8, 212u8,
-                            247u8, 191u8, 130u8, 95u8, 84u8, 252u8, 252u8, 197u8, 244u8, 149u8,
-                            103u8, 67u8,
-                        ]
-                    {
-                        let call = ForceUnreserve { who, amount };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<ForceUnreserve> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Balances",
+                        "force_unreserve",
+                        ForceUnreserve { who, amount },
+                        [
+                            160u8, 146u8, 137u8, 76u8, 157u8, 187u8, 66u8, 148u8, 207u8, 76u8,
+                            32u8, 254u8, 82u8, 215u8, 35u8, 161u8, 213u8, 52u8, 32u8, 98u8, 102u8,
+                            106u8, 234u8, 123u8, 6u8, 175u8, 184u8, 188u8, 174u8, 106u8, 176u8,
+                            78u8,
+                        ],
+                    )
                 }
             }
         }
-        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
         pub type Event = runtime_types::pallet_balances::pallet::Event;
         pub mod events {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "An account was created with some free balance."]
             pub struct Endowed {
-                pub account: ::subxt::sp_core::crypto::AccountId32,
+                pub account: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub free_balance: ::core::primitive::u128,
             }
-            impl ::subxt::Event for Endowed {
+            impl ::subxt::events::StaticEvent for Endowed {
                 const PALLET: &'static str = "Balances";
                 const EVENT: &'static str = "Endowed";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "An account was removed whose balance was non-zero but below ExistentialDeposit,"]
             #[doc = "resulting in an outright loss."]
             pub struct DustLost {
-                pub account: ::subxt::sp_core::crypto::AccountId32,
+                pub account: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub amount: ::core::primitive::u128,
             }
-            impl ::subxt::Event for DustLost {
+            impl ::subxt::events::StaticEvent for DustLost {
                 const PALLET: &'static str = "Balances";
                 const EVENT: &'static str = "DustLost";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Transfer succeeded."]
             pub struct Transfer {
-                pub from: ::subxt::sp_core::crypto::AccountId32,
-                pub to: ::subxt::sp_core::crypto::AccountId32,
+                pub from: ::subxt::ext::sp_core::crypto::AccountId32,
+                pub to: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub amount: ::core::primitive::u128,
             }
-            impl ::subxt::Event for Transfer {
+            impl ::subxt::events::StaticEvent for Transfer {
                 const PALLET: &'static str = "Balances";
                 const EVENT: &'static str = "Transfer";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "A balance was set by root."]
             pub struct BalanceSet {
-                pub who: ::subxt::sp_core::crypto::AccountId32,
+                pub who: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub free: ::core::primitive::u128,
                 pub reserved: ::core::primitive::u128,
             }
-            impl ::subxt::Event for BalanceSet {
+            impl ::subxt::events::StaticEvent for BalanceSet {
                 const PALLET: &'static str = "Balances";
                 const EVENT: &'static str = "BalanceSet";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Some balance was reserved (moved from free to reserved)."]
             pub struct Reserved {
-                pub who: ::subxt::sp_core::crypto::AccountId32,
+                pub who: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub amount: ::core::primitive::u128,
             }
-            impl ::subxt::Event for Reserved {
+            impl ::subxt::events::StaticEvent for Reserved {
                 const PALLET: &'static str = "Balances";
                 const EVENT: &'static str = "Reserved";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Some balance was unreserved (moved from reserved to free)."]
             pub struct Unreserved {
-                pub who: ::subxt::sp_core::crypto::AccountId32,
+                pub who: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub amount: ::core::primitive::u128,
             }
-            impl ::subxt::Event for Unreserved {
+            impl ::subxt::events::StaticEvent for Unreserved {
                 const PALLET: &'static str = "Balances";
                 const EVENT: &'static str = "Unreserved";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Some balance was moved from the reserve of the first account to the second account."]
             #[doc = "Final argument indicates the destination balance type."]
             pub struct ReserveRepatriated {
-                pub from: ::subxt::sp_core::crypto::AccountId32,
-                pub to: ::subxt::sp_core::crypto::AccountId32,
+                pub from: ::subxt::ext::sp_core::crypto::AccountId32,
+                pub to: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub amount: ::core::primitive::u128,
                 pub destination_status:
                     runtime_types::frame_support::traits::tokens::misc::BalanceStatus,
             }
-            impl ::subxt::Event for ReserveRepatriated {
+            impl ::subxt::events::StaticEvent for ReserveRepatriated {
                 const PALLET: &'static str = "Balances";
                 const EVENT: &'static str = "ReserveRepatriated";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Some amount was deposited (e.g. for transaction fees)."]
             pub struct Deposit {
-                pub who: ::subxt::sp_core::crypto::AccountId32,
+                pub who: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub amount: ::core::primitive::u128,
             }
-            impl ::subxt::Event for Deposit {
+            impl ::subxt::events::StaticEvent for Deposit {
                 const PALLET: &'static str = "Balances";
                 const EVENT: &'static str = "Deposit";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Some amount was withdrawn from the account (e.g. for transaction fees)."]
             pub struct Withdraw {
-                pub who: ::subxt::sp_core::crypto::AccountId32,
+                pub who: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub amount: ::core::primitive::u128,
             }
-            impl ::subxt::Event for Withdraw {
+            impl ::subxt::events::StaticEvent for Withdraw {
                 const PALLET: &'static str = "Balances";
                 const EVENT: &'static str = "Withdraw";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Some amount was removed from the account (e.g. for misbehavior)."]
             pub struct Slashed {
-                pub who: ::subxt::sp_core::crypto::AccountId32,
+                pub who: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub amount: ::core::primitive::u128,
             }
-            impl ::subxt::Event for Slashed {
+            impl ::subxt::events::StaticEvent for Slashed {
                 const PALLET: &'static str = "Balances";
                 const EVENT: &'static str = "Slashed";
             }
         }
         pub mod storage {
             use super::runtime_types;
-            pub struct TotalIssuance;
-            impl ::subxt::StorageEntry for TotalIssuance {
-                const PALLET: &'static str = "Balances";
-                const STORAGE: &'static str = "TotalIssuance";
-                type Value = ::core::primitive::u128;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Account<'a>(pub &'a ::subxt::sp_core::crypto::AccountId32);
-            impl ::subxt::StorageEntry for Account<'_> {
-                const PALLET: &'static str = "Balances";
-                const STORAGE: &'static str = "Account";
-                type Value = runtime_types::pallet_balances::AccountData<::core::primitive::u128>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Blake2_128Concat,
-                    )])
-                }
-            }
-            pub struct Locks<'a>(pub &'a ::subxt::sp_core::crypto::AccountId32);
-            impl ::subxt::StorageEntry for Locks<'_> {
-                const PALLET: &'static str = "Balances";
-                const STORAGE: &'static str = "Locks";
-                type Value = runtime_types::sp_runtime::bounded::weak_bounded_vec::WeakBoundedVec<
-                    runtime_types::pallet_balances::BalanceLock<::core::primitive::u128>,
-                >;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Blake2_128Concat,
-                    )])
-                }
-            }
-            pub struct Reserves<'a>(pub &'a ::subxt::sp_core::crypto::AccountId32);
-            impl ::subxt::StorageEntry for Reserves<'_> {
-                const PALLET: &'static str = "Balances";
-                const STORAGE: &'static str = "Reserves";
-                type Value = runtime_types::sp_runtime::bounded::bounded_vec::BoundedVec<
-                    runtime_types::pallet_balances::ReserveData<
-                        [::core::primitive::u8; 8usize],
-                        ::core::primitive::u128,
-                    >,
-                >;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Blake2_128Concat,
-                    )])
-                }
-            }
-            pub struct StorageVersion;
-            impl ::subxt::StorageEntry for StorageVersion {
-                const PALLET: &'static str = "Balances";
-                const STORAGE: &'static str = "StorageVersion";
-                type Value = runtime_types::pallet_balances::Releases;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 #[doc = " The total units issued in the system."]
                 pub fn total_issuance(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::u128, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<TotalIssuance>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                1u8, 206u8, 252u8, 237u8, 6u8, 30u8, 20u8, 232u8, 164u8, 115u8,
-                                51u8, 156u8, 156u8, 206u8, 241u8, 187u8, 44u8, 84u8, 25u8, 164u8,
-                                235u8, 20u8, 86u8, 242u8, 124u8, 23u8, 28u8, 140u8, 26u8, 73u8,
-                                231u8, 51u8,
-                            ]
-                        {
-                            let entry = TotalIssuance;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u128>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Balances",
+                        "TotalIssuance",
+                        vec![],
+                        [
+                            1u8, 206u8, 252u8, 237u8, 6u8, 30u8, 20u8, 232u8, 164u8, 115u8, 51u8,
+                            156u8, 156u8, 206u8, 241u8, 187u8, 44u8, 84u8, 25u8, 164u8, 235u8,
+                            20u8, 86u8, 242u8, 124u8, 23u8, 28u8, 140u8, 26u8, 73u8, 231u8, 51u8,
+                        ],
+                    )
                 }
                 #[doc = " The Balances pallet example of storing the balance of an account."]
                 #[doc = ""]
@@ -4373,38 +2683,28 @@ pub mod api {
                 #[doc = " NOTE: This is only used in the case that this pallet is used to store balances."]
                 pub fn account(
                     &self,
-                    _0: &'a ::subxt::sp_core::crypto::AccountId32,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
+                    _0: impl ::std::borrow::Borrow<::subxt::ext::sp_core::crypto::AccountId32>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
                         runtime_types::pallet_balances::AccountData<::core::primitive::u128>,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Account>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                129u8, 169u8, 171u8, 206u8, 229u8, 178u8, 69u8, 118u8, 199u8, 64u8,
-                                254u8, 67u8, 16u8, 154u8, 160u8, 197u8, 177u8, 161u8, 148u8, 199u8,
-                                78u8, 219u8, 187u8, 83u8, 99u8, 110u8, 207u8, 252u8, 243u8, 39u8,
-                                46u8, 106u8,
-                            ]
-                        {
-                            let entry = Account(_0);
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Balances",
+                        "Account",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Blake2_128Concat,
+                        )],
+                        [
+                            246u8, 154u8, 253u8, 71u8, 192u8, 192u8, 192u8, 236u8, 128u8, 80u8,
+                            40u8, 252u8, 201u8, 43u8, 3u8, 131u8, 19u8, 49u8, 141u8, 240u8, 172u8,
+                            217u8, 215u8, 109u8, 87u8, 135u8, 248u8, 57u8, 98u8, 185u8, 22u8, 4u8,
+                        ],
+                    )
                 }
                 #[doc = " The Balances pallet example of storing the balance of an account."]
                 #[doc = ""]
@@ -4430,303 +2730,218 @@ pub mod api {
                 #[doc = " `frame_system` data alongside the account data contrary to storing account balances in the"]
                 #[doc = " `Balances` pallet, which uses a `StorageMap` to store balances data only."]
                 #[doc = " NOTE: This is only used in the case that this pallet is used to store balances."]
-                pub fn account_iter(
+                pub fn account_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, Account<'a>>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::pallet_balances::AccountData<::core::primitive::u128>,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Account>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                129u8, 169u8, 171u8, 206u8, 229u8, 178u8, 69u8, 118u8, 199u8, 64u8,
-                                254u8, 67u8, 16u8, 154u8, 160u8, 197u8, 177u8, 161u8, 148u8, 199u8,
-                                78u8, 219u8, 187u8, 83u8, 99u8, 110u8, 207u8, 252u8, 243u8, 39u8,
-                                46u8, 106u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    (),
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Balances",
+                        "Account",
+                        Vec::new(),
+                        [
+                            246u8, 154u8, 253u8, 71u8, 192u8, 192u8, 192u8, 236u8, 128u8, 80u8,
+                            40u8, 252u8, 201u8, 43u8, 3u8, 131u8, 19u8, 49u8, 141u8, 240u8, 172u8,
+                            217u8, 215u8, 109u8, 87u8, 135u8, 248u8, 57u8, 98u8, 185u8, 22u8, 4u8,
+                        ],
+                    )
                 }
                 #[doc = " Any liquidity locks on some account balances."]
                 #[doc = " NOTE: Should only be accessed when setting, changing and freeing a lock."]
                 pub fn locks(
                     &self,
-                    _0: &'a ::subxt::sp_core::crypto::AccountId32,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        runtime_types::sp_runtime::bounded::weak_bounded_vec::WeakBoundedVec<
+                    _0: impl ::std::borrow::Borrow<::subxt::ext::sp_core::crypto::AccountId32>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_core::bounded::weak_bounded_vec::WeakBoundedVec<
                             runtime_types::pallet_balances::BalanceLock<::core::primitive::u128>,
                         >,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Locks>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                31u8, 76u8, 213u8, 60u8, 86u8, 11u8, 155u8, 151u8, 33u8, 212u8,
-                                74u8, 89u8, 174u8, 74u8, 195u8, 107u8, 29u8, 163u8, 178u8, 34u8,
-                                209u8, 8u8, 201u8, 237u8, 77u8, 99u8, 205u8, 212u8, 236u8, 132u8,
-                                2u8, 252u8,
-                            ]
-                        {
-                            let entry = Locks(_0);
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Balances",
+                        "Locks",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Blake2_128Concat,
+                        )],
+                        [
+                            216u8, 253u8, 87u8, 73u8, 24u8, 218u8, 35u8, 0u8, 244u8, 134u8, 195u8,
+                            58u8, 255u8, 64u8, 153u8, 212u8, 210u8, 232u8, 4u8, 122u8, 90u8, 212u8,
+                            136u8, 14u8, 127u8, 232u8, 8u8, 192u8, 40u8, 233u8, 18u8, 250u8,
+                        ],
+                    )
                 }
                 #[doc = " Any liquidity locks on some account balances."]
                 #[doc = " NOTE: Should only be accessed when setting, changing and freeing a lock."]
-                pub fn locks_iter(
+                pub fn locks_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, Locks<'a>>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_core::bounded::weak_bounded_vec::WeakBoundedVec<
+                            runtime_types::pallet_balances::BalanceLock<::core::primitive::u128>,
+                        >,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Locks>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                31u8, 76u8, 213u8, 60u8, 86u8, 11u8, 155u8, 151u8, 33u8, 212u8,
-                                74u8, 89u8, 174u8, 74u8, 195u8, 107u8, 29u8, 163u8, 178u8, 34u8,
-                                209u8, 8u8, 201u8, 237u8, 77u8, 99u8, 205u8, 212u8, 236u8, 132u8,
-                                2u8, 252u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    (),
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Balances",
+                        "Locks",
+                        Vec::new(),
+                        [
+                            216u8, 253u8, 87u8, 73u8, 24u8, 218u8, 35u8, 0u8, 244u8, 134u8, 195u8,
+                            58u8, 255u8, 64u8, 153u8, 212u8, 210u8, 232u8, 4u8, 122u8, 90u8, 212u8,
+                            136u8, 14u8, 127u8, 232u8, 8u8, 192u8, 40u8, 233u8, 18u8, 250u8,
+                        ],
+                    )
                 }
                 #[doc = " Named reserves on some account balances."]
                 pub fn reserves(
                     &self,
-                    _0: &'a ::subxt::sp_core::crypto::AccountId32,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        runtime_types::sp_runtime::bounded::bounded_vec::BoundedVec<
+                    _0: impl ::std::borrow::Borrow<::subxt::ext::sp_core::crypto::AccountId32>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_core::bounded::bounded_vec::BoundedVec<
                             runtime_types::pallet_balances::ReserveData<
                                 [::core::primitive::u8; 8usize],
                                 ::core::primitive::u128,
                             >,
                         >,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Reserves>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                103u8, 6u8, 69u8, 151u8, 81u8, 40u8, 146u8, 113u8, 56u8, 239u8,
-                                104u8, 31u8, 168u8, 242u8, 141u8, 121u8, 213u8, 213u8, 114u8, 63u8,
-                                62u8, 47u8, 91u8, 119u8, 57u8, 91u8, 95u8, 81u8, 19u8, 208u8, 59u8,
-                                146u8,
-                            ]
-                        {
-                            let entry = Reserves(_0);
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Balances",
+                        "Reserves",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Blake2_128Concat,
+                        )],
+                        [
+                            17u8, 32u8, 191u8, 46u8, 76u8, 220u8, 101u8, 100u8, 42u8, 250u8, 128u8,
+                            167u8, 117u8, 44u8, 85u8, 96u8, 105u8, 216u8, 16u8, 147u8, 74u8, 55u8,
+                            183u8, 94u8, 160u8, 177u8, 26u8, 187u8, 71u8, 197u8, 187u8, 163u8,
+                        ],
+                    )
                 }
                 #[doc = " Named reserves on some account balances."]
-                pub fn reserves_iter(
+                pub fn reserves_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, Reserves<'a>>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::sp_core::bounded::bounded_vec::BoundedVec<
+                            runtime_types::pallet_balances::ReserveData<
+                                [::core::primitive::u8; 8usize],
+                                ::core::primitive::u128,
+                            >,
+                        >,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Reserves>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                103u8, 6u8, 69u8, 151u8, 81u8, 40u8, 146u8, 113u8, 56u8, 239u8,
-                                104u8, 31u8, 168u8, 242u8, 141u8, 121u8, 213u8, 213u8, 114u8, 63u8,
-                                62u8, 47u8, 91u8, 119u8, 57u8, 91u8, 95u8, 81u8, 19u8, 208u8, 59u8,
-                                146u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    (),
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Balances",
+                        "Reserves",
+                        Vec::new(),
+                        [
+                            17u8, 32u8, 191u8, 46u8, 76u8, 220u8, 101u8, 100u8, 42u8, 250u8, 128u8,
+                            167u8, 117u8, 44u8, 85u8, 96u8, 105u8, 216u8, 16u8, 147u8, 74u8, 55u8,
+                            183u8, 94u8, 160u8, 177u8, 26u8, 187u8, 71u8, 197u8, 187u8, 163u8,
+                        ],
+                    )
                 }
                 #[doc = " Storage version of the pallet."]
                 #[doc = ""]
                 #[doc = " This is set to v2.0.0 for new networks."]
                 pub fn storage_version(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        runtime_types::pallet_balances::Releases,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<StorageVersion>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                135u8, 96u8, 28u8, 234u8, 124u8, 212u8, 56u8, 140u8, 40u8, 101u8,
-                                235u8, 128u8, 136u8, 221u8, 182u8, 81u8, 17u8, 9u8, 184u8, 228u8,
-                                174u8, 165u8, 200u8, 162u8, 214u8, 178u8, 227u8, 72u8, 34u8, 5u8,
-                                173u8, 96u8,
-                            ]
-                        {
-                            let entry = StorageVersion;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::pallet_balances::Releases>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Balances",
+                        "StorageVersion",
+                        vec![],
+                        [
+                            135u8, 96u8, 28u8, 234u8, 124u8, 212u8, 56u8, 140u8, 40u8, 101u8,
+                            235u8, 128u8, 136u8, 221u8, 182u8, 81u8, 17u8, 9u8, 184u8, 228u8,
+                            174u8, 165u8, 200u8, 162u8, 214u8, 178u8, 227u8, 72u8, 34u8, 5u8,
+                            173u8, 96u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod constants {
             use super::runtime_types;
-            pub struct ConstantsApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct ConstantsApi;
+            impl ConstantsApi {
                 #[doc = " The minimum amount required to keep an account open."]
                 pub fn existential_deposit(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u128, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Balances", "ExistentialDeposit")?
-                        == [
-                            206u8, 122u8, 40u8, 104u8, 118u8, 1u8, 145u8, 94u8, 87u8, 187u8, 206u8,
-                            187u8, 221u8, 67u8, 67u8, 160u8, 167u8, 24u8, 24u8, 132u8, 126u8, 27u8,
-                            134u8, 98u8, 118u8, 35u8, 196u8, 219u8, 25u8, 123u8, 34u8, 37u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Balances")?;
-                        let constant = pallet.constant("ExistentialDeposit")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u128>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Balances",
+                        "ExistentialDeposit",
+                        [
+                            84u8, 157u8, 140u8, 4u8, 93u8, 57u8, 29u8, 133u8, 105u8, 200u8, 214u8,
+                            27u8, 144u8, 208u8, 218u8, 160u8, 130u8, 109u8, 101u8, 54u8, 210u8,
+                            136u8, 71u8, 63u8, 49u8, 237u8, 234u8, 15u8, 178u8, 98u8, 148u8, 156u8,
+                        ],
+                    )
                 }
                 #[doc = " The maximum number of locks that should exist on an account."]
                 #[doc = " Not strictly enforced, but used for weight estimation."]
                 pub fn max_locks(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Balances", "MaxLocks")?
-                        == [
-                            250u8, 58u8, 19u8, 15u8, 35u8, 113u8, 227u8, 89u8, 39u8, 75u8, 21u8,
-                            108u8, 202u8, 32u8, 163u8, 167u8, 207u8, 233u8, 69u8, 151u8, 53u8,
-                            164u8, 230u8, 16u8, 14u8, 22u8, 172u8, 46u8, 36u8, 216u8, 29u8, 1u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Balances")?;
-                        let constant = pallet.constant("MaxLocks")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Balances",
+                        "MaxLocks",
+                        [
+                            98u8, 252u8, 116u8, 72u8, 26u8, 180u8, 225u8, 83u8, 200u8, 157u8,
+                            125u8, 151u8, 53u8, 76u8, 168u8, 26u8, 10u8, 9u8, 98u8, 68u8, 9u8,
+                            178u8, 197u8, 113u8, 31u8, 79u8, 200u8, 90u8, 203u8, 100u8, 41u8,
+                            145u8,
+                        ],
+                    )
                 }
                 #[doc = " The maximum number of named reserves that can exist on an account."]
                 pub fn max_reserves(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Balances", "MaxReserves")?
-                        == [
-                            95u8, 163u8, 254u8, 186u8, 158u8, 222u8, 45u8, 163u8, 130u8, 111u8,
-                            59u8, 232u8, 163u8, 210u8, 243u8, 112u8, 38u8, 103u8, 252u8, 120u8,
-                            141u8, 104u8, 20u8, 200u8, 128u8, 65u8, 56u8, 145u8, 247u8, 95u8, 82u8,
-                            42u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Balances")?;
-                        let constant = pallet.constant("MaxReserves")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Balances",
+                        "MaxReserves",
+                        [
+                            98u8, 252u8, 116u8, 72u8, 26u8, 180u8, 225u8, 83u8, 200u8, 157u8,
+                            125u8, 151u8, 53u8, 76u8, 168u8, 26u8, 10u8, 9u8, 98u8, 68u8, 9u8,
+                            178u8, 197u8, 113u8, 31u8, 79u8, 200u8, 90u8, 203u8, 100u8, 41u8,
+                            145u8,
+                        ],
+                    )
                 }
             }
         }
@@ -4734,129 +2949,78 @@ pub mod api {
     pub mod transaction_payment {
         use super::root_mod;
         use super::runtime_types;
-        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
         pub type Event = runtime_types::pallet_transaction_payment::pallet::Event;
         pub mod events {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "A transaction fee `actual_fee`, of which `tip` was added to the minimum inclusion fee,"]
             #[doc = "has been paid by `who`."]
             pub struct TransactionFeePaid {
-                pub who: ::subxt::sp_core::crypto::AccountId32,
+                pub who: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub actual_fee: ::core::primitive::u128,
                 pub tip: ::core::primitive::u128,
             }
-            impl ::subxt::Event for TransactionFeePaid {
+            impl ::subxt::events::StaticEvent for TransactionFeePaid {
                 const PALLET: &'static str = "TransactionPayment";
                 const EVENT: &'static str = "TransactionFeePaid";
             }
         }
         pub mod storage {
             use super::runtime_types;
-            pub struct NextFeeMultiplier;
-            impl ::subxt::StorageEntry for NextFeeMultiplier {
-                const PALLET: &'static str = "TransactionPayment";
-                const STORAGE: &'static str = "NextFeeMultiplier";
-                type Value = runtime_types::sp_arithmetic::fixed_point::FixedU128;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct StorageVersion;
-            impl ::subxt::StorageEntry for StorageVersion {
-                const PALLET: &'static str = "TransactionPayment";
-                const STORAGE: &'static str = "StorageVersion";
-                type Value = runtime_types::pallet_transaction_payment::Releases;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 pub fn next_fee_multiplier(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
                         runtime_types::sp_arithmetic::fixed_point::FixedU128,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<NextFeeMultiplier>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                232u8, 48u8, 68u8, 202u8, 209u8, 29u8, 249u8, 71u8, 0u8, 84u8,
-                                229u8, 250u8, 176u8, 203u8, 27u8, 26u8, 34u8, 55u8, 83u8, 183u8,
-                                224u8, 40u8, 62u8, 127u8, 131u8, 88u8, 128u8, 9u8, 56u8, 178u8,
-                                31u8, 183u8,
-                            ]
-                        {
-                            let entry = NextFeeMultiplier;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "TransactionPayment",
+                        "NextFeeMultiplier",
+                        vec![],
+                        [
+                            210u8, 0u8, 206u8, 165u8, 183u8, 10u8, 206u8, 52u8, 14u8, 90u8, 218u8,
+                            197u8, 189u8, 125u8, 113u8, 216u8, 52u8, 161u8, 45u8, 24u8, 245u8,
+                            237u8, 121u8, 41u8, 106u8, 29u8, 45u8, 129u8, 250u8, 203u8, 206u8,
+                            180u8,
+                        ],
+                    )
                 }
                 pub fn storage_version(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
                         runtime_types::pallet_transaction_payment::Releases,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<StorageVersion>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                219u8, 243u8, 82u8, 176u8, 65u8, 5u8, 132u8, 114u8, 8u8, 82u8,
-                                176u8, 200u8, 97u8, 150u8, 177u8, 164u8, 166u8, 11u8, 34u8, 12u8,
-                                12u8, 198u8, 58u8, 191u8, 186u8, 221u8, 221u8, 119u8, 181u8, 253u8,
-                                154u8, 228u8,
-                            ]
-                        {
-                            let entry = StorageVersion;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "TransactionPayment",
+                        "StorageVersion",
+                        vec![],
+                        [
+                            219u8, 243u8, 82u8, 176u8, 65u8, 5u8, 132u8, 114u8, 8u8, 82u8, 176u8,
+                            200u8, 97u8, 150u8, 177u8, 164u8, 166u8, 11u8, 34u8, 12u8, 12u8, 198u8,
+                            58u8, 191u8, 186u8, 221u8, 221u8, 119u8, 181u8, 253u8, 154u8, 228u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod constants {
             use super::runtime_types;
-            pub struct ConstantsApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct ConstantsApi;
+            impl ConstantsApi {
                 #[doc = " A fee mulitplier for `Operational` extrinsics to compute \"virtual tip\" to boost their"]
                 #[doc = " `priority`"]
                 #[doc = ""]
@@ -4880,25 +3044,19 @@ pub mod api {
                 #[doc = " transactions."]
                 pub fn operational_fee_multiplier(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u8, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("TransactionPayment", "OperationalFeeMultiplier")?
-                        == [
-                            161u8, 232u8, 150u8, 43u8, 106u8, 83u8, 56u8, 248u8, 54u8, 123u8,
-                            244u8, 73u8, 5u8, 49u8, 245u8, 150u8, 70u8, 92u8, 158u8, 207u8, 127u8,
-                            115u8, 211u8, 21u8, 24u8, 136u8, 89u8, 44u8, 151u8, 211u8, 235u8,
-                            196u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("TransactionPayment")?;
-                        let constant = pallet.constant("OperationalFeeMultiplier")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u8>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "TransactionPayment",
+                        "OperationalFeeMultiplier",
+                        [
+                            141u8, 130u8, 11u8, 35u8, 226u8, 114u8, 92u8, 179u8, 168u8, 110u8,
+                            28u8, 91u8, 221u8, 64u8, 4u8, 148u8, 201u8, 193u8, 185u8, 66u8, 226u8,
+                            114u8, 97u8, 79u8, 62u8, 212u8, 202u8, 114u8, 237u8, 228u8, 183u8,
+                            165u8,
+                        ],
+                    )
                 }
             }
         }
@@ -4911,36 +3069,19 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SetKeys {
                 pub keys: runtime_types::gear_runtime::SessionKeys,
                 pub proof: ::std::vec::Vec<::core::primitive::u8>,
             }
-            impl ::subxt::Call for SetKeys {
-                const PALLET: &'static str = "Session";
-                const FUNCTION: &'static str = "set_keys";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct PurgeKeys;
-            impl ::subxt::Call for PurgeKeys {
-                const PALLET: &'static str = "Session";
-                const FUNCTION: &'static str = "purge_keys";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "Sets the session key(s) of the function caller to `keys`."]
                 #[doc = "Allows an account to set its session key prior to becoming a validator."]
                 #[doc = "This doesn't take effect until the next session."]
@@ -4959,35 +3100,18 @@ pub mod api {
                     &self,
                     keys: runtime_types::gear_runtime::SessionKeys,
                     proof: ::std::vec::Vec<::core::primitive::u8>,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        SetKeys,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SetKeys>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            143u8, 222u8, 13u8, 121u8, 208u8, 192u8, 80u8, 157u8, 155u8, 225u8,
-                            180u8, 82u8, 182u8, 70u8, 68u8, 199u8, 86u8, 115u8, 201u8, 158u8, 12u8,
-                            157u8, 184u8, 179u8, 202u8, 202u8, 77u8, 66u8, 184u8, 13u8, 54u8,
-                            147u8,
-                        ]
-                    {
-                        let call = SetKeys { keys, proof };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<SetKeys> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Session",
+                        "set_keys",
+                        SetKeys { keys, proof },
+                        [
+                            242u8, 60u8, 43u8, 124u8, 197u8, 107u8, 11u8, 106u8, 124u8, 222u8,
+                            177u8, 128u8, 191u8, 164u8, 34u8, 162u8, 105u8, 245u8, 177u8, 207u8,
+                            92u8, 103u8, 37u8, 105u8, 220u8, 187u8, 145u8, 84u8, 233u8, 203u8,
+                            54u8, 205u8,
+                        ],
+                    )
                 }
                 #[doc = "Removes any session key(s) of the function caller."]
                 #[doc = ""]
@@ -5005,47 +3129,28 @@ pub mod api {
                 #[doc = "- DbWrites: `NextKeys`, `origin account`"]
                 #[doc = "- DbWrites per key id: `KeyOwner`"]
                 #[doc = "# </weight>"]
-                pub fn purge_keys(
-                    &self,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        PurgeKeys,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<PurgeKeys>()?
-                    };
-                    if runtime_call_hash
-                        == [
+                pub fn purge_keys(&self) -> ::subxt::tx::StaticTxPayload<PurgeKeys> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Session",
+                        "purge_keys",
+                        PurgeKeys {},
+                        [
                             200u8, 255u8, 4u8, 213u8, 188u8, 92u8, 99u8, 116u8, 163u8, 152u8, 29u8,
                             35u8, 133u8, 119u8, 246u8, 44u8, 91u8, 31u8, 145u8, 23u8, 213u8, 64u8,
                             71u8, 242u8, 207u8, 239u8, 231u8, 37u8, 61u8, 63u8, 190u8, 35u8,
-                        ]
-                    {
-                        let call = PurgeKeys {};
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        ],
+                    )
                 }
             }
         }
-        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
         pub type Event = runtime_types::pallet_session::pallet::Event;
         pub mod events {
             use super::runtime_types;
             #[derive(
-                :: subxt :: codec :: CompactAs,
-                :: subxt :: codec :: Decode,
-                :: subxt :: codec :: Encode,
+                :: subxt :: ext :: codec :: CompactAs,
+                :: subxt :: ext :: codec :: Decode,
+                :: subxt :: ext :: codec :: Encode,
                 Debug,
             )]
             #[doc = "New session has happened. Note that the argument is the session index, not the"]
@@ -5053,233 +3158,106 @@ pub mod api {
             pub struct NewSession {
                 pub session_index: ::core::primitive::u32,
             }
-            impl ::subxt::Event for NewSession {
+            impl ::subxt::events::StaticEvent for NewSession {
                 const PALLET: &'static str = "Session";
                 const EVENT: &'static str = "NewSession";
             }
         }
         pub mod storage {
             use super::runtime_types;
-            pub struct Validators;
-            impl ::subxt::StorageEntry for Validators {
-                const PALLET: &'static str = "Session";
-                const STORAGE: &'static str = "Validators";
-                type Value = ::std::vec::Vec<::subxt::sp_core::crypto::AccountId32>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct CurrentIndex;
-            impl ::subxt::StorageEntry for CurrentIndex {
-                const PALLET: &'static str = "Session";
-                const STORAGE: &'static str = "CurrentIndex";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct QueuedChanged;
-            impl ::subxt::StorageEntry for QueuedChanged {
-                const PALLET: &'static str = "Session";
-                const STORAGE: &'static str = "QueuedChanged";
-                type Value = ::core::primitive::bool;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct QueuedKeys;
-            impl ::subxt::StorageEntry for QueuedKeys {
-                const PALLET: &'static str = "Session";
-                const STORAGE: &'static str = "QueuedKeys";
-                type Value = ::std::vec::Vec<(
-                    ::subxt::sp_core::crypto::AccountId32,
-                    runtime_types::gear_runtime::SessionKeys,
-                )>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct DisabledValidators;
-            impl ::subxt::StorageEntry for DisabledValidators {
-                const PALLET: &'static str = "Session";
-                const STORAGE: &'static str = "DisabledValidators";
-                type Value = ::std::vec::Vec<::core::primitive::u32>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct NextKeys<'a>(pub &'a ::subxt::sp_core::crypto::AccountId32);
-            impl ::subxt::StorageEntry for NextKeys<'_> {
-                const PALLET: &'static str = "Session";
-                const STORAGE: &'static str = "NextKeys";
-                type Value = runtime_types::gear_runtime::SessionKeys;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Twox64Concat,
-                    )])
-                }
-            }
-            pub struct KeyOwner<'a>(
-                pub &'a runtime_types::sp_core::crypto::KeyTypeId,
-                pub &'a [::core::primitive::u8],
-            );
-            impl ::subxt::StorageEntry for KeyOwner<'_> {
-                const PALLET: &'static str = "Session";
-                const STORAGE: &'static str = "KeyOwner";
-                type Value = ::subxt::sp_core::crypto::AccountId32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &(&self.0, &self.1),
-                        ::subxt::StorageHasher::Twox64Concat,
-                    )])
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 #[doc = " The current set of validators."]
                 pub fn validators(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::std::vec::Vec<::subxt::sp_core::crypto::AccountId32>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        ::std::vec::Vec<::subxt::ext::sp_core::crypto::AccountId32>,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Validators>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                186u8, 248u8, 234u8, 74u8, 245u8, 141u8, 90u8, 152u8, 226u8, 220u8,
-                                255u8, 104u8, 174u8, 1u8, 37u8, 152u8, 23u8, 208u8, 25u8, 49u8,
-                                33u8, 253u8, 254u8, 251u8, 141u8, 16u8, 18u8, 175u8, 196u8, 188u8,
-                                163u8, 209u8,
-                            ]
-                        {
-                            let entry = Validators;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Session",
+                        "Validators",
+                        vec![],
+                        [
+                            144u8, 235u8, 200u8, 43u8, 151u8, 57u8, 147u8, 172u8, 201u8, 202u8,
+                            242u8, 96u8, 57u8, 76u8, 124u8, 77u8, 42u8, 113u8, 218u8, 220u8, 230u8,
+                            32u8, 151u8, 152u8, 172u8, 106u8, 60u8, 227u8, 122u8, 118u8, 137u8,
+                            68u8,
+                        ],
+                    )
                 }
                 #[doc = " Current index of the session."]
                 pub fn current_index(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<CurrentIndex>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                148u8, 179u8, 159u8, 15u8, 197u8, 95u8, 214u8, 30u8, 209u8, 251u8,
-                                183u8, 231u8, 91u8, 25u8, 181u8, 191u8, 143u8, 252u8, 227u8, 80u8,
-                                159u8, 66u8, 194u8, 67u8, 113u8, 74u8, 111u8, 91u8, 218u8, 187u8,
-                                130u8, 40u8,
-                            ]
-                        {
-                            let entry = CurrentIndex;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Session",
+                        "CurrentIndex",
+                        vec![],
+                        [
+                            148u8, 179u8, 159u8, 15u8, 197u8, 95u8, 214u8, 30u8, 209u8, 251u8,
+                            183u8, 231u8, 91u8, 25u8, 181u8, 191u8, 143u8, 252u8, 227u8, 80u8,
+                            159u8, 66u8, 194u8, 67u8, 113u8, 74u8, 111u8, 91u8, 218u8, 187u8,
+                            130u8, 40u8,
+                        ],
+                    )
                 }
                 #[doc = " True if the underlying economic identities or weighting behind the validators"]
                 #[doc = " has changed in the queued validator set."]
                 pub fn queued_changed(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::bool, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<QueuedChanged>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                105u8, 140u8, 235u8, 218u8, 96u8, 100u8, 252u8, 10u8, 58u8, 221u8,
-                                244u8, 251u8, 67u8, 91u8, 80u8, 202u8, 152u8, 42u8, 50u8, 113u8,
-                                200u8, 247u8, 59u8, 213u8, 77u8, 195u8, 1u8, 150u8, 220u8, 18u8,
-                                245u8, 46u8,
-                            ]
-                        {
-                            let entry = QueuedChanged;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::bool>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Session",
+                        "QueuedChanged",
+                        vec![],
+                        [
+                            105u8, 140u8, 235u8, 218u8, 96u8, 100u8, 252u8, 10u8, 58u8, 221u8,
+                            244u8, 251u8, 67u8, 91u8, 80u8, 202u8, 152u8, 42u8, 50u8, 113u8, 200u8,
+                            247u8, 59u8, 213u8, 77u8, 195u8, 1u8, 150u8, 220u8, 18u8, 245u8, 46u8,
+                        ],
+                    )
                 }
                 #[doc = " The queued keys for the next session. When the next session begins, these keys"]
                 #[doc = " will be used to determine the validator's session keys."]
                 pub fn queued_keys(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
                         ::std::vec::Vec<(
-                            ::subxt::sp_core::crypto::AccountId32,
+                            ::subxt::ext::sp_core::crypto::AccountId32,
                             runtime_types::gear_runtime::SessionKeys,
                         )>,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<QueuedKeys>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                73u8, 31u8, 1u8, 199u8, 45u8, 199u8, 167u8, 173u8, 43u8, 2u8, 11u8,
-                                235u8, 80u8, 37u8, 84u8, 11u8, 142u8, 140u8, 225u8, 71u8, 227u8,
-                                91u8, 56u8, 43u8, 10u8, 183u8, 64u8, 43u8, 199u8, 155u8, 31u8,
-                                127u8,
-                            ]
-                        {
-                            let entry = QueuedKeys;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Session",
+                        "QueuedKeys",
+                        vec![],
+                        [
+                            4u8, 126u8, 209u8, 204u8, 174u8, 43u8, 190u8, 209u8, 229u8, 204u8,
+                            80u8, 63u8, 212u8, 56u8, 83u8, 171u8, 188u8, 163u8, 237u8, 228u8, 7u8,
+                            37u8, 102u8, 225u8, 187u8, 132u8, 143u8, 189u8, 68u8, 29u8, 150u8,
+                            183u8,
+                        ],
+                    )
                 }
                 #[doc = " Indices of disabled validators."]
                 #[doc = ""]
@@ -5288,178 +3266,114 @@ pub mod api {
                 #[doc = " a new set of identities."]
                 pub fn disabled_validators(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::std::vec::Vec<::core::primitive::u32>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<DisabledValidators>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                135u8, 22u8, 22u8, 97u8, 82u8, 217u8, 144u8, 141u8, 121u8, 240u8,
-                                189u8, 16u8, 176u8, 88u8, 177u8, 31u8, 20u8, 242u8, 73u8, 104u8,
-                                11u8, 110u8, 214u8, 34u8, 52u8, 217u8, 106u8, 33u8, 174u8, 174u8,
-                                198u8, 84u8,
-                            ]
-                        {
-                            let entry = DisabledValidators;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::std::vec::Vec<::core::primitive::u32>>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Session",
+                        "DisabledValidators",
+                        vec![],
+                        [
+                            135u8, 22u8, 22u8, 97u8, 82u8, 217u8, 144u8, 141u8, 121u8, 240u8,
+                            189u8, 16u8, 176u8, 88u8, 177u8, 31u8, 20u8, 242u8, 73u8, 104u8, 11u8,
+                            110u8, 214u8, 34u8, 52u8, 217u8, 106u8, 33u8, 174u8, 174u8, 198u8,
+                            84u8,
+                        ],
+                    )
                 }
                 #[doc = " The next session keys for a validator."]
                 pub fn next_keys(
                     &self,
-                    _0: &'a ::subxt::sp_core::crypto::AccountId32,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<runtime_types::gear_runtime::SessionKeys>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<NextKeys>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                11u8, 102u8, 157u8, 248u8, 155u8, 12u8, 121u8, 115u8, 3u8, 68u8,
-                                128u8, 55u8, 175u8, 29u8, 161u8, 79u8, 142u8, 196u8, 71u8, 206u8,
-                                16u8, 141u8, 91u8, 38u8, 128u8, 97u8, 202u8, 222u8, 71u8, 185u8,
-                                139u8, 72u8,
-                            ]
-                        {
-                            let entry = NextKeys(_0);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    _0: impl ::std::borrow::Borrow<::subxt::ext::sp_core::crypto::AccountId32>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::gear_runtime::SessionKeys>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Session",
+                        "NextKeys",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Twox64Concat,
+                        )],
+                        [
+                            186u8, 228u8, 138u8, 54u8, 77u8, 224u8, 254u8, 19u8, 135u8, 195u8,
+                            79u8, 197u8, 68u8, 11u8, 232u8, 254u8, 154u8, 237u8, 140u8, 18u8,
+                            143u8, 146u8, 19u8, 160u8, 209u8, 75u8, 254u8, 148u8, 127u8, 92u8,
+                            86u8, 234u8,
+                        ],
+                    )
                 }
                 #[doc = " The next session keys for a validator."]
-                pub fn next_keys_iter(
+                pub fn next_keys_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, NextKeys<'a>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<NextKeys>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                11u8, 102u8, 157u8, 248u8, 155u8, 12u8, 121u8, 115u8, 3u8, 68u8,
-                                128u8, 55u8, 175u8, 29u8, 161u8, 79u8, 142u8, 196u8, 71u8, 206u8,
-                                16u8, 141u8, 91u8, 38u8, 128u8, 97u8, 202u8, 222u8, 71u8, 185u8,
-                                139u8, 72u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::gear_runtime::SessionKeys>,
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Session",
+                        "NextKeys",
+                        Vec::new(),
+                        [
+                            186u8, 228u8, 138u8, 54u8, 77u8, 224u8, 254u8, 19u8, 135u8, 195u8,
+                            79u8, 197u8, 68u8, 11u8, 232u8, 254u8, 154u8, 237u8, 140u8, 18u8,
+                            143u8, 146u8, 19u8, 160u8, 209u8, 75u8, 254u8, 148u8, 127u8, 92u8,
+                            86u8, 234u8,
+                        ],
+                    )
                 }
                 #[doc = " The owner of a key. The key is the `KeyTypeId` + the encoded key."]
                 pub fn key_owner(
                     &self,
-                    _0: &'a runtime_types::sp_core::crypto::KeyTypeId,
-                    _1: &'a [::core::primitive::u8],
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::subxt::sp_core::crypto::AccountId32>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<KeyOwner>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                49u8, 245u8, 212u8, 141u8, 211u8, 208u8, 109u8, 102u8, 249u8,
-                                161u8, 41u8, 93u8, 220u8, 230u8, 14u8, 59u8, 251u8, 176u8, 33u8,
-                                127u8, 93u8, 149u8, 205u8, 229u8, 113u8, 129u8, 162u8, 177u8,
-                                155u8, 216u8, 151u8, 57u8,
-                            ]
-                        {
-                            let entry = KeyOwner(_0, _1);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    _0: impl ::std::borrow::Borrow<runtime_types::sp_core::crypto::KeyTypeId>,
+                    _1: impl ::std::borrow::Borrow<[::core::primitive::u8]>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::subxt::ext::sp_core::crypto::AccountId32>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Session",
+                        "KeyOwner",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            &(_0.borrow(), _1.borrow()),
+                            ::subxt::storage::address::StorageHasher::Twox64Concat,
+                        )],
+                        [
+                            4u8, 91u8, 25u8, 84u8, 250u8, 201u8, 174u8, 129u8, 201u8, 58u8, 197u8,
+                            199u8, 137u8, 240u8, 118u8, 33u8, 99u8, 2u8, 195u8, 57u8, 53u8, 172u8,
+                            0u8, 148u8, 203u8, 144u8, 149u8, 64u8, 135u8, 254u8, 242u8, 215u8,
+                        ],
+                    )
                 }
                 #[doc = " The owner of a key. The key is the `KeyTypeId` + the encoded key."]
-                pub fn key_owner_iter(
+                pub fn key_owner_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, KeyOwner<'a>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<KeyOwner>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                49u8, 245u8, 212u8, 141u8, 211u8, 208u8, 109u8, 102u8, 249u8,
-                                161u8, 41u8, 93u8, 220u8, 230u8, 14u8, 59u8, 251u8, 176u8, 33u8,
-                                127u8, 93u8, 149u8, 205u8, 229u8, 113u8, 129u8, 162u8, 177u8,
-                                155u8, 216u8, 151u8, 57u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::subxt::ext::sp_core::crypto::AccountId32>,
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Session",
+                        "KeyOwner",
+                        Vec::new(),
+                        [
+                            4u8, 91u8, 25u8, 84u8, 250u8, 201u8, 174u8, 129u8, 201u8, 58u8, 197u8,
+                            199u8, 137u8, 240u8, 118u8, 33u8, 99u8, 2u8, 195u8, 57u8, 53u8, 172u8,
+                            0u8, 148u8, 203u8, 144u8, 149u8, 64u8, 135u8, 254u8, 242u8, 215u8,
+                        ],
+                    )
                 }
             }
         }
@@ -5472,57 +3386,40 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct Sudo {
-                pub call: ::std::boxed::Box<runtime_types::gear_runtime::Call>,
+                pub call: ::std::boxed::Box<runtime_types::gear_runtime::RuntimeCall>,
             }
-            impl ::subxt::Call for Sudo {
-                const PALLET: &'static str = "Sudo";
-                const FUNCTION: &'static str = "sudo";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SudoUncheckedWeight {
-                pub call: ::std::boxed::Box<runtime_types::gear_runtime::Call>,
-                pub weight: ::core::primitive::u64,
+                pub call: ::std::boxed::Box<runtime_types::gear_runtime::RuntimeCall>,
+                pub weight: runtime_types::sp_weights::weight_v2::Weight,
             }
-            impl ::subxt::Call for SudoUncheckedWeight {
-                const PALLET: &'static str = "Sudo";
-                const FUNCTION: &'static str = "sudo_unchecked_weight";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SetKey {
-                pub new:
-                    ::subxt::sp_runtime::MultiAddress<::subxt::sp_core::crypto::AccountId32, ()>,
+                pub new: ::subxt::ext::sp_runtime::MultiAddress<
+                    ::subxt::ext::sp_core::crypto::AccountId32,
+                    (),
+                >,
             }
-            impl ::subxt::Call for SetKey {
-                const PALLET: &'static str = "Sudo";
-                const FUNCTION: &'static str = "set_key";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SudoAs {
-                pub who:
-                    ::subxt::sp_runtime::MultiAddress<::subxt::sp_core::crypto::AccountId32, ()>,
-                pub call: ::std::boxed::Box<runtime_types::gear_runtime::Call>,
+                pub who: ::subxt::ext::sp_runtime::MultiAddress<
+                    ::subxt::ext::sp_core::crypto::AccountId32,
+                    (),
+                >,
+                pub call: ::std::boxed::Box<runtime_types::gear_runtime::RuntimeCall>,
             }
-            impl ::subxt::Call for SudoAs {
-                const PALLET: &'static str = "Sudo";
-                const FUNCTION: &'static str = "sudo_as";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "Authenticates the sudo key and dispatches a function call with `Root` origin."]
                 #[doc = ""]
                 #[doc = "The dispatch origin for this call must be _Signed_."]
@@ -5535,31 +3432,20 @@ pub mod api {
                 #[doc = "# </weight>"]
                 pub fn sudo(
                     &self,
-                    call: runtime_types::gear_runtime::Call,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<'a, T, X, Sudo, DispatchError, root_mod::Event>,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<Sudo>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            30u8, 104u8, 210u8, 195u8, 78u8, 125u8, 32u8, 44u8, 41u8, 202u8, 100u8,
-                            226u8, 221u8, 204u8, 118u8, 203u8, 97u8, 21u8, 27u8, 138u8, 79u8,
-                            145u8, 105u8, 107u8, 141u8, 82u8, 244u8, 2u8, 213u8, 165u8, 98u8,
-                            162u8,
-                        ]
-                    {
-                        let call = Sudo {
+                    call: runtime_types::gear_runtime::RuntimeCall,
+                ) -> ::subxt::tx::StaticTxPayload<Sudo> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Sudo",
+                        "sudo",
+                        Sudo {
                             call: ::std::boxed::Box::new(call),
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            185u8, 202u8, 91u8, 205u8, 189u8, 197u8, 212u8, 219u8, 106u8, 239u8,
+                            49u8, 33u8, 247u8, 23u8, 76u8, 200u8, 193u8, 166u8, 86u8, 134u8, 3u8,
+                            12u8, 168u8, 228u8, 140u8, 141u8, 108u8, 0u8, 151u8, 8u8, 5u8, 159u8,
+                        ],
+                    )
                 }
                 #[doc = "Authenticates the sudo key and dispatches a function call with `Root` origin."]
                 #[doc = "This function does not check the weight of the call, and instead allows the"]
@@ -5573,40 +3459,22 @@ pub mod api {
                 #[doc = "# </weight>"]
                 pub fn sudo_unchecked_weight(
                     &self,
-                    call: runtime_types::gear_runtime::Call,
-                    weight: ::core::primitive::u64,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        SudoUncheckedWeight,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SudoUncheckedWeight>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            76u8, 255u8, 70u8, 89u8, 165u8, 236u8, 239u8, 242u8, 155u8, 183u8,
-                            113u8, 62u8, 249u8, 126u8, 24u8, 102u8, 93u8, 48u8, 175u8, 118u8,
-                            133u8, 217u8, 57u8, 119u8, 97u8, 166u8, 71u8, 67u8, 53u8, 137u8, 108u8,
-                            148u8,
-                        ]
-                    {
-                        let call = SudoUncheckedWeight {
+                    call: runtime_types::gear_runtime::RuntimeCall,
+                    weight: runtime_types::sp_weights::weight_v2::Weight,
+                ) -> ::subxt::tx::StaticTxPayload<SudoUncheckedWeight> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Sudo",
+                        "sudo_unchecked_weight",
+                        SudoUncheckedWeight {
                             call: ::std::boxed::Box::new(call),
                             weight,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            95u8, 235u8, 38u8, 74u8, 236u8, 54u8, 26u8, 62u8, 90u8, 212u8, 49u8,
+                            96u8, 99u8, 249u8, 32u8, 87u8, 218u8, 82u8, 210u8, 220u8, 243u8, 195u8,
+                            112u8, 169u8, 110u8, 42u8, 16u8, 50u8, 171u8, 59u8, 40u8, 85u8,
+                        ],
+                    )
                 }
                 #[doc = "Authenticates the current sudo key and sets the given AccountId (`new`) as the new sudo"]
                 #[doc = "key."]
@@ -5620,31 +3488,21 @@ pub mod api {
                 #[doc = "# </weight>"]
                 pub fn set_key(
                     &self,
-                    new: ::subxt::sp_runtime::MultiAddress<
-                        ::subxt::sp_core::crypto::AccountId32,
+                    new: ::subxt::ext::sp_runtime::MultiAddress<
+                        ::subxt::ext::sp_core::crypto::AccountId32,
                         (),
                     >,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<'a, T, X, SetKey, DispatchError, root_mod::Event>,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SetKey>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            77u8, 253u8, 211u8, 157u8, 74u8, 92u8, 1u8, 102u8, 178u8, 103u8, 126u8,
-                            56u8, 156u8, 105u8, 45u8, 44u8, 64u8, 154u8, 163u8, 102u8, 93u8, 93u8,
-                            212u8, 5u8, 148u8, 184u8, 22u8, 135u8, 110u8, 102u8, 44u8, 172u8,
-                        ]
-                    {
-                        let call = SetKey { new };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<SetKey> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Sudo",
+                        "set_key",
+                        SetKey { new },
+                        [
+                            23u8, 224u8, 218u8, 169u8, 8u8, 28u8, 111u8, 199u8, 26u8, 88u8, 225u8,
+                            105u8, 17u8, 19u8, 87u8, 156u8, 97u8, 67u8, 89u8, 173u8, 70u8, 0u8,
+                            5u8, 246u8, 198u8, 135u8, 182u8, 180u8, 44u8, 9u8, 212u8, 95u8,
+                        ],
+                    )
                 }
                 #[doc = "Authenticates the sudo key and dispatches a function call with `Signed` origin from"]
                 #[doc = "a given account."]
@@ -5659,125 +3517,91 @@ pub mod api {
                 #[doc = "# </weight>"]
                 pub fn sudo_as(
                     &self,
-                    who: ::subxt::sp_runtime::MultiAddress<
-                        ::subxt::sp_core::crypto::AccountId32,
+                    who: ::subxt::ext::sp_runtime::MultiAddress<
+                        ::subxt::ext::sp_core::crypto::AccountId32,
                         (),
                     >,
-                    call: runtime_types::gear_runtime::Call,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<'a, T, X, SudoAs, DispatchError, root_mod::Event>,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SudoAs>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            127u8, 162u8, 138u8, 147u8, 135u8, 155u8, 125u8, 217u8, 61u8, 17u8,
-                            121u8, 17u8, 146u8, 217u8, 156u8, 131u8, 132u8, 205u8, 224u8, 130u8,
-                            45u8, 239u8, 13u8, 176u8, 102u8, 234u8, 99u8, 237u8, 172u8, 66u8,
-                            111u8, 244u8,
-                        ]
-                    {
-                        let call = SudoAs {
+                    call: runtime_types::gear_runtime::RuntimeCall,
+                ) -> ::subxt::tx::StaticTxPayload<SudoAs> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Sudo",
+                        "sudo_as",
+                        SudoAs {
                             who,
                             call: ::std::boxed::Box::new(call),
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            41u8, 216u8, 136u8, 242u8, 186u8, 129u8, 140u8, 87u8, 254u8, 8u8, 3u8,
+                            141u8, 208u8, 217u8, 201u8, 197u8, 80u8, 22u8, 34u8, 233u8, 124u8,
+                            229u8, 78u8, 38u8, 22u8, 181u8, 160u8, 235u8, 29u8, 158u8, 228u8, 92u8,
+                        ],
+                    )
                 }
             }
         }
-        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
         pub type Event = runtime_types::pallet_sudo::pallet::Event;
         pub mod events {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "A sudo just took place. \\[result\\]"]
             pub struct Sudid {
                 pub sudo_result:
                     ::core::result::Result<(), runtime_types::sp_runtime::DispatchError>,
             }
-            impl ::subxt::Event for Sudid {
+            impl ::subxt::events::StaticEvent for Sudid {
                 const PALLET: &'static str = "Sudo";
                 const EVENT: &'static str = "Sudid";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "The \\[sudoer\\] just switched identity; the old key is supplied if one existed."]
             pub struct KeyChanged {
-                pub old_sudoer: ::core::option::Option<::subxt::sp_core::crypto::AccountId32>,
+                pub old_sudoer: ::core::option::Option<::subxt::ext::sp_core::crypto::AccountId32>,
             }
-            impl ::subxt::Event for KeyChanged {
+            impl ::subxt::events::StaticEvent for KeyChanged {
                 const PALLET: &'static str = "Sudo";
                 const EVENT: &'static str = "KeyChanged";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "A sudo just took place. \\[result\\]"]
             pub struct SudoAsDone {
                 pub sudo_result:
                     ::core::result::Result<(), runtime_types::sp_runtime::DispatchError>,
             }
-            impl ::subxt::Event for SudoAsDone {
+            impl ::subxt::events::StaticEvent for SudoAsDone {
                 const PALLET: &'static str = "Sudo";
                 const EVENT: &'static str = "SudoAsDone";
             }
         }
         pub mod storage {
             use super::runtime_types;
-            pub struct Key;
-            impl ::subxt::StorageEntry for Key {
-                const PALLET: &'static str = "Sudo";
-                const STORAGE: &'static str = "Key";
-                type Value = ::subxt::sp_core::crypto::AccountId32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 #[doc = " The `AccountId` of the sudo key."]
                 pub fn key(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::subxt::sp_core::crypto::AccountId32>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Key>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                222u8, 90u8, 158u8, 233u8, 184u8, 23u8, 141u8, 135u8, 81u8, 187u8,
-                                47u8, 100u8, 30u8, 81u8, 239u8, 197u8, 249u8, 253u8, 73u8, 207u8,
-                                161u8, 141u8, 174u8, 59u8, 74u8, 181u8, 10u8, 90u8, 22u8, 109u8,
-                                62u8, 27u8,
-                            ]
-                        {
-                            let entry = Key;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::subxt::ext::sp_core::crypto::AccountId32>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "Sudo",
+                        "Key",
+                        vec![],
+                        [
+                            244u8, 73u8, 188u8, 136u8, 218u8, 163u8, 68u8, 179u8, 122u8, 173u8,
+                            34u8, 108u8, 137u8, 28u8, 182u8, 16u8, 196u8, 92u8, 138u8, 34u8, 102u8,
+                            80u8, 199u8, 88u8, 107u8, 207u8, 36u8, 22u8, 168u8, 167u8, 20u8, 142u8,
+                        ],
+                    )
                 }
             }
         }
@@ -5790,63 +3614,40 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct Batch {
-                pub calls: ::std::vec::Vec<runtime_types::gear_runtime::Call>,
+                pub calls: ::std::vec::Vec<runtime_types::gear_runtime::RuntimeCall>,
             }
-            impl ::subxt::Call for Batch {
-                const PALLET: &'static str = "Utility";
-                const FUNCTION: &'static str = "batch";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct AsDerivative {
                 pub index: ::core::primitive::u16,
-                pub call: ::std::boxed::Box<runtime_types::gear_runtime::Call>,
+                pub call: ::std::boxed::Box<runtime_types::gear_runtime::RuntimeCall>,
             }
-            impl ::subxt::Call for AsDerivative {
-                const PALLET: &'static str = "Utility";
-                const FUNCTION: &'static str = "as_derivative";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct BatchAll {
-                pub calls: ::std::vec::Vec<runtime_types::gear_runtime::Call>,
+                pub calls: ::std::vec::Vec<runtime_types::gear_runtime::RuntimeCall>,
             }
-            impl ::subxt::Call for BatchAll {
-                const PALLET: &'static str = "Utility";
-                const FUNCTION: &'static str = "batch_all";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct DispatchAs {
                 pub as_origin: ::std::boxed::Box<runtime_types::gear_runtime::OriginCaller>,
-                pub call: ::std::boxed::Box<runtime_types::gear_runtime::Call>,
+                pub call: ::std::boxed::Box<runtime_types::gear_runtime::RuntimeCall>,
             }
-            impl ::subxt::Call for DispatchAs {
-                const PALLET: &'static str = "Utility";
-                const FUNCTION: &'static str = "dispatch_as";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ForceBatch {
-                pub calls: ::std::vec::Vec<runtime_types::gear_runtime::Call>,
+                pub calls: ::std::vec::Vec<runtime_types::gear_runtime::RuntimeCall>,
             }
-            impl ::subxt::Call for ForceBatch {
-                const PALLET: &'static str = "Utility";
-                const FUNCTION: &'static str = "force_batch";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "Send a batch of dispatch calls."]
                 #[doc = ""]
                 #[doc = "May be called from any origin."]
@@ -5868,28 +3669,18 @@ pub mod api {
                 #[doc = "event is deposited."]
                 pub fn batch(
                     &self,
-                    calls: ::std::vec::Vec<runtime_types::gear_runtime::Call>,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<'a, T, X, Batch, DispatchError, root_mod::Event>,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<Batch>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            137u8, 58u8, 204u8, 247u8, 103u8, 181u8, 195u8, 37u8, 47u8, 27u8, 51u8,
-                            189u8, 17u8, 246u8, 132u8, 231u8, 186u8, 217u8, 17u8, 81u8, 166u8,
-                            243u8, 137u8, 202u8, 139u8, 53u8, 101u8, 182u8, 4u8, 17u8, 225u8, 48u8,
-                        ]
-                    {
-                        let call = Batch { calls };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                    calls: ::std::vec::Vec<runtime_types::gear_runtime::RuntimeCall>,
+                ) -> ::subxt::tx::StaticTxPayload<Batch> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Utility",
+                        "batch",
+                        Batch { calls },
+                        [
+                            215u8, 160u8, 5u8, 251u8, 76u8, 149u8, 211u8, 173u8, 205u8, 93u8, 91u8,
+                            236u8, 87u8, 20u8, 178u8, 83u8, 202u8, 235u8, 158u8, 142u8, 101u8,
+                            41u8, 217u8, 197u8, 114u8, 33u8, 230u8, 64u8, 54u8, 46u8, 63u8, 218u8,
+                        ],
+                    )
                 }
                 #[doc = "Send a call through an indexed pseudonym of the sender."]
                 #[doc = ""]
@@ -5907,38 +3698,22 @@ pub mod api {
                 pub fn as_derivative(
                     &self,
                     index: ::core::primitive::u16,
-                    call: runtime_types::gear_runtime::Call,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        AsDerivative,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<AsDerivative>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            68u8, 124u8, 9u8, 53u8, 210u8, 79u8, 37u8, 250u8, 176u8, 112u8, 165u8,
-                            10u8, 32u8, 151u8, 220u8, 127u8, 120u8, 139u8, 53u8, 185u8, 56u8, 34u8,
-                            23u8, 208u8, 246u8, 166u8, 167u8, 246u8, 91u8, 181u8, 31u8, 63u8,
-                        ]
-                    {
-                        let call = AsDerivative {
+                    call: runtime_types::gear_runtime::RuntimeCall,
+                ) -> ::subxt::tx::StaticTxPayload<AsDerivative> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Utility",
+                        "as_derivative",
+                        AsDerivative {
                             index,
                             call: ::std::boxed::Box::new(call),
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            162u8, 244u8, 132u8, 136u8, 36u8, 217u8, 81u8, 74u8, 155u8, 167u8,
+                            64u8, 74u8, 228u8, 126u8, 132u8, 192u8, 222u8, 67u8, 4u8, 179u8, 70u8,
+                            139u8, 62u8, 212u8, 100u8, 102u8, 232u8, 37u8, 57u8, 116u8, 251u8,
+                            215u8,
+                        ],
+                    )
                 }
                 #[doc = "Send a batch of dispatch calls and atomically execute them."]
                 #[doc = "The whole transaction will rollback and fail if any of the calls failed."]
@@ -5956,36 +3731,18 @@ pub mod api {
                 #[doc = "# </weight>"]
                 pub fn batch_all(
                     &self,
-                    calls: ::std::vec::Vec<runtime_types::gear_runtime::Call>,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        BatchAll,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<BatchAll>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            13u8, 86u8, 183u8, 205u8, 167u8, 175u8, 109u8, 51u8, 197u8, 81u8,
-                            152u8, 155u8, 201u8, 25u8, 119u8, 207u8, 190u8, 81u8, 241u8, 113u8,
-                            138u8, 150u8, 247u8, 137u8, 117u8, 226u8, 61u8, 180u8, 254u8, 149u8,
-                            52u8, 212u8,
-                        ]
-                    {
-                        let call = BatchAll { calls };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                    calls: ::std::vec::Vec<runtime_types::gear_runtime::RuntimeCall>,
+                ) -> ::subxt::tx::StaticTxPayload<BatchAll> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Utility",
+                        "batch_all",
+                        BatchAll { calls },
+                        [
+                            154u8, 96u8, 5u8, 179u8, 97u8, 213u8, 147u8, 95u8, 42u8, 221u8, 226u8,
+                            9u8, 10u8, 154u8, 38u8, 210u8, 208u8, 48u8, 204u8, 160u8, 23u8, 121u8,
+                            44u8, 147u8, 99u8, 202u8, 125u8, 194u8, 75u8, 150u8, 8u8, 230u8,
+                        ],
+                    )
                 }
                 #[doc = "Dispatches a function call with a provided origin."]
                 #[doc = ""]
@@ -6000,38 +3757,22 @@ pub mod api {
                 pub fn dispatch_as(
                     &self,
                     as_origin: runtime_types::gear_runtime::OriginCaller,
-                    call: runtime_types::gear_runtime::Call,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        DispatchAs,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<DispatchAs>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            81u8, 118u8, 148u8, 18u8, 67u8, 92u8, 179u8, 180u8, 158u8, 179u8, 54u8,
-                            5u8, 80u8, 247u8, 188u8, 223u8, 105u8, 163u8, 19u8, 223u8, 93u8, 65u8,
-                            124u8, 157u8, 107u8, 189u8, 232u8, 114u8, 23u8, 222u8, 88u8, 59u8,
-                        ]
-                    {
-                        let call = DispatchAs {
+                    call: runtime_types::gear_runtime::RuntimeCall,
+                ) -> ::subxt::tx::StaticTxPayload<DispatchAs> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Utility",
+                        "dispatch_as",
+                        DispatchAs {
                             as_origin: ::std::boxed::Box::new(as_origin),
                             call: ::std::boxed::Box::new(call),
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            82u8, 16u8, 27u8, 50u8, 211u8, 0u8, 182u8, 140u8, 113u8, 126u8, 150u8,
+                            42u8, 252u8, 29u8, 116u8, 213u8, 177u8, 118u8, 112u8, 217u8, 212u8,
+                            227u8, 236u8, 192u8, 142u8, 226u8, 211u8, 58u8, 46u8, 44u8, 64u8,
+                            244u8,
+                        ],
+                    )
                 }
                 #[doc = "Send a batch of dispatch calls."]
                 #[doc = "Unlike `batch`, it allows errors and won't interrupt."]
@@ -6049,124 +3790,108 @@ pub mod api {
                 #[doc = "# </weight>"]
                 pub fn force_batch(
                     &self,
-                    calls: ::std::vec::Vec<runtime_types::gear_runtime::Call>,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        ForceBatch,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<ForceBatch>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            220u8, 19u8, 163u8, 145u8, 152u8, 5u8, 244u8, 164u8, 223u8, 100u8,
-                            56u8, 172u8, 25u8, 21u8, 214u8, 42u8, 75u8, 197u8, 134u8, 126u8, 103u8,
-                            227u8, 94u8, 154u8, 209u8, 95u8, 108u8, 101u8, 152u8, 224u8, 25u8,
-                            141u8,
-                        ]
-                    {
-                        let call = ForceBatch { calls };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                    calls: ::std::vec::Vec<runtime_types::gear_runtime::RuntimeCall>,
+                ) -> ::subxt::tx::StaticTxPayload<ForceBatch> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Utility",
+                        "force_batch",
+                        ForceBatch { calls },
+                        [
+                            10u8, 110u8, 158u8, 28u8, 49u8, 187u8, 113u8, 73u8, 44u8, 240u8, 115u8,
+                            31u8, 222u8, 38u8, 91u8, 202u8, 31u8, 173u8, 130u8, 253u8, 254u8, 95u8,
+                            206u8, 236u8, 200u8, 38u8, 165u8, 122u8, 184u8, 45u8, 179u8, 55u8,
+                        ],
+                    )
                 }
             }
         }
-        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
         pub type Event = runtime_types::pallet_utility::pallet::Event;
         pub mod events {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Batch of dispatches did not complete fully. Index of first failing dispatch given, as"]
             #[doc = "well as the error."]
             pub struct BatchInterrupted {
                 pub index: ::core::primitive::u32,
                 pub error: runtime_types::sp_runtime::DispatchError,
             }
-            impl ::subxt::Event for BatchInterrupted {
+            impl ::subxt::events::StaticEvent for BatchInterrupted {
                 const PALLET: &'static str = "Utility";
                 const EVENT: &'static str = "BatchInterrupted";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Batch of dispatches completed fully with no error."]
             pub struct BatchCompleted;
-            impl ::subxt::Event for BatchCompleted {
+            impl ::subxt::events::StaticEvent for BatchCompleted {
                 const PALLET: &'static str = "Utility";
                 const EVENT: &'static str = "BatchCompleted";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Batch of dispatches completed but has errors."]
             pub struct BatchCompletedWithErrors;
-            impl ::subxt::Event for BatchCompletedWithErrors {
+            impl ::subxt::events::StaticEvent for BatchCompletedWithErrors {
                 const PALLET: &'static str = "Utility";
                 const EVENT: &'static str = "BatchCompletedWithErrors";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "A single item within a Batch of dispatches has completed with no error."]
             pub struct ItemCompleted;
-            impl ::subxt::Event for ItemCompleted {
+            impl ::subxt::events::StaticEvent for ItemCompleted {
                 const PALLET: &'static str = "Utility";
                 const EVENT: &'static str = "ItemCompleted";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "A single item within a Batch of dispatches has completed with error."]
             pub struct ItemFailed {
                 pub error: runtime_types::sp_runtime::DispatchError,
             }
-            impl ::subxt::Event for ItemFailed {
+            impl ::subxt::events::StaticEvent for ItemFailed {
                 const PALLET: &'static str = "Utility";
                 const EVENT: &'static str = "ItemFailed";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "A call was dispatched."]
             pub struct DispatchedAs {
                 pub result: ::core::result::Result<(), runtime_types::sp_runtime::DispatchError>,
             }
-            impl ::subxt::Event for DispatchedAs {
+            impl ::subxt::events::StaticEvent for DispatchedAs {
                 const PALLET: &'static str = "Utility";
                 const EVENT: &'static str = "DispatchedAs";
             }
         }
         pub mod constants {
             use super::runtime_types;
-            pub struct ConstantsApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct ConstantsApi;
+            impl ConstantsApi {
                 #[doc = " The limit on the number of batched calls."]
                 pub fn batched_calls_limit(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Utility", "batched_calls_limit")?
-                        == [
-                            230u8, 161u8, 6u8, 191u8, 162u8, 108u8, 149u8, 245u8, 68u8, 101u8,
-                            120u8, 129u8, 140u8, 51u8, 77u8, 97u8, 30u8, 155u8, 115u8, 70u8, 72u8,
-                            235u8, 251u8, 192u8, 5u8, 8u8, 188u8, 72u8, 132u8, 227u8, 44u8, 2u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Utility")?;
-                        let constant = pallet.constant("batched_calls_limit")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Utility",
+                        "batched_calls_limit",
+                        [
+                            98u8, 252u8, 116u8, 72u8, 26u8, 180u8, 225u8, 83u8, 200u8, 157u8,
+                            125u8, 151u8, 53u8, 76u8, 168u8, 26u8, 10u8, 9u8, 98u8, 68u8, 9u8,
+                            178u8, 197u8, 113u8, 31u8, 79u8, 200u8, 90u8, 203u8, 100u8, 41u8,
+                            145u8,
+                        ],
+                    )
                 }
             }
         }
@@ -6179,38 +3904,23 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ResumeProgram {
                 pub program_id: runtime_types::gear_core::ids::ProgramId,
-                pub memory_pages: ::subxt::KeyedVec<
+                pub memory_pages: ::subxt::utils::KeyedVec<
                     runtime_types::gear_core::memory::PageNumber,
                     ::std::vec::Vec<::core::primitive::u8>,
                 >,
-                pub wait_list: ::subxt::KeyedVec<
+                pub wait_list: ::subxt::utils::KeyedVec<
                     runtime_types::gear_core::ids::MessageId,
                     runtime_types::gear_core::message::stored::StoredDispatch,
                 >,
                 pub value: ::core::primitive::u128,
             }
-            impl ::subxt::Call for ResumeProgram {
-                const PALLET: &'static str = "GearProgram";
-                const FUNCTION: &'static str = "resume_program";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "Resumes a previously paused program"]
                 #[doc = ""]
                 #[doc = "The origin must be Signed and the sender must have sufficient funds to"]
@@ -6226,400 +3936,242 @@ pub mod api {
                 pub fn resume_program(
                     &self,
                     program_id: runtime_types::gear_core::ids::ProgramId,
-                    memory_pages: ::subxt::KeyedVec<
+                    memory_pages: ::subxt::utils::KeyedVec<
                         runtime_types::gear_core::memory::PageNumber,
                         ::std::vec::Vec<::core::primitive::u8>,
                     >,
-                    wait_list: ::subxt::KeyedVec<
+                    wait_list: ::subxt::utils::KeyedVec<
                         runtime_types::gear_core::ids::MessageId,
                         runtime_types::gear_core::message::stored::StoredDispatch,
                     >,
                     value: ::core::primitive::u128,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        ResumeProgram,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<ResumeProgram>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            12u8, 24u8, 159u8, 228u8, 146u8, 47u8, 118u8, 109u8, 178u8, 1u8, 241u8,
-                            74u8, 9u8, 1u8, 152u8, 156u8, 243u8, 140u8, 202u8, 118u8, 161u8, 213u8,
-                            71u8, 156u8, 100u8, 52u8, 29u8, 17u8, 230u8, 141u8, 74u8, 198u8,
-                        ]
-                    {
-                        let call = ResumeProgram {
+                ) -> ::subxt::tx::StaticTxPayload<ResumeProgram> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "GearProgram",
+                        "resume_program",
+                        ResumeProgram {
                             program_id,
                             memory_pages,
                             wait_list,
                             value,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            38u8, 104u8, 17u8, 60u8, 124u8, 204u8, 99u8, 164u8, 88u8, 59u8, 91u8,
+                            52u8, 69u8, 26u8, 25u8, 41u8, 77u8, 24u8, 234u8, 128u8, 207u8, 211u8,
+                            104u8, 42u8, 147u8, 105u8, 115u8, 149u8, 12u8, 241u8, 33u8, 120u8,
+                        ],
+                    )
                 }
             }
         }
-        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
         pub type Event = runtime_types::pallet_gear_program::pallet::Event;
         pub mod events {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Program has been successfully resumed"]
             pub struct ProgramResumed(pub runtime_types::gear_core::ids::ProgramId);
-            impl ::subxt::Event for ProgramResumed {
+            impl ::subxt::events::StaticEvent for ProgramResumed {
                 const PALLET: &'static str = "GearProgram";
                 const EVENT: &'static str = "ProgramResumed";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Program has been paused"]
             pub struct ProgramPaused(pub runtime_types::gear_core::ids::ProgramId);
-            impl ::subxt::Event for ProgramPaused {
+            impl ::subxt::events::StaticEvent for ProgramPaused {
                 const PALLET: &'static str = "GearProgram";
                 const EVENT: &'static str = "ProgramPaused";
             }
         }
         pub mod storage {
             use super::runtime_types;
-            pub struct CodeStorage<'a>(pub &'a runtime_types::gear_core::ids::CodeId);
-            impl ::subxt::StorageEntry for CodeStorage<'_> {
-                const PALLET: &'static str = "GearProgram";
-                const STORAGE: &'static str = "CodeStorage";
-                type Value = runtime_types::gear_core::code::InstrumentedCode;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Identity,
-                    )])
-                }
-            }
-            pub struct OriginalCodeStorage<'a>(pub &'a runtime_types::gear_core::ids::CodeId);
-            impl ::subxt::StorageEntry for OriginalCodeStorage<'_> {
-                const PALLET: &'static str = "GearProgram";
-                const STORAGE: &'static str = "OriginalCodeStorage";
-                type Value = ::std::vec::Vec<::core::primitive::u8>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Identity,
-                    )])
-                }
-            }
-            pub struct MetadataStorage<'a>(pub &'a runtime_types::gear_core::ids::CodeId);
-            impl ::subxt::StorageEntry for MetadataStorage<'_> {
-                const PALLET: &'static str = "GearProgram";
-                const STORAGE: &'static str = "MetadataStorage";
-                type Value = runtime_types::gear_common::CodeMetadata;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Identity,
-                    )])
-                }
-            }
-            pub struct PausedPrograms<'a>(pub &'a runtime_types::gear_core::ids::ProgramId);
-            impl ::subxt::StorageEntry for PausedPrograms<'_> {
-                const PALLET: &'static str = "GearProgram";
-                const STORAGE: &'static str = "PausedPrograms";
-                type Value = runtime_types::pallet_gear_program::pause::PausedProgram;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Identity,
-                    )])
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 pub fn code_storage(
                     &self,
-                    _0: &'a runtime_types::gear_core::ids::CodeId,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<runtime_types::gear_core::code::InstrumentedCode>,
-                        ::subxt::BasicError,
+                    _0: impl ::std::borrow::Borrow<runtime_types::gear_core::ids::CodeId>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::gear_core::code::InstrumentedCode,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<CodeStorage>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                95u8, 8u8, 5u8, 27u8, 150u8, 163u8, 149u8, 224u8, 92u8, 148u8,
-                                148u8, 208u8, 189u8, 244u8, 116u8, 142u8, 181u8, 44u8, 254u8, 43u8,
-                                236u8, 172u8, 231u8, 66u8, 119u8, 147u8, 234u8, 135u8, 69u8, 183u8,
-                                182u8, 68u8,
-                            ]
-                        {
-                            let entry = CodeStorage(_0);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearProgram",
+                        "CodeStorage",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Identity,
+                        )],
+                        [
+                            189u8, 15u8, 15u8, 20u8, 165u8, 132u8, 253u8, 48u8, 137u8, 247u8, 55u8,
+                            92u8, 126u8, 84u8, 127u8, 194u8, 218u8, 160u8, 119u8, 52u8, 73u8,
+                            148u8, 253u8, 151u8, 246u8, 9u8, 85u8, 245u8, 176u8, 198u8, 180u8,
+                            149u8,
+                        ],
+                    )
                 }
-                pub fn code_storage_iter(
+                pub fn code_storage_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, CodeStorage<'a>>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::gear_core::code::InstrumentedCode,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<CodeStorage>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                95u8, 8u8, 5u8, 27u8, 150u8, 163u8, 149u8, 224u8, 92u8, 148u8,
-                                148u8, 208u8, 189u8, 244u8, 116u8, 142u8, 181u8, 44u8, 254u8, 43u8,
-                                236u8, 172u8, 231u8, 66u8, 119u8, 147u8, 234u8, 135u8, 69u8, 183u8,
-                                182u8, 68u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearProgram",
+                        "CodeStorage",
+                        Vec::new(),
+                        [
+                            189u8, 15u8, 15u8, 20u8, 165u8, 132u8, 253u8, 48u8, 137u8, 247u8, 55u8,
+                            92u8, 126u8, 84u8, 127u8, 194u8, 218u8, 160u8, 119u8, 52u8, 73u8,
+                            148u8, 253u8, 151u8, 246u8, 9u8, 85u8, 245u8, 176u8, 198u8, 180u8,
+                            149u8,
+                        ],
+                    )
                 }
                 pub fn original_code_storage(
                     &self,
-                    _0: &'a runtime_types::gear_core::ids::CodeId,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::std::vec::Vec<::core::primitive::u8>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<OriginalCodeStorage>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                19u8, 64u8, 8u8, 195u8, 148u8, 119u8, 223u8, 144u8, 31u8, 116u8,
-                                66u8, 191u8, 132u8, 127u8, 137u8, 54u8, 214u8, 240u8, 13u8, 9u8,
-                                7u8, 68u8, 166u8, 194u8, 173u8, 144u8, 174u8, 71u8, 62u8, 43u8,
-                                249u8, 200u8,
-                            ]
-                        {
-                            let entry = OriginalCodeStorage(_0);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    _0: impl ::std::borrow::Borrow<runtime_types::gear_core::ids::CodeId>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::std::vec::Vec<::core::primitive::u8>>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearProgram",
+                        "OriginalCodeStorage",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Identity,
+                        )],
+                        [
+                            123u8, 194u8, 8u8, 188u8, 83u8, 247u8, 25u8, 113u8, 182u8, 230u8,
+                            233u8, 63u8, 37u8, 246u8, 56u8, 28u8, 60u8, 147u8, 113u8, 245u8, 117u8,
+                            192u8, 195u8, 214u8, 189u8, 12u8, 26u8, 233u8, 122u8, 134u8, 204u8,
+                            106u8,
+                        ],
+                    )
                 }
-                pub fn original_code_storage_iter(
+                pub fn original_code_storage_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, OriginalCodeStorage<'a>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<OriginalCodeStorage>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                19u8, 64u8, 8u8, 195u8, 148u8, 119u8, 223u8, 144u8, 31u8, 116u8,
-                                66u8, 191u8, 132u8, 127u8, 137u8, 54u8, 214u8, 240u8, 13u8, 9u8,
-                                7u8, 68u8, 166u8, 194u8, 173u8, 144u8, 174u8, 71u8, 62u8, 43u8,
-                                249u8, 200u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::std::vec::Vec<::core::primitive::u8>>,
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearProgram",
+                        "OriginalCodeStorage",
+                        Vec::new(),
+                        [
+                            123u8, 194u8, 8u8, 188u8, 83u8, 247u8, 25u8, 113u8, 182u8, 230u8,
+                            233u8, 63u8, 37u8, 246u8, 56u8, 28u8, 60u8, 147u8, 113u8, 245u8, 117u8,
+                            192u8, 195u8, 214u8, 189u8, 12u8, 26u8, 233u8, 122u8, 134u8, 204u8,
+                            106u8,
+                        ],
+                    )
                 }
                 pub fn metadata_storage(
                     &self,
-                    _0: &'a runtime_types::gear_core::ids::CodeId,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<runtime_types::gear_common::CodeMetadata>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<MetadataStorage>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                246u8, 169u8, 72u8, 148u8, 69u8, 237u8, 76u8, 210u8, 60u8, 126u8,
-                                20u8, 81u8, 143u8, 3u8, 138u8, 151u8, 213u8, 58u8, 193u8, 247u8,
-                                97u8, 133u8, 94u8, 123u8, 42u8, 78u8, 229u8, 96u8, 185u8, 228u8,
-                                240u8, 34u8,
-                            ]
-                        {
-                            let entry = MetadataStorage(_0);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    _0: impl ::std::borrow::Borrow<runtime_types::gear_core::ids::CodeId>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::gear_common::CodeMetadata>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearProgram",
+                        "MetadataStorage",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Identity,
+                        )],
+                        [
+                            112u8, 16u8, 114u8, 11u8, 144u8, 82u8, 39u8, 233u8, 35u8, 207u8, 135u8,
+                            163u8, 228u8, 236u8, 126u8, 208u8, 98u8, 162u8, 125u8, 245u8, 251u8,
+                            24u8, 52u8, 60u8, 110u8, 134u8, 102u8, 242u8, 203u8, 178u8, 5u8, 9u8,
+                        ],
+                    )
                 }
-                pub fn metadata_storage_iter(
+                pub fn metadata_storage_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, MetadataStorage<'a>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<MetadataStorage>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                246u8, 169u8, 72u8, 148u8, 69u8, 237u8, 76u8, 210u8, 60u8, 126u8,
-                                20u8, 81u8, 143u8, 3u8, 138u8, 151u8, 213u8, 58u8, 193u8, 247u8,
-                                97u8, 133u8, 94u8, 123u8, 42u8, 78u8, 229u8, 96u8, 185u8, 228u8,
-                                240u8, 34u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::gear_common::CodeMetadata>,
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearProgram",
+                        "MetadataStorage",
+                        Vec::new(),
+                        [
+                            112u8, 16u8, 114u8, 11u8, 144u8, 82u8, 39u8, 233u8, 35u8, 207u8, 135u8,
+                            163u8, 228u8, 236u8, 126u8, 208u8, 98u8, 162u8, 125u8, 245u8, 251u8,
+                            24u8, 52u8, 60u8, 110u8, 134u8, 102u8, 242u8, 203u8, 178u8, 5u8, 9u8,
+                        ],
+                    )
                 }
                 pub fn paused_programs(
                     &self,
-                    _0: &'a runtime_types::gear_core::ids::ProgramId,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<
-                            runtime_types::pallet_gear_program::pause::PausedProgram,
-                        >,
-                        ::subxt::BasicError,
+                    _0: impl ::std::borrow::Borrow<runtime_types::gear_core::ids::ProgramId>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::pallet_gear_program::pause::PausedProgram,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<PausedPrograms>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                13u8, 201u8, 57u8, 102u8, 238u8, 251u8, 200u8, 48u8, 0u8, 230u8,
-                                239u8, 55u8, 59u8, 1u8, 41u8, 201u8, 29u8, 252u8, 61u8, 174u8,
-                                130u8, 13u8, 33u8, 139u8, 218u8, 239u8, 211u8, 178u8, 89u8, 232u8,
-                                38u8, 2u8,
-                            ]
-                        {
-                            let entry = PausedPrograms(_0);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearProgram",
+                        "PausedPrograms",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Identity,
+                        )],
+                        [
+                            31u8, 123u8, 17u8, 172u8, 156u8, 116u8, 96u8, 138u8, 232u8, 34u8,
+                            181u8, 58u8, 134u8, 193u8, 140u8, 172u8, 235u8, 7u8, 19u8, 59u8, 248u8,
+                            33u8, 130u8, 143u8, 208u8, 236u8, 153u8, 36u8, 233u8, 128u8, 198u8,
+                            179u8,
+                        ],
+                    )
                 }
-                pub fn paused_programs_iter(
+                pub fn paused_programs_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, PausedPrograms<'a>>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::pallet_gear_program::pause::PausedProgram,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<PausedPrograms>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                13u8, 201u8, 57u8, 102u8, 238u8, 251u8, 200u8, 48u8, 0u8, 230u8,
-                                239u8, 55u8, 59u8, 1u8, 41u8, 201u8, 29u8, 252u8, 61u8, 174u8,
-                                130u8, 13u8, 33u8, 139u8, 218u8, 239u8, 211u8, 178u8, 89u8, 232u8,
-                                38u8, 2u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearProgram",
+                        "PausedPrograms",
+                        Vec::new(),
+                        [
+                            31u8, 123u8, 17u8, 172u8, 156u8, 116u8, 96u8, 138u8, 232u8, 34u8,
+                            181u8, 58u8, 134u8, 193u8, 140u8, 172u8, 235u8, 7u8, 19u8, 59u8, 248u8,
+                            33u8, 130u8, 143u8, 208u8, 236u8, 153u8, 36u8, 233u8, 128u8, 198u8,
+                            179u8,
+                        ],
+                    )
                 }
             }
         }
@@ -6629,544 +4181,296 @@ pub mod api {
         use super::runtime_types;
         pub mod storage {
             use super::runtime_types;
-            pub struct Dequeued;
-            impl ::subxt::StorageEntry for Dequeued {
-                const PALLET: &'static str = "GearMessenger";
-                const STORAGE: &'static str = "Dequeued";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Dispatches<'a>(pub &'a runtime_types::gear_core::ids::MessageId);
-            impl ::subxt::StorageEntry for Dispatches<'_> {
-                const PALLET: &'static str = "GearMessenger";
-                const STORAGE: &'static str = "Dispatches";
-                type Value = runtime_types::gear_common::storage::complicated::dequeue::LinkedNode<
-                    runtime_types::gear_core::ids::MessageId,
-                    runtime_types::gear_core::message::stored::StoredDispatch,
-                >;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Identity,
-                    )])
-                }
-            }
-            pub struct CounterForDispatches;
-            impl ::subxt::StorageEntry for CounterForDispatches {
-                const PALLET: &'static str = "GearMessenger";
-                const STORAGE: &'static str = "CounterForDispatches";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Head;
-            impl ::subxt::StorageEntry for Head {
-                const PALLET: &'static str = "GearMessenger";
-                const STORAGE: &'static str = "Head";
-                type Value = runtime_types::gear_core::ids::MessageId;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Mailbox<'a>(
-                pub &'a ::subxt::sp_core::crypto::AccountId32,
-                pub &'a runtime_types::gear_core::ids::MessageId,
-            );
-            impl ::subxt::StorageEntry for Mailbox<'_> {
-                const PALLET: &'static str = "GearMessenger";
-                const STORAGE: &'static str = "Mailbox";
-                type Value = (
-                    runtime_types::gear_core::message::stored::StoredMessage,
-                    runtime_types::gear_common::storage::primitives::Interval<
-                        ::core::primitive::u32,
-                    >,
-                );
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![
-                        ::subxt::StorageMapKey::new(&self.0, ::subxt::StorageHasher::Identity),
-                        ::subxt::StorageMapKey::new(&self.1, ::subxt::StorageHasher::Identity),
-                    ])
-                }
-            }
-            pub struct QueueProcessing;
-            impl ::subxt::StorageEntry for QueueProcessing {
-                const PALLET: &'static str = "GearMessenger";
-                const STORAGE: &'static str = "QueueProcessing";
-                type Value = ::core::primitive::bool;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Sent;
-            impl ::subxt::StorageEntry for Sent {
-                const PALLET: &'static str = "GearMessenger";
-                const STORAGE: &'static str = "Sent";
-                type Value = ::core::primitive::u32;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Tail;
-            impl ::subxt::StorageEntry for Tail {
-                const PALLET: &'static str = "GearMessenger";
-                const STORAGE: &'static str = "Tail";
-                type Value = runtime_types::gear_core::ids::MessageId;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct Waitlist<'a>(
-                pub &'a runtime_types::gear_core::ids::ProgramId,
-                pub &'a runtime_types::gear_core::ids::MessageId,
-            );
-            impl ::subxt::StorageEntry for Waitlist<'_> {
-                const PALLET: &'static str = "GearMessenger";
-                const STORAGE: &'static str = "Waitlist";
-                type Value = (
-                    runtime_types::gear_core::message::stored::StoredDispatch,
-                    runtime_types::gear_common::storage::primitives::Interval<
-                        ::core::primitive::u32,
-                    >,
-                );
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![
-                        ::subxt::StorageMapKey::new(&self.0, ::subxt::StorageHasher::Identity),
-                        ::subxt::StorageMapKey::new(&self.1, ::subxt::StorageHasher::Identity),
-                    ])
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 pub fn dequeued(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::core::primitive::u32>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Dequeued>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                105u8, 112u8, 103u8, 113u8, 125u8, 32u8, 84u8, 31u8, 98u8, 132u8,
-                                151u8, 132u8, 127u8, 42u8, 30u8, 181u8, 180u8, 60u8, 70u8, 64u8,
-                                221u8, 180u8, 110u8, 128u8, 154u8, 21u8, 117u8, 111u8, 46u8, 117u8,
-                                212u8, 52u8,
-                            ]
-                        {
-                            let entry = Dequeued;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "Dequeued",
+                        vec![],
+                        [
+                            105u8, 112u8, 103u8, 113u8, 125u8, 32u8, 84u8, 31u8, 98u8, 132u8,
+                            151u8, 132u8, 127u8, 42u8, 30u8, 181u8, 180u8, 60u8, 70u8, 64u8, 221u8,
+                            180u8, 110u8, 128u8, 154u8, 21u8, 117u8, 111u8, 46u8, 117u8, 212u8,
+                            52u8,
+                        ],
+                    )
                 }
                 pub fn dispatches(
                     &self,
-                    _0: &'a runtime_types::gear_core::ids::MessageId,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<
-                            runtime_types::gear_common::storage::complicated::dequeue::LinkedNode<
-                                runtime_types::gear_core::ids::MessageId,
-                                runtime_types::gear_core::message::stored::StoredDispatch,
-                            >,
+                    _0: impl ::std::borrow::Borrow<runtime_types::gear_core::ids::MessageId>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::gear_common::storage::complicated::dequeue::LinkedNode<
+                            runtime_types::gear_core::ids::MessageId,
+                            runtime_types::gear_core::message::stored::StoredDispatch,
                         >,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Dispatches>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                19u8, 14u8, 165u8, 110u8, 125u8, 87u8, 41u8, 205u8, 242u8, 129u8,
-                                168u8, 23u8, 55u8, 245u8, 4u8, 18u8, 255u8, 36u8, 31u8, 14u8, 9u8,
-                                40u8, 64u8, 160u8, 113u8, 132u8, 148u8, 101u8, 194u8, 147u8, 84u8,
-                                91u8,
-                            ]
-                        {
-                            let entry = Dispatches(_0);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "Dispatches",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Identity,
+                        )],
+                        [
+                            28u8, 120u8, 9u8, 54u8, 140u8, 165u8, 0u8, 34u8, 16u8, 226u8, 33u8,
+                            214u8, 214u8, 17u8, 158u8, 50u8, 165u8, 42u8, 103u8, 211u8, 36u8, 63u8,
+                            27u8, 162u8, 53u8, 39u8, 68u8, 106u8, 234u8, 198u8, 85u8, 204u8,
+                        ],
+                    )
                 }
-                pub fn dispatches_iter(
+                pub fn dispatches_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, Dispatches<'a>>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::gear_common::storage::complicated::dequeue::LinkedNode<
+                            runtime_types::gear_core::ids::MessageId,
+                            runtime_types::gear_core::message::stored::StoredDispatch,
+                        >,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Dispatches>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                19u8, 14u8, 165u8, 110u8, 125u8, 87u8, 41u8, 205u8, 242u8, 129u8,
-                                168u8, 23u8, 55u8, 245u8, 4u8, 18u8, 255u8, 36u8, 31u8, 14u8, 9u8,
-                                40u8, 64u8, 160u8, 113u8, 132u8, 148u8, 101u8, 194u8, 147u8, 84u8,
-                                91u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "Dispatches",
+                        Vec::new(),
+                        [
+                            28u8, 120u8, 9u8, 54u8, 140u8, 165u8, 0u8, 34u8, 16u8, 226u8, 33u8,
+                            214u8, 214u8, 17u8, 158u8, 50u8, 165u8, 42u8, 103u8, 211u8, 36u8, 63u8,
+                            27u8, 162u8, 53u8, 39u8, 68u8, 106u8, 234u8, 198u8, 85u8, 204u8,
+                        ],
+                    )
                 }
                 #[doc = "Counter for the related counted storage map"]
                 pub fn counter_for_dispatches(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<CounterForDispatches>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                63u8, 51u8, 137u8, 125u8, 174u8, 247u8, 34u8, 229u8, 107u8, 43u8,
-                                3u8, 157u8, 66u8, 39u8, 177u8, 184u8, 159u8, 221u8, 129u8, 46u8,
-                                253u8, 39u8, 159u8, 52u8, 96u8, 74u8, 47u8, 207u8, 177u8, 3u8,
-                                254u8, 228u8,
-                            ]
-                        {
-                            let entry = CounterForDispatches;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "CounterForDispatches",
+                        vec![],
+                        [
+                            63u8, 51u8, 137u8, 125u8, 174u8, 247u8, 34u8, 229u8, 107u8, 43u8, 3u8,
+                            157u8, 66u8, 39u8, 177u8, 184u8, 159u8, 221u8, 129u8, 46u8, 253u8,
+                            39u8, 159u8, 52u8, 96u8, 74u8, 47u8, 207u8, 177u8, 3u8, 254u8, 228u8,
+                        ],
+                    )
                 }
                 pub fn head(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<runtime_types::gear_core::ids::MessageId>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Head>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                202u8, 59u8, 82u8, 146u8, 26u8, 188u8, 139u8, 129u8, 240u8, 187u8,
-                                9u8, 135u8, 15u8, 114u8, 200u8, 221u8, 46u8, 21u8, 69u8, 228u8,
-                                252u8, 5u8, 235u8, 126u8, 182u8, 155u8, 226u8, 152u8, 40u8, 195u8,
-                                67u8, 233u8,
-                            ]
-                        {
-                            let entry = Head;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::gear_core::ids::MessageId>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "Head",
+                        vec![],
+                        [
+                            162u8, 185u8, 82u8, 237u8, 221u8, 60u8, 77u8, 96u8, 89u8, 41u8, 162u8,
+                            7u8, 174u8, 251u8, 121u8, 247u8, 196u8, 118u8, 57u8, 24u8, 142u8,
+                            129u8, 142u8, 106u8, 166u8, 7u8, 86u8, 54u8, 108u8, 110u8, 118u8, 75u8,
+                        ],
+                    )
                 }
                 pub fn mailbox(
                     &self,
-                    _0: &'a ::subxt::sp_core::crypto::AccountId32,
-                    _1: &'a runtime_types::gear_core::ids::MessageId,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<(
-                            runtime_types::gear_core::message::stored::StoredMessage,
-                            runtime_types::gear_common::storage::primitives::Interval<
-                                ::core::primitive::u32,
-                            >,
-                        )>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Mailbox>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                190u8, 152u8, 202u8, 137u8, 146u8, 197u8, 18u8, 85u8, 176u8, 157u8,
-                                208u8, 115u8, 75u8, 193u8, 199u8, 77u8, 25u8, 110u8, 144u8, 209u8,
-                                138u8, 98u8, 105u8, 3u8, 146u8, 221u8, 76u8, 213u8, 20u8, 157u8,
-                                216u8, 23u8,
-                            ]
-                        {
-                            let entry = Mailbox(_0, _1);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    _0: impl ::std::borrow::Borrow<::subxt::ext::sp_core::crypto::AccountId32>,
+                    _1: impl ::std::borrow::Borrow<runtime_types::gear_core::ids::MessageId>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<(
+                        runtime_types::gear_core::message::stored::StoredMessage,
+                        runtime_types::gear_common::storage::primitives::Interval<
+                            ::core::primitive::u32,
+                        >,
+                    )>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "Mailbox",
+                        vec![
+                            ::subxt::storage::address::StorageMapKey::new(
+                                _0.borrow(),
+                                ::subxt::storage::address::StorageHasher::Identity,
+                            ),
+                            ::subxt::storage::address::StorageMapKey::new(
+                                _1.borrow(),
+                                ::subxt::storage::address::StorageHasher::Identity,
+                            ),
+                        ],
+                        [
+                            31u8, 73u8, 24u8, 100u8, 63u8, 67u8, 20u8, 65u8, 89u8, 133u8, 227u8,
+                            214u8, 30u8, 186u8, 151u8, 81u8, 203u8, 10u8, 152u8, 119u8, 110u8,
+                            89u8, 143u8, 224u8, 35u8, 205u8, 13u8, 233u8, 128u8, 184u8, 57u8,
+                            126u8,
+                        ],
+                    )
                 }
-                pub fn mailbox_iter(
+                pub fn mailbox_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, Mailbox<'a>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Mailbox>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                190u8, 152u8, 202u8, 137u8, 146u8, 197u8, 18u8, 85u8, 176u8, 157u8,
-                                208u8, 115u8, 75u8, 193u8, 199u8, 77u8, 25u8, 110u8, 144u8, 209u8,
-                                138u8, 98u8, 105u8, 3u8, 146u8, 221u8, 76u8, 213u8, 20u8, 157u8,
-                                216u8, 23u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<(
+                        runtime_types::gear_core::message::stored::StoredMessage,
+                        runtime_types::gear_common::storage::primitives::Interval<
+                            ::core::primitive::u32,
+                        >,
+                    )>,
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "Mailbox",
+                        Vec::new(),
+                        [
+                            31u8, 73u8, 24u8, 100u8, 63u8, 67u8, 20u8, 65u8, 89u8, 133u8, 227u8,
+                            214u8, 30u8, 186u8, 151u8, 81u8, 203u8, 10u8, 152u8, 119u8, 110u8,
+                            89u8, 143u8, 224u8, 35u8, 205u8, 13u8, 233u8, 128u8, 184u8, 57u8,
+                            126u8,
+                        ],
+                    )
                 }
                 pub fn queue_processing(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::core::primitive::bool>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<QueueProcessing>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                10u8, 194u8, 166u8, 76u8, 94u8, 214u8, 223u8, 191u8, 238u8, 31u8,
-                                206u8, 24u8, 13u8, 27u8, 129u8, 72u8, 218u8, 245u8, 57u8, 224u8,
-                                31u8, 254u8, 31u8, 219u8, 142u8, 60u8, 38u8, 186u8, 195u8, 248u8,
-                                112u8, 185u8,
-                            ]
-                        {
-                            let entry = QueueProcessing;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::bool>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "QueueProcessing",
+                        vec![],
+                        [
+                            10u8, 194u8, 166u8, 76u8, 94u8, 214u8, 223u8, 191u8, 238u8, 31u8,
+                            206u8, 24u8, 13u8, 27u8, 129u8, 72u8, 218u8, 245u8, 57u8, 224u8, 31u8,
+                            254u8, 31u8, 219u8, 142u8, 60u8, 38u8, 186u8, 195u8, 248u8, 112u8,
+                            185u8,
+                        ],
+                    )
                 }
                 pub fn sent(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::core::primitive::u32>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Sent>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                240u8, 146u8, 10u8, 14u8, 224u8, 131u8, 245u8, 150u8, 100u8, 182u8,
-                                108u8, 9u8, 177u8, 41u8, 169u8, 251u8, 46u8, 11u8, 155u8, 58u8,
-                                183u8, 134u8, 55u8, 94u8, 225u8, 156u8, 35u8, 40u8, 240u8, 50u8,
-                                112u8, 236u8,
-                            ]
-                        {
-                            let entry = Sent;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "Sent",
+                        vec![],
+                        [
+                            240u8, 146u8, 10u8, 14u8, 224u8, 131u8, 245u8, 150u8, 100u8, 182u8,
+                            108u8, 9u8, 177u8, 41u8, 169u8, 251u8, 46u8, 11u8, 155u8, 58u8, 183u8,
+                            134u8, 55u8, 94u8, 225u8, 156u8, 35u8, 40u8, 240u8, 50u8, 112u8, 236u8,
+                        ],
+                    )
                 }
                 pub fn tail(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<runtime_types::gear_core::ids::MessageId>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Tail>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                193u8, 241u8, 64u8, 191u8, 242u8, 170u8, 178u8, 11u8, 65u8, 143u8,
-                                178u8, 88u8, 74u8, 92u8, 85u8, 79u8, 97u8, 51u8, 97u8, 176u8,
-                                216u8, 252u8, 204u8, 89u8, 88u8, 82u8, 168u8, 242u8, 218u8, 101u8,
-                                20u8, 255u8,
-                            ]
-                        {
-                            let entry = Tail;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<runtime_types::gear_core::ids::MessageId>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "Tail",
+                        vec![],
+                        [
+                            169u8, 115u8, 64u8, 192u8, 53u8, 42u8, 116u8, 234u8, 232u8, 29u8, 25u8,
+                            216u8, 235u8, 213u8, 228u8, 101u8, 139u8, 80u8, 29u8, 76u8, 170u8,
+                            120u8, 169u8, 77u8, 72u8, 206u8, 28u8, 92u8, 158u8, 200u8, 33u8, 93u8,
+                        ],
+                    )
                 }
                 pub fn waitlist(
                     &self,
-                    _0: &'a runtime_types::gear_core::ids::ProgramId,
-                    _1: &'a runtime_types::gear_core::ids::MessageId,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<(
-                            runtime_types::gear_core::message::stored::StoredDispatch,
-                            runtime_types::gear_common::storage::primitives::Interval<
-                                ::core::primitive::u32,
-                            >,
-                        )>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Waitlist>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                246u8, 141u8, 99u8, 243u8, 157u8, 197u8, 253u8, 235u8, 126u8,
-                                203u8, 246u8, 158u8, 202u8, 71u8, 214u8, 33u8, 42u8, 88u8, 127u8,
-                                213u8, 208u8, 229u8, 21u8, 49u8, 33u8, 103u8, 66u8, 3u8, 134u8,
-                                122u8, 94u8, 161u8,
-                            ]
-                        {
-                            let entry = Waitlist(_0, _1);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    _0: impl ::std::borrow::Borrow<runtime_types::gear_core::ids::ProgramId>,
+                    _1: impl ::std::borrow::Borrow<runtime_types::gear_core::ids::MessageId>,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<(
+                        runtime_types::gear_core::message::stored::StoredDispatch,
+                        runtime_types::gear_common::storage::primitives::Interval<
+                            ::core::primitive::u32,
+                        >,
+                    )>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "Waitlist",
+                        vec![
+                            ::subxt::storage::address::StorageMapKey::new(
+                                _0.borrow(),
+                                ::subxt::storage::address::StorageHasher::Identity,
+                            ),
+                            ::subxt::storage::address::StorageMapKey::new(
+                                _1.borrow(),
+                                ::subxt::storage::address::StorageHasher::Identity,
+                            ),
+                        ],
+                        [
+                            121u8, 164u8, 240u8, 36u8, 49u8, 180u8, 32u8, 32u8, 254u8, 142u8, 77u8,
+                            35u8, 120u8, 147u8, 249u8, 8u8, 58u8, 67u8, 239u8, 172u8, 29u8, 33u8,
+                            104u8, 231u8, 90u8, 114u8, 118u8, 208u8, 113u8, 47u8, 102u8, 229u8,
+                        ],
+                    )
                 }
-                pub fn waitlist_iter(
+                pub fn waitlist_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, Waitlist<'a>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Waitlist>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                246u8, 141u8, 99u8, 243u8, 157u8, 197u8, 253u8, 235u8, 126u8,
-                                203u8, 246u8, 158u8, 202u8, 71u8, 214u8, 33u8, 42u8, 88u8, 127u8,
-                                213u8, 208u8, 229u8, 21u8, 49u8, 33u8, 103u8, 66u8, 3u8, 134u8,
-                                122u8, 94u8, 161u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<(
+                        runtime_types::gear_core::message::stored::StoredDispatch,
+                        runtime_types::gear_common::storage::primitives::Interval<
+                            ::core::primitive::u32,
+                        >,
+                    )>,
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearMessenger",
+                        "Waitlist",
+                        Vec::new(),
+                        [
+                            121u8, 164u8, 240u8, 36u8, 49u8, 180u8, 32u8, 32u8, 254u8, 142u8, 77u8,
+                            35u8, 120u8, 147u8, 249u8, 8u8, 58u8, 67u8, 239u8, 172u8, 29u8, 33u8,
+                            104u8, 231u8, 90u8, 114u8, 118u8, 208u8, 113u8, 47u8, 102u8, 229u8,
+                        ],
+                    )
                 }
             }
         }
@@ -7176,222 +4480,136 @@ pub mod api {
         use super::runtime_types;
         pub mod storage {
             use super::runtime_types;
-            pub struct MissedBlocks;
-            impl ::subxt::StorageEntry for MissedBlocks {
-                const PALLET: &'static str = "GearScheduler";
-                const STORAGE: &'static str = "MissedBlocks";
-                type Value = ::std::vec::Vec<::core::primitive::u32>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct TaskPool<'a>(
-                pub &'a ::core::primitive::u32,
-                pub  &'a runtime_types::gear_common::scheduler::task::ScheduledTask<
-                    ::subxt::sp_core::crypto::AccountId32,
-                >,
-            );
-            impl ::subxt::StorageEntry for TaskPool<'_> {
-                const PALLET: &'static str = "GearScheduler";
-                const STORAGE: &'static str = "TaskPool";
-                type Value = ();
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![
-                        ::subxt::StorageMapKey::new(&self.0, ::subxt::StorageHasher::Identity),
-                        ::subxt::StorageMapKey::new(&self.1, ::subxt::StorageHasher::Identity),
-                    ])
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 pub fn missed_blocks(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::std::vec::Vec<::core::primitive::u32>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<MissedBlocks>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                141u8, 60u8, 52u8, 166u8, 40u8, 112u8, 92u8, 189u8, 243u8, 166u8,
-                                41u8, 171u8, 9u8, 93u8, 242u8, 60u8, 199u8, 140u8, 222u8, 35u8,
-                                250u8, 167u8, 247u8, 154u8, 91u8, 189u8, 195u8, 215u8, 174u8,
-                                171u8, 126u8, 251u8,
-                            ]
-                        {
-                            let entry = MissedBlocks;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::std::vec::Vec<::core::primitive::u32>>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearScheduler",
+                        "MissedBlocks",
+                        vec![],
+                        [
+                            141u8, 60u8, 52u8, 166u8, 40u8, 112u8, 92u8, 189u8, 243u8, 166u8, 41u8,
+                            171u8, 9u8, 93u8, 242u8, 60u8, 199u8, 140u8, 222u8, 35u8, 250u8, 167u8,
+                            247u8, 154u8, 91u8, 189u8, 195u8, 215u8, 174u8, 171u8, 126u8, 251u8,
+                        ],
+                    )
                 }
                 pub fn task_pool(
                     &self,
-                    _0: &'a ::core::primitive::u32,
-                    _1: &'a runtime_types::gear_common::scheduler::task::ScheduledTask<
-                        ::subxt::sp_core::crypto::AccountId32,
+                    _0: impl ::std::borrow::Borrow<::core::primitive::u32>,
+                    _1: impl ::std::borrow::Borrow<
+                        runtime_types::gear_common::scheduler::task::ScheduledTask<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
+                        >,
                     >,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<()>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<TaskPool>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                92u8, 50u8, 199u8, 84u8, 178u8, 213u8, 235u8, 130u8, 173u8, 175u8,
-                                203u8, 201u8, 95u8, 187u8, 163u8, 143u8, 15u8, 251u8, 128u8, 87u8,
-                                140u8, 187u8, 16u8, 126u8, 105u8, 33u8, 184u8, 163u8, 104u8, 114u8,
-                                189u8, 70u8,
-                            ]
-                        {
-                            let entry = TaskPool(_0, _1);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<()>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearScheduler",
+                        "TaskPool",
+                        vec![
+                            ::subxt::storage::address::StorageMapKey::new(
+                                _0.borrow(),
+                                ::subxt::storage::address::StorageHasher::Identity,
+                            ),
+                            ::subxt::storage::address::StorageMapKey::new(
+                                _1.borrow(),
+                                ::subxt::storage::address::StorageHasher::Identity,
+                            ),
+                        ],
+                        [
+                            63u8, 131u8, 150u8, 42u8, 237u8, 179u8, 118u8, 0u8, 74u8, 182u8, 0u8,
+                            244u8, 95u8, 41u8, 100u8, 149u8, 77u8, 103u8, 30u8, 92u8, 80u8, 236u8,
+                            166u8, 34u8, 82u8, 37u8, 157u8, 192u8, 199u8, 207u8, 69u8, 180u8,
+                        ],
+                    )
                 }
-                pub fn task_pool_iter(
+                pub fn task_pool_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, TaskPool<'a>>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<TaskPool>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                92u8, 50u8, 199u8, 84u8, 178u8, 213u8, 235u8, 130u8, 173u8, 175u8,
-                                203u8, 201u8, 95u8, 187u8, 163u8, 143u8, 15u8, 251u8, 128u8, 87u8,
-                                140u8, 187u8, 16u8, 126u8, 105u8, 33u8, 184u8, 163u8, 104u8, 114u8,
-                                189u8, 70u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<()>,
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearScheduler",
+                        "TaskPool",
+                        Vec::new(),
+                        [
+                            63u8, 131u8, 150u8, 42u8, 237u8, 179u8, 118u8, 0u8, 74u8, 182u8, 0u8,
+                            244u8, 95u8, 41u8, 100u8, 149u8, 77u8, 103u8, 30u8, 92u8, 80u8, 236u8,
+                            166u8, 34u8, 82u8, 37u8, 157u8, 192u8, 199u8, 207u8, 69u8, 180u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod constants {
             use super::runtime_types;
-            pub struct ConstantsApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct ConstantsApi;
+            impl ConstantsApi {
                 #[doc = " Amount of blocks for extra delay used to secure from outdated tasks."]
                 pub fn reserve_threshold(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("GearScheduler", "ReserveThreshold")?
-                        == [
-                            202u8, 130u8, 107u8, 234u8, 203u8, 32u8, 216u8, 197u8, 92u8, 38u8,
-                            243u8, 35u8, 57u8, 62u8, 176u8, 40u8, 88u8, 119u8, 13u8, 96u8, 221u8,
-                            70u8, 185u8, 96u8, 59u8, 234u8, 156u8, 224u8, 92u8, 144u8, 110u8,
-                            103u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("GearScheduler")?;
-                        let constant = pallet.constant("ReserveThreshold")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "GearScheduler",
+                        "ReserveThreshold",
+                        [
+                            98u8, 252u8, 116u8, 72u8, 26u8, 180u8, 225u8, 83u8, 200u8, 157u8,
+                            125u8, 151u8, 53u8, 76u8, 168u8, 26u8, 10u8, 9u8, 98u8, 68u8, 9u8,
+                            178u8, 197u8, 113u8, 31u8, 79u8, 200u8, 90u8, 203u8, 100u8, 41u8,
+                            145u8,
+                        ],
+                    )
                 }
                 #[doc = " Cost for storing in waitlist per block."]
                 pub fn waitlist_cost(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("GearScheduler", "WaitlistCost")?
-                        == [
-                            171u8, 108u8, 19u8, 219u8, 213u8, 63u8, 94u8, 184u8, 210u8, 248u8,
-                            164u8, 128u8, 1u8, 73u8, 95u8, 182u8, 50u8, 29u8, 96u8, 4u8, 17u8,
-                            35u8, 146u8, 197u8, 206u8, 155u8, 25u8, 196u8, 119u8, 137u8, 199u8,
-                            89u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("GearScheduler")?;
-                        let constant = pallet.constant("WaitlistCost")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "GearScheduler",
+                        "WaitlistCost",
+                        [
+                            128u8, 214u8, 205u8, 242u8, 181u8, 142u8, 124u8, 231u8, 190u8, 146u8,
+                            59u8, 226u8, 157u8, 101u8, 103u8, 117u8, 249u8, 65u8, 18u8, 191u8,
+                            103u8, 119u8, 53u8, 85u8, 81u8, 96u8, 220u8, 42u8, 184u8, 239u8, 42u8,
+                            246u8,
+                        ],
+                    )
                 }
                 #[doc = " Cost for storing in mailbox per block."]
                 pub fn mailbox_cost(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("GearScheduler", "MailboxCost")?
-                        == [
-                            213u8, 84u8, 131u8, 162u8, 90u8, 131u8, 113u8, 30u8, 107u8, 65u8, 45u8,
-                            115u8, 102u8, 121u8, 211u8, 135u8, 193u8, 179u8, 216u8, 244u8, 153u8,
-                            183u8, 227u8, 139u8, 205u8, 80u8, 63u8, 115u8, 187u8, 44u8, 3u8, 87u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("GearScheduler")?;
-                        let constant = pallet.constant("MailboxCost")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "GearScheduler",
+                        "MailboxCost",
+                        [
+                            128u8, 214u8, 205u8, 242u8, 181u8, 142u8, 124u8, 231u8, 190u8, 146u8,
+                            59u8, 226u8, 157u8, 101u8, 103u8, 117u8, 249u8, 65u8, 18u8, 191u8,
+                            103u8, 119u8, 53u8, 85u8, 81u8, 96u8, 220u8, 42u8, 184u8, 239u8, 42u8,
+                            246u8,
+                        ],
+                    )
                 }
             }
         }
@@ -7401,226 +4619,130 @@ pub mod api {
         use super::runtime_types;
         pub mod storage {
             use super::runtime_types;
-            pub struct TotalIssuance;
-            impl ::subxt::StorageEntry for TotalIssuance {
-                const PALLET: &'static str = "GearGas";
-                const STORAGE: &'static str = "TotalIssuance";
-                type Value = ::core::primitive::u64;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct GasNodes<'a>(
-                pub  &'a runtime_types::gear_common::gas_provider::node::GasNodeId<
-                    runtime_types::gear_core::ids::MessageId,
-                    runtime_types::gear_core::ids::ReservationId,
-                >,
-            );
-            impl ::subxt::StorageEntry for GasNodes<'_> {
-                const PALLET: &'static str = "GearGas";
-                const STORAGE: &'static str = "GasNodes";
-                type Value = runtime_types::gear_common::gas_provider::node::GasNode<
-                    ::subxt::sp_core::crypto::AccountId32,
-                    runtime_types::gear_core::ids::MessageId,
-                    ::core::primitive::u64,
-                >;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Map(vec![::subxt::StorageMapKey::new(
-                        &self.0,
-                        ::subxt::StorageHasher::Identity,
-                    )])
-                }
-            }
-            pub struct Allowance;
-            impl ::subxt::StorageEntry for Allowance {
-                const PALLET: &'static str = "GearGas";
-                const STORAGE: &'static str = "Allowance";
-                type Value = ::core::primitive::u64;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 pub fn total_issuance(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<::core::primitive::u64>,
-                        ::subxt::BasicError,
-                    >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<TotalIssuance>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                215u8, 30u8, 184u8, 22u8, 122u8, 121u8, 61u8, 175u8, 90u8, 240u8,
-                                180u8, 196u8, 214u8, 242u8, 43u8, 245u8, 173u8, 13u8, 87u8, 19u8,
-                                119u8, 134u8, 64u8, 104u8, 44u8, 70u8, 65u8, 212u8, 132u8, 81u8,
-                                246u8, 247u8,
-                            ]
-                        {
-                            let entry = TotalIssuance;
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearGas",
+                        "TotalIssuance",
+                        vec![],
+                        [
+                            215u8, 30u8, 184u8, 22u8, 122u8, 121u8, 61u8, 175u8, 90u8, 240u8,
+                            180u8, 196u8, 214u8, 242u8, 43u8, 245u8, 173u8, 13u8, 87u8, 19u8,
+                            119u8, 134u8, 64u8, 104u8, 44u8, 70u8, 65u8, 212u8, 132u8, 81u8, 246u8,
+                            247u8,
+                        ],
+                    )
                 }
                 pub fn gas_nodes(
                     &self,
-                    _0: &'a runtime_types::gear_common::gas_provider::node::GasNodeId<
-                        runtime_types::gear_core::ids::MessageId,
-                        runtime_types::gear_core::ids::ReservationId,
-                    >,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::core::option::Option<
-                            runtime_types::gear_common::gas_provider::node::GasNode<
-                                ::subxt::sp_core::crypto::AccountId32,
-                                runtime_types::gear_core::ids::MessageId,
-                                ::core::primitive::u64,
-                            >,
+                    _0: impl ::std::borrow::Borrow<
+                        runtime_types::gear_common::gas_provider::node::GasNodeId<
+                            runtime_types::gear_core::ids::MessageId,
+                            runtime_types::gear_core::ids::ReservationId,
                         >,
-                        ::subxt::BasicError,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<GasNodes>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                57u8, 91u8, 183u8, 208u8, 112u8, 32u8, 28u8, 146u8, 55u8, 22u8,
-                                92u8, 103u8, 94u8, 102u8, 43u8, 117u8, 72u8, 197u8, 28u8, 60u8,
-                                111u8, 228u8, 82u8, 197u8, 74u8, 180u8, 98u8, 217u8, 49u8, 59u8,
-                                164u8, 161u8,
-                            ]
-                        {
-                            let entry = GasNodes(_0);
-                            client.storage().fetch(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::gear_common::gas_provider::node::GasNode<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
+                            runtime_types::gear_core::ids::MessageId,
+                            ::core::primitive::u64,
+                        >,
+                    >,
+                    ::subxt::storage::address::Yes,
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearGas",
+                        "GasNodes",
+                        vec![::subxt::storage::address::StorageMapKey::new(
+                            _0.borrow(),
+                            ::subxt::storage::address::StorageHasher::Identity,
+                        )],
+                        [
+                            12u8, 145u8, 95u8, 126u8, 125u8, 140u8, 72u8, 227u8, 23u8, 131u8,
+                            174u8, 109u8, 98u8, 108u8, 179u8, 241u8, 169u8, 172u8, 4u8, 150u8,
+                            195u8, 232u8, 234u8, 91u8, 46u8, 142u8, 189u8, 221u8, 21u8, 247u8,
+                            76u8, 214u8,
+                        ],
+                    )
                 }
-                pub fn gas_nodes_iter(
+                pub fn gas_nodes_root(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyIter<'a, T, GasNodes<'a>>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::gear_common::gas_provider::node::GasNode<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
+                            runtime_types::gear_core::ids::MessageId,
+                            ::core::primitive::u64,
+                        >,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<GasNodes>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                57u8, 91u8, 183u8, 208u8, 112u8, 32u8, 28u8, 146u8, 55u8, 22u8,
-                                92u8, 103u8, 94u8, 102u8, 43u8, 117u8, 72u8, 197u8, 28u8, 60u8,
-                                111u8, 228u8, 82u8, 197u8, 74u8, 180u8, 98u8, 217u8, 49u8, 59u8,
-                                164u8, 161u8,
-                            ]
-                        {
-                            client.storage().iter(block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    (),
+                    (),
+                    ::subxt::storage::address::Yes,
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearGas",
+                        "GasNodes",
+                        Vec::new(),
+                        [
+                            12u8, 145u8, 95u8, 126u8, 125u8, 140u8, 72u8, 227u8, 23u8, 131u8,
+                            174u8, 109u8, 98u8, 108u8, 179u8, 241u8, 169u8, 172u8, 4u8, 150u8,
+                            195u8, 232u8, 234u8, 91u8, 46u8, 142u8, 189u8, 221u8, 21u8, 247u8,
+                            76u8, 214u8,
+                        ],
+                    )
                 }
                 pub fn allowance(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<Allowance>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                86u8, 150u8, 89u8, 215u8, 149u8, 141u8, 95u8, 7u8, 74u8, 16u8, 6u8,
-                                85u8, 247u8, 220u8, 22u8, 107u8, 191u8, 248u8, 157u8, 6u8, 49u8,
-                                156u8, 10u8, 159u8, 50u8, 179u8, 153u8, 95u8, 141u8, 17u8, 6u8,
-                                166u8,
-                            ]
-                        {
-                            let entry = Allowance;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearGas",
+                        "Allowance",
+                        vec![],
+                        [
+                            86u8, 150u8, 89u8, 215u8, 149u8, 141u8, 95u8, 7u8, 74u8, 16u8, 6u8,
+                            85u8, 247u8, 220u8, 22u8, 107u8, 191u8, 248u8, 157u8, 6u8, 49u8, 156u8,
+                            10u8, 159u8, 50u8, 179u8, 153u8, 95u8, 141u8, 17u8, 6u8, 166u8,
+                        ],
+                    )
                 }
             }
         }
         pub mod constants {
             use super::runtime_types;
-            pub struct ConstantsApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct ConstantsApi;
+            impl ConstantsApi {
                 #[doc = " The maximum amount of gas that can be used within a single block."]
                 pub fn block_gas_limit(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("GearGas", "BlockGasLimit")?
-                        == [
-                            238u8, 78u8, 114u8, 61u8, 170u8, 104u8, 123u8, 124u8, 134u8, 230u8,
-                            226u8, 21u8, 123u8, 201u8, 93u8, 97u8, 54u8, 247u8, 187u8, 65u8, 16u8,
-                            252u8, 152u8, 92u8, 136u8, 64u8, 32u8, 25u8, 16u8, 207u8, 69u8, 121u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("GearGas")?;
-                        let constant = pallet.constant("BlockGasLimit")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "GearGas",
+                        "BlockGasLimit",
+                        [
+                            128u8, 214u8, 205u8, 242u8, 181u8, 142u8, 124u8, 231u8, 190u8, 146u8,
+                            59u8, 226u8, 157u8, 101u8, 103u8, 117u8, 249u8, 65u8, 18u8, 191u8,
+                            103u8, 119u8, 53u8, 85u8, 81u8, 96u8, 220u8, 42u8, 184u8, 239u8, 42u8,
+                            246u8,
+                        ],
+                    )
                 }
             }
         }
@@ -7633,15 +4755,15 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct UploadCode {
                 pub code: ::std::vec::Vec<::core::primitive::u8>,
             }
-            impl ::subxt::Call for UploadCode {
-                const PALLET: &'static str = "Gear";
-                const FUNCTION: &'static str = "upload_code";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct UploadProgram {
                 pub code: ::std::vec::Vec<::core::primitive::u8>,
                 pub salt: ::std::vec::Vec<::core::primitive::u8>,
@@ -7649,11 +4771,9 @@ pub mod api {
                 pub gas_limit: ::core::primitive::u64,
                 pub value: ::core::primitive::u128,
             }
-            impl ::subxt::Call for UploadProgram {
-                const PALLET: &'static str = "Gear";
-                const FUNCTION: &'static str = "upload_program";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct CreateProgram {
                 pub code_id: runtime_types::gear_core::ids::CodeId,
                 pub salt: ::std::vec::Vec<::core::primitive::u8>,
@@ -7661,61 +4781,36 @@ pub mod api {
                 pub gas_limit: ::core::primitive::u64,
                 pub value: ::core::primitive::u128,
             }
-            impl ::subxt::Call for CreateProgram {
-                const PALLET: &'static str = "Gear";
-                const FUNCTION: &'static str = "create_program";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SendMessage {
                 pub destination: runtime_types::gear_core::ids::ProgramId,
                 pub payload: ::std::vec::Vec<::core::primitive::u8>,
                 pub gas_limit: ::core::primitive::u64,
                 pub value: ::core::primitive::u128,
             }
-            impl ::subxt::Call for SendMessage {
-                const PALLET: &'static str = "Gear";
-                const FUNCTION: &'static str = "send_message";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SendReply {
                 pub reply_to_id: runtime_types::gear_core::ids::MessageId,
                 pub payload: ::std::vec::Vec<::core::primitive::u8>,
                 pub gas_limit: ::core::primitive::u64,
                 pub value: ::core::primitive::u128,
             }
-            impl ::subxt::Call for SendReply {
-                const PALLET: &'static str = "Gear";
-                const FUNCTION: &'static str = "send_reply";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ClaimValue {
                 pub message_id: runtime_types::gear_core::ids::MessageId,
             }
-            impl ::subxt::Call for ClaimValue {
-                const PALLET: &'static str = "Gear";
-                const FUNCTION: &'static str = "claim_value";
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct Reset;
-            impl ::subxt::Call for Reset {
-                const PALLET: &'static str = "Gear";
-                const FUNCTION: &'static str = "reset";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "Saves program `code` in storage."]
                 #[doc = ""]
                 #[doc = "The extrinsic was created to provide _deploy program from program_ functionality."]
@@ -7735,34 +4830,18 @@ pub mod api {
                 pub fn upload_code(
                     &self,
                     code: ::std::vec::Vec<::core::primitive::u8>,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        UploadCode,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<UploadCode>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            82u8, 212u8, 78u8, 59u8, 185u8, 135u8, 195u8, 130u8, 116u8, 51u8, 81u8,
-                            156u8, 117u8, 158u8, 121u8, 238u8, 226u8, 227u8, 165u8, 54u8, 115u8,
-                            112u8, 85u8, 162u8, 21u8, 132u8, 3u8, 4u8, 73u8, 16u8, 153u8, 85u8,
-                        ]
-                    {
-                        let call = UploadCode { code };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<UploadCode> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Gear",
+                        "upload_code",
+                        UploadCode { code },
+                        [
+                            185u8, 233u8, 170u8, 61u8, 175u8, 152u8, 156u8, 141u8, 59u8, 244u8,
+                            46u8, 132u8, 237u8, 108u8, 61u8, 32u8, 37u8, 118u8, 75u8, 87u8, 88u8,
+                            173u8, 49u8, 44u8, 207u8, 239u8, 185u8, 234u8, 146u8, 125u8, 94u8,
+                            107u8,
+                        ],
+                    )
                 }
                 #[doc = "Creates program initialization request (message), that is scheduled to be run in the same block."]
                 #[doc = ""]
@@ -7809,41 +4888,23 @@ pub mod api {
                     init_payload: ::std::vec::Vec<::core::primitive::u8>,
                     gas_limit: ::core::primitive::u64,
                     value: ::core::primitive::u128,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        UploadProgram,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<UploadProgram>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            252u8, 21u8, 14u8, 152u8, 146u8, 140u8, 172u8, 242u8, 140u8, 49u8,
-                            76u8, 166u8, 167u8, 71u8, 235u8, 235u8, 228u8, 142u8, 235u8, 118u8,
-                            168u8, 175u8, 62u8, 85u8, 33u8, 222u8, 229u8, 179u8, 39u8, 43u8, 111u8,
-                            62u8,
-                        ]
-                    {
-                        let call = UploadProgram {
+                ) -> ::subxt::tx::StaticTxPayload<UploadProgram> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Gear",
+                        "upload_program",
+                        UploadProgram {
                             code,
                             salt,
                             init_payload,
                             gas_limit,
                             value,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            32u8, 1u8, 25u8, 191u8, 235u8, 135u8, 128u8, 128u8, 212u8, 109u8, 63u8,
+                            135u8, 31u8, 192u8, 246u8, 68u8, 112u8, 59u8, 233u8, 10u8, 10u8, 147u8,
+                            249u8, 148u8, 116u8, 231u8, 85u8, 141u8, 147u8, 58u8, 201u8, 233u8,
+                        ],
+                    )
                 }
                 #[doc = "Creates program via `code_id` from storage."]
                 #[doc = ""]
@@ -7868,40 +4929,23 @@ pub mod api {
                     init_payload: ::std::vec::Vec<::core::primitive::u8>,
                     gas_limit: ::core::primitive::u64,
                     value: ::core::primitive::u128,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        CreateProgram,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<CreateProgram>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            140u8, 33u8, 31u8, 245u8, 206u8, 162u8, 39u8, 147u8, 121u8, 42u8, 15u8,
-                            25u8, 50u8, 25u8, 67u8, 43u8, 239u8, 49u8, 74u8, 12u8, 146u8, 249u8,
-                            106u8, 228u8, 254u8, 59u8, 95u8, 50u8, 43u8, 121u8, 178u8, 129u8,
-                        ]
-                    {
-                        let call = CreateProgram {
+                ) -> ::subxt::tx::StaticTxPayload<CreateProgram> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Gear",
+                        "create_program",
+                        CreateProgram {
                             code_id,
                             salt,
                             init_payload,
                             gas_limit,
                             value,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            142u8, 52u8, 70u8, 128u8, 0u8, 97u8, 90u8, 147u8, 150u8, 118u8, 193u8,
+                            49u8, 212u8, 20u8, 12u8, 31u8, 93u8, 164u8, 222u8, 183u8, 18u8, 81u8,
+                            83u8, 199u8, 246u8, 203u8, 164u8, 60u8, 228u8, 59u8, 103u8, 113u8,
+                        ],
+                    )
                 }
                 #[doc = "Sends a message to a program or to another account."]
                 #[doc = ""]
@@ -7926,40 +4970,23 @@ pub mod api {
                     payload: ::std::vec::Vec<::core::primitive::u8>,
                     gas_limit: ::core::primitive::u64,
                     value: ::core::primitive::u128,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        SendMessage,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SendMessage>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            174u8, 213u8, 219u8, 184u8, 114u8, 26u8, 171u8, 196u8, 232u8, 141u8,
-                            157u8, 160u8, 12u8, 201u8, 76u8, 209u8, 162u8, 152u8, 202u8, 173u8,
-                            67u8, 59u8, 181u8, 26u8, 246u8, 18u8, 153u8, 145u8, 26u8, 129u8, 142u8,
-                            66u8,
-                        ]
-                    {
-                        let call = SendMessage {
+                ) -> ::subxt::tx::StaticTxPayload<SendMessage> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Gear",
+                        "send_message",
+                        SendMessage {
                             destination,
                             payload,
                             gas_limit,
                             value,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            60u8, 50u8, 131u8, 173u8, 185u8, 196u8, 170u8, 45u8, 191u8, 223u8,
+                            35u8, 213u8, 13u8, 14u8, 157u8, 85u8, 208u8, 221u8, 193u8, 119u8,
+                            151u8, 248u8, 78u8, 32u8, 227u8, 167u8, 27u8, 157u8, 199u8, 222u8,
+                            14u8, 44u8,
+                        ],
+                    )
                 }
                 #[doc = "Send reply on message in `Mailbox`."]
                 #[doc = ""]
@@ -7980,39 +5007,22 @@ pub mod api {
                     payload: ::std::vec::Vec<::core::primitive::u8>,
                     gas_limit: ::core::primitive::u64,
                     value: ::core::primitive::u128,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        SendReply,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<SendReply>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            239u8, 231u8, 250u8, 83u8, 253u8, 67u8, 204u8, 18u8, 253u8, 109u8,
-                            141u8, 168u8, 206u8, 1u8, 160u8, 120u8, 87u8, 53u8, 89u8, 63u8, 19u8,
-                            254u8, 156u8, 134u8, 203u8, 60u8, 6u8, 230u8, 15u8, 23u8, 208u8, 18u8,
-                        ]
-                    {
-                        let call = SendReply {
+                ) -> ::subxt::tx::StaticTxPayload<SendReply> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Gear",
+                        "send_reply",
+                        SendReply {
                             reply_to_id,
                             payload,
                             gas_limit,
                             value,
-                        };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        },
+                        [
+                            96u8, 52u8, 186u8, 93u8, 212u8, 227u8, 63u8, 113u8, 255u8, 209u8,
+                            116u8, 100u8, 7u8, 175u8, 121u8, 200u8, 90u8, 9u8, 58u8, 190u8, 189u8,
+                            193u8, 43u8, 212u8, 0u8, 104u8, 26u8, 178u8, 55u8, 172u8, 187u8, 109u8,
+                        ],
+                    )
                 }
                 #[doc = "Claim value from message in `Mailbox`."]
                 #[doc = ""]
@@ -8025,90 +5035,67 @@ pub mod api {
                 pub fn claim_value(
                     &self,
                     message_id: runtime_types::gear_core::ids::MessageId,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        ClaimValue,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<ClaimValue>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            236u8, 193u8, 97u8, 137u8, 19u8, 252u8, 6u8, 238u8, 25u8, 15u8, 175u8,
-                            95u8, 12u8, 63u8, 16u8, 224u8, 235u8, 69u8, 190u8, 184u8, 55u8, 180u8,
-                            54u8, 133u8, 162u8, 118u8, 86u8, 15u8, 236u8, 76u8, 251u8, 21u8,
-                        ]
-                    {
-                        let call = ClaimValue { message_id };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<ClaimValue> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Gear",
+                        "claim_value",
+                        ClaimValue { message_id },
+                        [
+                            45u8, 104u8, 74u8, 6u8, 100u8, 221u8, 226u8, 2u8, 135u8, 127u8, 2u8,
+                            88u8, 89u8, 143u8, 195u8, 17u8, 204u8, 138u8, 104u8, 5u8, 122u8, 187u8,
+                            50u8, 178u8, 106u8, 15u8, 10u8, 46u8, 16u8, 223u8, 210u8, 17u8,
+                        ],
+                    )
                 }
                 #[doc = "Reset all pallet associated storage."]
-                pub fn reset(
-                    &self,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<'a, T, X, Reset, DispatchError, root_mod::Event>,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<Reset>()?
-                    };
-                    if runtime_call_hash
-                        == [
+                pub fn reset(&self) -> ::subxt::tx::StaticTxPayload<Reset> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "Gear",
+                        "reset",
+                        Reset {},
+                        [
                             166u8, 208u8, 145u8, 126u8, 162u8, 10u8, 248u8, 10u8, 94u8, 186u8,
                             169u8, 36u8, 67u8, 190u8, 253u8, 231u8, 77u8, 176u8, 100u8, 80u8, 76u8,
                             77u8, 66u8, 12u8, 232u8, 83u8, 216u8, 23u8, 131u8, 55u8, 49u8, 223u8,
-                        ]
-                    {
-                        let call = Reset {};
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                        ],
+                    )
                 }
             }
         }
-        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
         pub type Event = runtime_types::pallet_gear::pallet::Event;
         pub mod events {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "User send message to program, which was successfully"]
             #[doc = "added to gear message queue."]
             pub struct MessageEnqueued {
                 pub id: runtime_types::gear_core::ids::MessageId,
-                pub source: ::subxt::sp_core::crypto::AccountId32,
+                pub source: ::subxt::ext::sp_core::crypto::AccountId32,
                 pub destination: runtime_types::gear_core::ids::ProgramId,
                 pub entry: runtime_types::gear_common::event::Entry,
             }
-            impl ::subxt::Event for MessageEnqueued {
+            impl ::subxt::events::StaticEvent for MessageEnqueued {
                 const PALLET: &'static str = "Gear";
                 const EVENT: &'static str = "MessageEnqueued";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Somebody sent message to user."]
             pub struct UserMessageSent {
                 pub message: runtime_types::gear_core::message::stored::StoredMessage,
                 pub expiration: ::core::option::Option<::core::primitive::u32>,
             }
-            impl ::subxt::Event for UserMessageSent {
+            impl ::subxt::events::StaticEvent for UserMessageSent {
                 const PALLET: &'static str = "Gear";
                 const EVENT: &'static str = "UserMessageSent";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Message marked as \"read\" and removes it from `Mailbox`."]
             #[doc = "This event only affects messages, which were"]
             #[doc = "already inserted in `Mailbox` before."]
@@ -8119,34 +5106,40 @@ pub mod api {
                     runtime_types::gear_common::event::UserMessageReadSystemReason,
                 >,
             }
-            impl ::subxt::Event for UserMessageRead {
+            impl ::subxt::events::StaticEvent for UserMessageRead {
                 const PALLET: &'static str = "Gear";
                 const EVENT: &'static str = "UserMessageRead";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "The result of the messages processing within the block."]
             pub struct MessagesDispatched {
                 pub total: ::core::primitive::u32,
-                pub statuses: ::subxt::KeyedVec<
+                pub statuses: ::subxt::utils::KeyedVec<
                     runtime_types::gear_core::ids::MessageId,
                     runtime_types::gear_common::event::DispatchStatus,
                 >,
                 pub state_changes: ::std::vec::Vec<runtime_types::gear_core::ids::ProgramId>,
             }
-            impl ::subxt::Event for MessagesDispatched {
+            impl ::subxt::events::StaticEvent for MessagesDispatched {
                 const PALLET: &'static str = "Gear";
                 const EVENT: &'static str = "MessagesDispatched";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Temporary `Event` variant, showing that all storages was cleared."]
             #[doc = ""]
             #[doc = "Will be removed in favor of proper database migrations."]
             pub struct DatabaseWiped;
-            impl ::subxt::Event for DatabaseWiped {
+            impl ::subxt::events::StaticEvent for DatabaseWiped {
                 const PALLET: &'static str = "Gear";
                 const EVENT: &'static str = "DatabaseWiped";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Messages execution delayed (waited) and it was successfully"]
             #[doc = "added to gear waitlist."]
             pub struct MessageWaited {
@@ -8158,11 +5151,13 @@ pub mod api {
                 >,
                 pub expiration: ::core::primitive::u32,
             }
-            impl ::subxt::Event for MessageWaited {
+            impl ::subxt::events::StaticEvent for MessageWaited {
                 const PALLET: &'static str = "Gear";
                 const EVENT: &'static str = "MessageWaited";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Message is ready to continue its execution"]
             #[doc = "and was removed from `Waitlist`."]
             pub struct MessageWoken {
@@ -8172,89 +5167,75 @@ pub mod api {
                     runtime_types::gear_common::event::MessageWokenSystemReason,
                 >,
             }
-            impl ::subxt::Event for MessageWoken {
+            impl ::subxt::events::StaticEvent for MessageWoken {
                 const PALLET: &'static str = "Gear";
                 const EVENT: &'static str = "MessageWoken";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Any data related to programs codes changed."]
             pub struct CodeChanged {
                 pub id: runtime_types::gear_core::ids::CodeId,
                 pub change:
                     runtime_types::gear_common::event::CodeChangeKind<::core::primitive::u32>,
             }
-            impl ::subxt::Event for CodeChanged {
+            impl ::subxt::events::StaticEvent for CodeChanged {
                 const PALLET: &'static str = "Gear";
                 const EVENT: &'static str = "CodeChanged";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "Any data related to programs changed."]
             pub struct ProgramChanged {
                 pub id: runtime_types::gear_core::ids::ProgramId,
                 pub change:
                     runtime_types::gear_common::event::ProgramChangeKind<::core::primitive::u32>,
             }
-            impl ::subxt::Event for ProgramChanged {
+            impl ::subxt::events::StaticEvent for ProgramChanged {
                 const PALLET: &'static str = "Gear";
                 const EVENT: &'static str = "ProgramChanged";
             }
         }
         pub mod constants {
             use super::runtime_types;
-            pub struct ConstantsApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct ConstantsApi;
+            impl ConstantsApi {
                 #[doc = " Cost schedule and limits."]
                 pub fn schedule(
                     &self,
-                ) -> ::core::result::Result<
-                    runtime_types::pallet_gear::schedule::Schedule,
-                    ::subxt::BasicError,
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        runtime_types::pallet_gear::schedule::Schedule,
+                    >,
                 > {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Gear", "Schedule")?
-                        == [
-                            116u8, 108u8, 149u8, 16u8, 137u8, 81u8, 168u8, 51u8, 235u8, 174u8,
-                            108u8, 138u8, 7u8, 178u8, 123u8, 233u8, 124u8, 124u8, 226u8, 96u8,
-                            47u8, 200u8, 253u8, 141u8, 163u8, 201u8, 72u8, 107u8, 25u8, 241u8,
-                            202u8, 135u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Gear")?;
-                        let constant = pallet.constant("Schedule")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Gear",
+                        "Schedule",
+                        [
+                            217u8, 103u8, 65u8, 143u8, 6u8, 65u8, 78u8, 71u8, 71u8, 234u8, 189u8,
+                            88u8, 24u8, 173u8, 103u8, 242u8, 33u8, 198u8, 53u8, 192u8, 154u8, 46u8,
+                            72u8, 124u8, 122u8, 251u8, 106u8, 99u8, 158u8, 190u8, 140u8, 78u8,
+                        ],
+                    )
                 }
                 #[doc = " The maximum amount of messages that can be produced in single run."]
                 pub fn outgoing_limit(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u32, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Gear", "OutgoingLimit")?
-                        == [
-                            132u8, 130u8, 114u8, 247u8, 135u8, 28u8, 201u8, 219u8, 79u8, 252u8,
-                            19u8, 157u8, 30u8, 192u8, 7u8, 150u8, 7u8, 191u8, 231u8, 122u8, 253u8,
-                            138u8, 253u8, 189u8, 180u8, 211u8, 250u8, 245u8, 4u8, 112u8, 228u8,
-                            152u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Gear")?;
-                        let constant = pallet.constant("OutgoingLimit")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u32>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Gear",
+                        "OutgoingLimit",
+                        [
+                            98u8, 252u8, 116u8, 72u8, 26u8, 180u8, 225u8, 83u8, 200u8, 157u8,
+                            125u8, 151u8, 53u8, 76u8, 168u8, 26u8, 10u8, 9u8, 98u8, 68u8, 9u8,
+                            178u8, 197u8, 113u8, 31u8, 79u8, 200u8, 90u8, 203u8, 100u8, 41u8,
+                            145u8,
+                        ],
+                    )
                 }
                 #[doc = " The minimal gas amount for message to be inserted in mailbox."]
                 #[doc = ""]
@@ -8265,24 +5246,19 @@ pub mod api {
                 #[doc = " but will be seen in events."]
                 pub fn mailbox_threshold(
                     &self,
-                ) -> ::core::result::Result<::core::primitive::u64, ::subxt::BasicError>
-                {
-                    let locked_metadata = self.client.metadata();
-                    let metadata = locked_metadata.read();
-                    if metadata.constant_hash("Gear", "MailboxThreshold")?
-                        == [
-                            226u8, 255u8, 9u8, 36u8, 224u8, 127u8, 120u8, 162u8, 184u8, 200u8,
-                            100u8, 95u8, 166u8, 55u8, 71u8, 224u8, 254u8, 35u8, 250u8, 54u8, 211u8,
-                            176u8, 202u8, 253u8, 4u8, 209u8, 77u8, 56u8, 163u8, 223u8, 142u8, 90u8,
-                        ]
-                    {
-                        let pallet = metadata.pallet("Gear")?;
-                        let constant = pallet.constant("MailboxThreshold")?;
-                        let value = ::subxt::codec::Decode::decode(&mut &constant.value[..])?;
-                        Ok(value)
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::constants::StaticConstantAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::u64>,
+                > {
+                    ::subxt::constants::StaticConstantAddress::new(
+                        "Gear",
+                        "MailboxThreshold",
+                        [
+                            128u8, 214u8, 205u8, 242u8, 181u8, 142u8, 124u8, 231u8, 190u8, 146u8,
+                            59u8, 226u8, 157u8, 101u8, 103u8, 117u8, 249u8, 65u8, 18u8, 191u8,
+                            103u8, 119u8, 53u8, 85u8, 81u8, 96u8, 220u8, 42u8, 184u8, 239u8, 42u8,
+                            246u8,
+                        ],
+                    )
                 }
             }
         }
@@ -8299,29 +5275,14 @@ pub mod api {
             use super::root_mod;
             use super::runtime_types;
             type DispatchError = runtime_types::sp_runtime::DispatchError;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct EnableDebugMode {
                 pub debug_mode_on: ::core::primitive::bool,
             }
-            impl ::subxt::Call for EnableDebugMode {
-                const PALLET: &'static str = "GearDebug";
-                const FUNCTION: &'static str = "enable_debug_mode";
-            }
-            pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-                client: &'a ::subxt::Client<T>,
-                marker: ::core::marker::PhantomData<X>,
-            }
-            impl<'a, T, X> TransactionApi<'a, T, X>
-            where
-                T: ::subxt::Config,
-                X: ::subxt::extrinsic::ExtrinsicParams<T>,
-            {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self {
-                        client,
-                        marker: ::core::marker::PhantomData,
-                    }
-                }
+            pub struct TransactionApi;
+            impl TransactionApi {
                 #[doc = "Turn the debug mode on and off."]
                 #[doc = ""]
                 #[doc = "The origin must be the root."]
@@ -8334,187 +5295,108 @@ pub mod api {
                 pub fn enable_debug_mode(
                     &self,
                     debug_mode_on: ::core::primitive::bool,
-                ) -> Result<
-                    ::subxt::SubmittableExtrinsic<
-                        'a,
-                        T,
-                        X,
-                        EnableDebugMode,
-                        DispatchError,
-                        root_mod::Event,
-                    >,
-                    ::subxt::BasicError,
-                > {
-                    let runtime_call_hash = {
-                        let locked_metadata = self.client.metadata();
-                        let metadata = locked_metadata.read();
-                        metadata.call_hash::<EnableDebugMode>()?
-                    };
-                    if runtime_call_hash
-                        == [
-                            244u8, 33u8, 15u8, 65u8, 102u8, 109u8, 97u8, 160u8, 233u8, 11u8, 42u8,
-                            154u8, 244u8, 230u8, 34u8, 183u8, 20u8, 230u8, 224u8, 47u8, 230u8,
-                            222u8, 49u8, 112u8, 221u8, 64u8, 173u8, 65u8, 220u8, 105u8, 95u8,
-                            163u8,
-                        ]
-                    {
-                        let call = EnableDebugMode { debug_mode_on };
-                        Ok(::subxt::SubmittableExtrinsic::new(self.client, call))
-                    } else {
-                        Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                    }
+                ) -> ::subxt::tx::StaticTxPayload<EnableDebugMode> {
+                    ::subxt::tx::StaticTxPayload::new(
+                        "GearDebug",
+                        "enable_debug_mode",
+                        EnableDebugMode { debug_mode_on },
+                        [
+                            137u8, 214u8, 28u8, 54u8, 64u8, 111u8, 224u8, 56u8, 224u8, 1u8, 165u8,
+                            112u8, 207u8, 187u8, 241u8, 210u8, 111u8, 16u8, 51u8, 222u8, 113u8,
+                            184u8, 39u8, 100u8, 224u8, 84u8, 255u8, 22u8, 109u8, 151u8, 218u8,
+                            193u8,
+                        ],
+                    )
                 }
             }
         }
-        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+        #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
         pub type Event = runtime_types::pallet_gear_debug::pallet::Event;
         pub mod events {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct DebugMode(pub ::core::primitive::bool);
-            impl ::subxt::Event for DebugMode {
+            impl ::subxt::events::StaticEvent for DebugMode {
                 const PALLET: &'static str = "GearDebug";
                 const EVENT: &'static str = "DebugMode";
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             #[doc = "A snapshot of the debug data: programs and message queue ('debug mode' only)"]
             pub struct DebugDataSnapshot(pub runtime_types::pallet_gear_debug::pallet::DebugData);
-            impl ::subxt::Event for DebugDataSnapshot {
+            impl ::subxt::events::StaticEvent for DebugDataSnapshot {
                 const PALLET: &'static str = "GearDebug";
                 const EVENT: &'static str = "DebugDataSnapshot";
             }
         }
         pub mod storage {
             use super::runtime_types;
-            pub struct DebugMode;
-            impl ::subxt::StorageEntry for DebugMode {
-                const PALLET: &'static str = "GearDebug";
-                const STORAGE: &'static str = "DebugMode";
-                type Value = ::core::primitive::bool;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct RemapId;
-            impl ::subxt::StorageEntry for RemapId {
-                const PALLET: &'static str = "GearDebug";
-                const STORAGE: &'static str = "RemapId";
-                type Value = ::core::primitive::bool;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct ProgramsMap;
-            impl ::subxt::StorageEntry for ProgramsMap {
-                const PALLET: &'static str = "GearDebug";
-                const STORAGE: &'static str = "ProgramsMap";
-                type Value = ::subxt::KeyedVec<::subxt::sp_core::H256, ::subxt::sp_core::H256>;
-                fn key(&self) -> ::subxt::StorageEntryKey {
-                    ::subxt::StorageEntryKey::Plain
-                }
-            }
-            pub struct StorageApi<'a, T: ::subxt::Config> {
-                client: &'a ::subxt::Client<T>,
-            }
-            impl<'a, T: ::subxt::Config> StorageApi<'a, T> {
-                pub fn new(client: &'a ::subxt::Client<T>) -> Self {
-                    Self { client }
-                }
+            pub struct StorageApi;
+            impl StorageApi {
                 pub fn debug_mode(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::bool, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<DebugMode>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                14u8, 141u8, 16u8, 180u8, 246u8, 8u8, 143u8, 41u8, 101u8, 196u8,
-                                225u8, 107u8, 50u8, 5u8, 79u8, 15u8, 240u8, 4u8, 72u8, 55u8, 120u8,
-                                30u8, 191u8, 237u8, 95u8, 100u8, 191u8, 149u8, 99u8, 177u8, 223u8,
-                                55u8,
-                            ]
-                        {
-                            let entry = DebugMode;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::bool>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearDebug",
+                        "DebugMode",
+                        vec![],
+                        [
+                            14u8, 141u8, 16u8, 180u8, 246u8, 8u8, 143u8, 41u8, 101u8, 196u8, 225u8,
+                            107u8, 50u8, 5u8, 79u8, 15u8, 240u8, 4u8, 72u8, 55u8, 120u8, 30u8,
+                            191u8, 237u8, 95u8, 100u8, 191u8, 149u8, 99u8, 177u8, 223u8, 55u8,
+                        ],
+                    )
                 }
                 pub fn remap_id(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<::core::primitive::bool, ::subxt::BasicError>,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<RemapId>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                251u8, 54u8, 5u8, 155u8, 69u8, 125u8, 214u8, 51u8, 109u8, 66u8,
-                                47u8, 185u8, 202u8, 82u8, 231u8, 22u8, 15u8, 85u8, 242u8, 97u8,
-                                211u8, 203u8, 45u8, 17u8, 179u8, 101u8, 176u8, 24u8, 29u8, 122u8,
-                                122u8, 172u8,
-                            ]
-                        {
-                            let entry = RemapId;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<::core::primitive::bool>,
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearDebug",
+                        "RemapId",
+                        vec![],
+                        [
+                            251u8, 54u8, 5u8, 155u8, 69u8, 125u8, 214u8, 51u8, 109u8, 66u8, 47u8,
+                            185u8, 202u8, 82u8, 231u8, 22u8, 15u8, 85u8, 242u8, 97u8, 211u8, 203u8,
+                            45u8, 17u8, 179u8, 101u8, 176u8, 24u8, 29u8, 122u8, 122u8, 172u8,
+                        ],
+                    )
                 }
                 pub fn programs_map(
                     &self,
-                    block_hash: ::core::option::Option<T::Hash>,
-                ) -> impl ::core::future::Future<
-                    Output = ::core::result::Result<
-                        ::subxt::KeyedVec<::subxt::sp_core::H256, ::subxt::sp_core::H256>,
-                        ::subxt::BasicError,
+                ) -> ::subxt::storage::address::StaticStorageAddress<
+                    ::subxt::metadata::DecodeStaticType<
+                        ::subxt::utils::KeyedVec<
+                            ::subxt::ext::sp_core::H256,
+                            ::subxt::ext::sp_core::H256,
+                        >,
                     >,
-                > + 'a {
-                    let client = self.client;
-                    async move {
-                        let runtime_storage_hash = {
-                            let locked_metadata = client.metadata();
-                            let metadata = locked_metadata.read();
-                            match metadata.storage_hash::<ProgramsMap>() {
-                                Ok(hash) => hash,
-                                Err(e) => return Err(e.into()),
-                            }
-                        };
-                        if runtime_storage_hash
-                            == [
-                                0u8, 139u8, 116u8, 149u8, 117u8, 161u8, 144u8, 205u8, 206u8, 232u8,
-                                9u8, 45u8, 28u8, 174u8, 241u8, 6u8, 164u8, 254u8, 8u8, 230u8,
-                                102u8, 27u8, 193u8, 212u8, 176u8, 238u8, 192u8, 42u8, 83u8, 123u8,
-                                10u8, 184u8,
-                            ]
-                        {
-                            let entry = ProgramsMap;
-                            client.storage().fetch_or_default(&entry, block_hash).await
-                        } else {
-                            Err(::subxt::MetadataError::IncompatibleMetadata.into())
-                        }
-                    }
+                    ::subxt::storage::address::Yes,
+                    ::subxt::storage::address::Yes,
+                    (),
+                > {
+                    ::subxt::storage::address::StaticStorageAddress::new(
+                        "GearDebug",
+                        "ProgramsMap",
+                        vec![],
+                        [
+                            58u8, 255u8, 56u8, 115u8, 218u8, 94u8, 246u8, 0u8, 206u8, 143u8, 200u8,
+                            206u8, 156u8, 87u8, 197u8, 79u8, 127u8, 28u8, 229u8, 2u8, 148u8, 183u8,
+                            177u8, 152u8, 11u8, 129u8, 22u8, 157u8, 55u8, 228u8, 87u8, 224u8,
+                        ],
+                    )
                 }
             }
         }
@@ -8523,19 +5405,25 @@ pub mod api {
         use super::runtime_types;
         pub mod finality_grandpa {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct Equivocation<_0, _1, _2> {
                 pub round_number: ::core::primitive::u64,
                 pub identity: _0,
                 pub first: (_1, _2),
                 pub second: (_1, _2),
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct Precommit<_0, _1> {
                 pub target_hash: _0,
                 pub target_number: _1,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct Prevote<_0, _1> {
                 pub target_hash: _0,
                 pub target_number: _1,
@@ -8545,7 +5433,45 @@ pub mod api {
             use super::runtime_types;
             pub mod dispatch {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                pub enum DispatchClass {
+                    #[codec(index = 0)]
+                    Normal,
+                    #[codec(index = 1)]
+                    Operational,
+                    #[codec(index = 2)]
+                    Mandatory,
+                }
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                pub struct DispatchInfo {
+                    pub weight: runtime_types::sp_weights::weight_v2::Weight,
+                    pub class: runtime_types::frame_support::dispatch::DispatchClass,
+                    pub pays_fee: runtime_types::frame_support::dispatch::Pays,
+                }
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                pub enum Pays {
+                    #[codec(index = 0)]
+                    Yes,
+                    #[codec(index = 1)]
+                    No,
+                }
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                pub struct PerDispatchClass<_0> {
+                    pub normal: _0,
+                    pub operational: _0,
+                    pub mandatory: _0,
+                }
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum RawOrigin<_0> {
                     #[codec(index = 0)]
                     Root,
@@ -8562,7 +5488,9 @@ pub mod api {
                     pub mod misc {
                         use super::runtime_types;
                         #[derive(
-                            :: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug,
+                            :: subxt :: ext :: codec :: Decode,
+                            :: subxt :: ext :: codec :: Encode,
+                            Debug,
                         )]
                         pub enum BalanceStatus {
                             #[codec(index = 0)]
@@ -8573,42 +5501,6 @@ pub mod api {
                     }
                 }
             }
-            pub mod weights {
-                use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                pub enum DispatchClass {
-                    #[codec(index = 0)]
-                    Normal,
-                    #[codec(index = 1)]
-                    Operational,
-                    #[codec(index = 2)]
-                    Mandatory,
-                }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                pub struct DispatchInfo {
-                    pub weight: ::core::primitive::u64,
-                    pub class: runtime_types::frame_support::weights::DispatchClass,
-                    pub pays_fee: runtime_types::frame_support::weights::Pays,
-                }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                pub enum Pays {
-                    #[codec(index = 0)]
-                    Yes,
-                    #[codec(index = 1)]
-                    No,
-                }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                pub struct PerDispatchClass<_0> {
-                    pub normal: _0,
-                    pub operational: _0,
-                    pub mandatory: _0,
-                }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                pub struct RuntimeDbWeight {
-                    pub read: ::core::primitive::u64,
-                    pub write: ::core::primitive::u64,
-                }
-            }
         }
         pub mod frame_system {
             use super::runtime_types;
@@ -8616,67 +5508,106 @@ pub mod api {
                 use super::runtime_types;
                 pub mod check_genesis {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct CheckGenesis;
                 }
                 pub mod check_mortality {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct CheckMortality(pub runtime_types::sp_runtime::generic::era::Era);
                 }
                 pub mod check_non_zero_sender {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct CheckNonZeroSender;
                 }
                 pub mod check_nonce {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct CheckNonce(#[codec(compact)] pub ::core::primitive::u32);
                 }
                 pub mod check_spec_version {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct CheckSpecVersion;
                 }
                 pub mod check_tx_version {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct CheckTxVersion;
                 }
                 pub mod check_weight {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct CheckWeight;
                 }
             }
             pub mod limits {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct BlockLength {
-                    pub max: runtime_types::frame_support::weights::PerDispatchClass<
+                    pub max: runtime_types::frame_support::dispatch::PerDispatchClass<
                         ::core::primitive::u32,
                     >,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct BlockWeights {
-                    pub base_block: ::core::primitive::u64,
-                    pub max_block: ::core::primitive::u64,
-                    pub per_class: runtime_types::frame_support::weights::PerDispatchClass<
+                    pub base_block: runtime_types::sp_weights::weight_v2::Weight,
+                    pub max_block: runtime_types::sp_weights::weight_v2::Weight,
+                    pub per_class: runtime_types::frame_support::dispatch::PerDispatchClass<
                         runtime_types::frame_system::limits::WeightsPerClass,
                     >,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct WeightsPerClass {
-                    pub base_extrinsic: ::core::primitive::u64,
-                    pub max_extrinsic: ::core::option::Option<::core::primitive::u64>,
-                    pub max_total: ::core::option::Option<::core::primitive::u64>,
-                    pub reserved: ::core::option::Option<::core::primitive::u64>,
+                    pub base_extrinsic: runtime_types::sp_weights::weight_v2::Weight,
+                    pub max_extrinsic:
+                        ::core::option::Option<runtime_types::sp_weights::weight_v2::Weight>,
+                    pub max_total:
+                        ::core::option::Option<runtime_types::sp_weights::weight_v2::Weight>,
+                    pub reserved:
+                        ::core::option::Option<runtime_types::sp_weights::weight_v2::Weight>,
                 }
             }
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -8753,7 +5684,9 @@ pub mod api {
                         remark: ::std::vec::Vec<::core::primitive::u8>,
                     },
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Error for the System pallet"]
                 pub enum Error {
                     #[codec(index = 0)]
@@ -8779,19 +5712,21 @@ pub mod api {
                     #[doc = "The origin filter prevent the call to be dispatched."]
                     CallFiltered,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Event for the System pallet."]
                 pub enum Event {
                     #[codec(index = 0)]
                     #[doc = "An extrinsic completed successfully."]
                     ExtrinsicSuccess {
-                        dispatch_info: runtime_types::frame_support::weights::DispatchInfo,
+                        dispatch_info: runtime_types::frame_support::dispatch::DispatchInfo,
                     },
                     #[codec(index = 1)]
                     #[doc = "An extrinsic failed."]
                     ExtrinsicFailed {
                         dispatch_error: runtime_types::sp_runtime::DispatchError,
-                        dispatch_info: runtime_types::frame_support::weights::DispatchInfo,
+                        dispatch_info: runtime_types::frame_support::dispatch::DispatchInfo,
                     },
                     #[codec(index = 2)]
                     #[doc = "`:code` was updated."]
@@ -8799,22 +5734,24 @@ pub mod api {
                     #[codec(index = 3)]
                     #[doc = "A new account was created."]
                     NewAccount {
-                        account: ::subxt::sp_core::crypto::AccountId32,
+                        account: ::subxt::ext::sp_core::crypto::AccountId32,
                     },
                     #[codec(index = 4)]
                     #[doc = "An account was reaped."]
                     KilledAccount {
-                        account: ::subxt::sp_core::crypto::AccountId32,
+                        account: ::subxt::ext::sp_core::crypto::AccountId32,
                     },
                     #[codec(index = 5)]
                     #[doc = "On on-chain remark happened."]
                     Remarked {
-                        sender: ::subxt::sp_core::crypto::AccountId32,
-                        hash: ::subxt::sp_core::H256,
+                        sender: ::subxt::ext::sp_core::crypto::AccountId32,
+                        hash: ::subxt::ext::sp_core::H256,
                     },
                 }
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct AccountInfo<_0, _1> {
                 pub nonce: _0,
                 pub consumers: _0,
@@ -8822,19 +5759,25 @@ pub mod api {
                 pub sufficients: _0,
                 pub data: _1,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct EventRecord<_0, _1> {
                 pub phase: runtime_types::frame_system::Phase,
                 pub event: _0,
                 pub topics: ::std::vec::Vec<_1>,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct LastRuntimeUpgradeInfo {
                 #[codec(compact)]
                 pub spec_version: ::core::primitive::u32,
                 pub spec_name: ::std::string::String,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum Phase {
                 #[codec(index = 0)]
                 ApplyExtrinsic(::core::primitive::u32),
@@ -8848,7 +5791,9 @@ pub mod api {
             use super::runtime_types;
             pub mod event {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum CodeChangeKind<_0> {
                     #[codec(index = 0)]
                     Active {
@@ -8859,7 +5804,9 @@ pub mod api {
                     #[codec(index = 2)]
                     Reinstrumented,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum DispatchStatus {
                     #[codec(index = 0)]
                     Success,
@@ -8868,7 +5815,9 @@ pub mod api {
                     #[codec(index = 2)]
                     NotExecuted,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum Entry {
                     #[codec(index = 0)]
                     Init,
@@ -8877,22 +5826,30 @@ pub mod api {
                     #[codec(index = 2)]
                     Reply(runtime_types::gear_core::ids::MessageId),
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum MessageWaitedRuntimeReason {
                     #[codec(index = 0)]
                     WaitCalled,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum MessageWaitedSystemReason {
                     #[codec(index = 0)]
                     ProgramIsNotInitialized,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum MessageWokenRuntimeReason {
                     #[codec(index = 0)]
                     WakeCalled,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum MessageWokenSystemReason {
                     #[codec(index = 0)]
                     ProgramGotInitialized,
@@ -8901,7 +5858,9 @@ pub mod api {
                     #[codec(index = 2)]
                     OutOfRent,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum ProgramChangeKind<_0> {
                     #[codec(index = 0)]
                     Active { expiration: _0 },
@@ -8909,26 +5868,32 @@ pub mod api {
                     Inactive,
                     #[codec(index = 2)]
                     Paused {
-                        code_hash: ::subxt::sp_core::H256,
-                        memory_hash: ::subxt::sp_core::H256,
-                        waitlist_hash: ::subxt::sp_core::H256,
+                        code_hash: ::subxt::ext::sp_core::H256,
+                        memory_hash: ::subxt::ext::sp_core::H256,
+                        waitlist_hash: ::subxt::ext::sp_core::H256,
                     },
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum Reason<_0, _1> {
                     #[codec(index = 0)]
                     Runtime(_0),
                     #[codec(index = 1)]
                     System(_1),
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum UserMessageReadRuntimeReason {
                     #[codec(index = 0)]
                     MessageReplied,
                     #[codec(index = 1)]
                     MessageClaimed,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum UserMessageReadSystemReason {
                     #[codec(index = 0)]
                     OutOfRent,
@@ -8938,12 +5903,20 @@ pub mod api {
                 use super::runtime_types;
                 pub mod node {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct ChildrenRefs {
                         pub spec_refs: ::core::primitive::u32,
                         pub unspec_refs: ::core::primitive::u32,
                     }
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub enum GasNode<_0, _1, _2> {
                         #[codec(index = 0)]
                         External {
@@ -8968,7 +5941,11 @@ pub mod api {
                         #[codec(index = 4)]
                         UnspecifiedLocal { parent: _1, lock: _2 },
                     }
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub enum GasNodeId<_0, _1> {
                         #[codec(index = 0)]
                         Node(_0),
@@ -8981,7 +5958,11 @@ pub mod api {
                 use super::runtime_types;
                 pub mod task {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub enum ScheduledTask<_0> {
                         #[codec(index = 0)]
                         PauseProgram(runtime_types::gear_core::ids::ProgramId),
@@ -9011,7 +5992,9 @@ pub mod api {
                     pub mod dequeue {
                         use super::runtime_types;
                         #[derive(
-                            :: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug,
+                            :: subxt :: ext :: codec :: Decode,
+                            :: subxt :: ext :: codec :: Encode,
+                            Debug,
                         )]
                         pub struct LinkedNode<_0, _1> {
                             pub next: ::core::option::Option<_0>,
@@ -9021,27 +6004,37 @@ pub mod api {
                 }
                 pub mod primitives {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct Interval<_0> {
                         pub start: _0,
                         pub finish: _0,
                     }
                 }
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ActiveProgram {
                 pub allocations: ::std::vec::Vec<runtime_types::gear_core::memory::WasmPageNumber>,
                 pub pages_with_data: ::std::vec::Vec<runtime_types::gear_core::memory::PageNumber>,
-                pub code_hash: ::subxt::sp_core::H256,
+                pub code_hash: ::subxt::ext::sp_core::H256,
                 pub state: runtime_types::gear_common::ProgramState,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct CodeMetadata {
-                pub author: ::subxt::sp_core::H256,
+                pub author: ::subxt::ext::sp_core::H256,
                 #[codec(compact)]
                 pub block_number: ::core::primitive::u32,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum ProgramState {
                 #[codec(index = 0)]
                 Uninitialized {
@@ -9055,7 +6048,9 @@ pub mod api {
             use super::runtime_types;
             pub mod code {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct InstrumentedCode {
                     pub code: ::std::vec::Vec<::core::primitive::u8>,
                     pub exports: ::std::vec::Vec<runtime_types::gear_core::message::DispatchKind>,
@@ -9065,28 +6060,36 @@ pub mod api {
             }
             pub mod ids {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct CodeId(pub [::core::primitive::u8; 32usize]);
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct MessageId(pub [::core::primitive::u8; 32usize]);
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct ProgramId(pub [::core::primitive::u8; 32usize]);
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct ReservationId(pub [::core::primitive::u8; 32usize]);
             }
             pub mod memory {
                 use super::runtime_types;
                 #[derive(
-                    :: subxt :: codec :: CompactAs,
-                    :: subxt :: codec :: Decode,
-                    :: subxt :: codec :: Encode,
+                    :: subxt :: ext :: codec :: CompactAs,
+                    :: subxt :: ext :: codec :: Decode,
+                    :: subxt :: ext :: codec :: Encode,
                     Debug,
                 )]
                 pub struct PageNumber(pub ::core::primitive::u32);
                 #[derive(
-                    :: subxt :: codec :: CompactAs,
-                    :: subxt :: codec :: Decode,
-                    :: subxt :: codec :: Encode,
+                    :: subxt :: ext :: codec :: CompactAs,
+                    :: subxt :: ext :: codec :: Decode,
+                    :: subxt :: ext :: codec :: Encode,
                     Debug,
                 )]
                 pub struct WasmPageNumber(pub ::core::primitive::u32);
@@ -9095,7 +6098,11 @@ pub mod api {
                 use super::runtime_types;
                 pub mod common {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct ReplyDetails {
                         pub reply_to: runtime_types::gear_core::ids::MessageId,
                         pub exit_code: ::core::primitive::i32,
@@ -9103,9 +6110,13 @@ pub mod api {
                 }
                 pub mod context {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct ContextStore {
-                        pub outgoing: ::subxt::KeyedVec<
+                        pub outgoing: ::subxt::utils::KeyedVec<
                             ::core::primitive::u32,
                             ::core::option::Option<::std::vec::Vec<::core::primitive::u8>>,
                         >,
@@ -9117,7 +6128,11 @@ pub mod api {
                 }
                 pub mod stored {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct StoredDispatch {
                         pub kind: runtime_types::gear_core::message::DispatchKind,
                         pub message: runtime_types::gear_core::message::stored::StoredMessage,
@@ -9125,7 +6140,11 @@ pub mod api {
                             runtime_types::gear_core::message::context::ContextStore,
                         >,
                     }
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct StoredMessage {
                         pub id: runtime_types::gear_core::ids::MessageId,
                         pub source: runtime_types::gear_core::ids::ProgramId,
@@ -9138,7 +6157,9 @@ pub mod api {
                         >,
                     }
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum DispatchKind {
                     #[codec(index = 0)]
                     Init,
@@ -9151,8 +6172,27 @@ pub mod api {
         }
         pub mod gear_runtime {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-            pub enum Call {
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
+            pub enum OriginCaller {
+                #[codec(index = 0)]
+                system(
+                    runtime_types::frame_support::dispatch::RawOrigin<
+                        ::subxt::ext::sp_core::crypto::AccountId32,
+                    >,
+                ),
+                #[codec(index = 1)]
+                Void(runtime_types::sp_core::Void),
+            }
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
+            pub struct Runtime;
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
+            pub enum RuntimeCall {
                 #[codec(index = 0)]
                 System(runtime_types::frame_system::pallet::Call),
                 #[codec(index = 1)]
@@ -9178,8 +6218,10 @@ pub mod api {
                 #[codec(index = 16)]
                 GearDebug(runtime_types::pallet_gear_debug::pallet::Call),
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-            pub enum Event {
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
+            pub enum RuntimeEvent {
                 #[codec(index = 0)]
                 System(runtime_types::frame_system::pallet::Event),
                 #[codec(index = 4)]
@@ -9201,20 +6243,9 @@ pub mod api {
                 #[codec(index = 16)]
                 GearDebug(runtime_types::pallet_gear_debug::pallet::Event),
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-            pub enum OriginCaller {
-                #[codec(index = 0)]
-                system(
-                    runtime_types::frame_support::dispatch::RawOrigin<
-                        ::subxt::sp_core::crypto::AccountId32,
-                    >,
-                ),
-                #[codec(index = 1)]
-                Void(runtime_types::sp_core::Void),
-            }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-            pub struct Runtime;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct SessionKeys {
                 pub babe: runtime_types::sp_consensus_babe::app::Public,
                 pub grandpa: runtime_types::sp_finality_grandpa::app::Public,
@@ -9224,7 +6255,9 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -9238,8 +6271,10 @@ pub mod api {
                         >,
                     },
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/v3/runtime/events-and-errors)\n\t\t\tof this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)\n\t\t\tof this pallet.\n\t\t\t"]
                 pub enum Error {
                     #[codec(index = 0)]
                     #[doc = "The uncle parent not in the chain."]
@@ -9264,7 +6299,9 @@ pub mod api {
                     OldUncle,
                 }
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum UncleEntryItem<_0, _1, _2> {
                 #[codec(index = 0)]
                 InclusionHeight(_0),
@@ -9276,7 +6313,9 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -9326,8 +6365,10 @@ pub mod api {
                         config: runtime_types::sp_consensus_babe::digests::NextConfigDescriptor,
                     },
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/v3/runtime/events-and-errors)\n\t\t\tof this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)\n\t\t\tof this pallet.\n\t\t\t"]
                 pub enum Error {
                     #[codec(index = 0)]
                     #[doc = "An equivocation proof provided as part of an equivocation report is invalid."]
@@ -9348,7 +6389,9 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -9378,8 +6421,8 @@ pub mod api {
                     #[doc = "- Origin account is already in memory, so no DB operations for them."]
                     #[doc = "# </weight>"]
                     transfer {
-                        dest: ::subxt::sp_runtime::MultiAddress<
-                            ::subxt::sp_core::crypto::AccountId32,
+                        dest: ::subxt::ext::sp_runtime::MultiAddress<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
                             (),
                         >,
                         #[codec(compact)]
@@ -9395,8 +6438,8 @@ pub mod api {
                     #[doc = ""]
                     #[doc = "The dispatch origin for this call is `root`."]
                     set_balance {
-                        who: ::subxt::sp_runtime::MultiAddress<
-                            ::subxt::sp_core::crypto::AccountId32,
+                        who: ::subxt::ext::sp_runtime::MultiAddress<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
                             (),
                         >,
                         #[codec(compact)]
@@ -9412,12 +6455,12 @@ pub mod api {
                     #[doc = "  assumed to be in the overlay."]
                     #[doc = "# </weight>"]
                     force_transfer {
-                        source: ::subxt::sp_runtime::MultiAddress<
-                            ::subxt::sp_core::crypto::AccountId32,
+                        source: ::subxt::ext::sp_runtime::MultiAddress<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
                             (),
                         >,
-                        dest: ::subxt::sp_runtime::MultiAddress<
-                            ::subxt::sp_core::crypto::AccountId32,
+                        dest: ::subxt::ext::sp_runtime::MultiAddress<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
                             (),
                         >,
                         #[codec(compact)]
@@ -9431,8 +6474,8 @@ pub mod api {
                     #[doc = ""]
                     #[doc = "[`transfer`]: struct.Pallet.html#method.transfer"]
                     transfer_keep_alive {
-                        dest: ::subxt::sp_runtime::MultiAddress<
-                            ::subxt::sp_core::crypto::AccountId32,
+                        dest: ::subxt::ext::sp_runtime::MultiAddress<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
                             (),
                         >,
                         #[codec(compact)]
@@ -9457,8 +6500,8 @@ pub mod api {
                     #[doc = "- O(1). Just like transfer, but reading the user's transferable balance first."]
                     #[doc = "  #</weight>"]
                     transfer_all {
-                        dest: ::subxt::sp_runtime::MultiAddress<
-                            ::subxt::sp_core::crypto::AccountId32,
+                        dest: ::subxt::ext::sp_runtime::MultiAddress<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
                             (),
                         >,
                         keep_alive: ::core::primitive::bool,
@@ -9468,15 +6511,17 @@ pub mod api {
                     #[doc = ""]
                     #[doc = "Can only be called by ROOT."]
                     force_unreserve {
-                        who: ::subxt::sp_runtime::MultiAddress<
-                            ::subxt::sp_core::crypto::AccountId32,
+                        who: ::subxt::ext::sp_runtime::MultiAddress<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
                             (),
                         >,
                         amount: ::core::primitive::u128,
                     },
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/v3/runtime/events-and-errors)\n\t\t\tof this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)\n\t\t\tof this pallet.\n\t\t\t"]
                 pub enum Error {
                     #[codec(index = 0)]
                     #[doc = "Vesting balance too high to send value"]
@@ -9503,54 +6548,56 @@ pub mod api {
                     #[doc = "Number of named reserves exceed MaxReserves"]
                     TooManyReserves,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
                 pub enum Event {
                     #[codec(index = 0)]
                     #[doc = "An account was created with some free balance."]
                     Endowed {
-                        account: ::subxt::sp_core::crypto::AccountId32,
+                        account: ::subxt::ext::sp_core::crypto::AccountId32,
                         free_balance: ::core::primitive::u128,
                     },
                     #[codec(index = 1)]
                     #[doc = "An account was removed whose balance was non-zero but below ExistentialDeposit,"]
                     #[doc = "resulting in an outright loss."]
                     DustLost {
-                        account: ::subxt::sp_core::crypto::AccountId32,
+                        account: ::subxt::ext::sp_core::crypto::AccountId32,
                         amount: ::core::primitive::u128,
                     },
                     #[codec(index = 2)]
                     #[doc = "Transfer succeeded."]
                     Transfer {
-                        from: ::subxt::sp_core::crypto::AccountId32,
-                        to: ::subxt::sp_core::crypto::AccountId32,
+                        from: ::subxt::ext::sp_core::crypto::AccountId32,
+                        to: ::subxt::ext::sp_core::crypto::AccountId32,
                         amount: ::core::primitive::u128,
                     },
                     #[codec(index = 3)]
                     #[doc = "A balance was set by root."]
                     BalanceSet {
-                        who: ::subxt::sp_core::crypto::AccountId32,
+                        who: ::subxt::ext::sp_core::crypto::AccountId32,
                         free: ::core::primitive::u128,
                         reserved: ::core::primitive::u128,
                     },
                     #[codec(index = 4)]
                     #[doc = "Some balance was reserved (moved from free to reserved)."]
                     Reserved {
-                        who: ::subxt::sp_core::crypto::AccountId32,
+                        who: ::subxt::ext::sp_core::crypto::AccountId32,
                         amount: ::core::primitive::u128,
                     },
                     #[codec(index = 5)]
                     #[doc = "Some balance was unreserved (moved from reserved to free)."]
                     Unreserved {
-                        who: ::subxt::sp_core::crypto::AccountId32,
+                        who: ::subxt::ext::sp_core::crypto::AccountId32,
                         amount: ::core::primitive::u128,
                     },
                     #[codec(index = 6)]
                     #[doc = "Some balance was moved from the reserve of the first account to the second account."]
                     #[doc = "Final argument indicates the destination balance type."]
                     ReserveRepatriated {
-                        from: ::subxt::sp_core::crypto::AccountId32,
-                        to: ::subxt::sp_core::crypto::AccountId32,
+                        from: ::subxt::ext::sp_core::crypto::AccountId32,
+                        to: ::subxt::ext::sp_core::crypto::AccountId32,
                         amount: ::core::primitive::u128,
                         destination_status:
                             runtime_types::frame_support::traits::tokens::misc::BalanceStatus,
@@ -9558,37 +6605,43 @@ pub mod api {
                     #[codec(index = 7)]
                     #[doc = "Some amount was deposited (e.g. for transaction fees)."]
                     Deposit {
-                        who: ::subxt::sp_core::crypto::AccountId32,
+                        who: ::subxt::ext::sp_core::crypto::AccountId32,
                         amount: ::core::primitive::u128,
                     },
                     #[codec(index = 8)]
                     #[doc = "Some amount was withdrawn from the account (e.g. for transaction fees)."]
                     Withdraw {
-                        who: ::subxt::sp_core::crypto::AccountId32,
+                        who: ::subxt::ext::sp_core::crypto::AccountId32,
                         amount: ::core::primitive::u128,
                     },
                     #[codec(index = 9)]
                     #[doc = "Some amount was removed from the account (e.g. for misbehavior)."]
                     Slashed {
-                        who: ::subxt::sp_core::crypto::AccountId32,
+                        who: ::subxt::ext::sp_core::crypto::AccountId32,
                         amount: ::core::primitive::u128,
                     },
                 }
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct AccountData<_0> {
                 pub free: _0,
                 pub reserved: _0,
                 pub misc_frozen: _0,
                 pub fee_frozen: _0,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct BalanceLock<_0> {
                 pub id: [::core::primitive::u8; 8usize],
                 pub amount: _0,
                 pub reasons: runtime_types::pallet_balances::Reasons,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum Reasons {
                 #[codec(index = 0)]
                 Fee,
@@ -9597,14 +6650,18 @@ pub mod api {
                 #[codec(index = 2)]
                 All,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum Releases {
                 #[codec(index = 0)]
                 V1_0_0,
                 #[codec(index = 1)]
                 V2_0_0,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ReserveData<_0, _1> {
                 pub id: _0,
                 pub amount: _1,
@@ -9614,7 +6671,9 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -9767,8 +6826,10 @@ pub mod api {
                     #[doc = "Reset all pallet associated storage."]
                     reset,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/v3/runtime/events-and-errors)\n\t\t\tof this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)\n\t\t\tof this pallet.\n\t\t\t"]
                 pub enum Error {
                     #[codec(index = 0)]
                     #[doc = "Message wasn't found in mailbox."]
@@ -9822,15 +6883,17 @@ pub mod api {
                     #[doc = "Messages storage corrupted."]
                     MessagesStorageCorrupted,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
                 pub enum Event {
                     #[codec(index = 0)]
                     #[doc = "User send message to program, which was successfully"]
                     #[doc = "added to gear message queue."]
                     MessageEnqueued {
                         id: runtime_types::gear_core::ids::MessageId,
-                        source: ::subxt::sp_core::crypto::AccountId32,
+                        source: ::subxt::ext::sp_core::crypto::AccountId32,
                         destination: runtime_types::gear_core::ids::ProgramId,
                         entry: runtime_types::gear_common::event::Entry,
                     },
@@ -9855,7 +6918,7 @@ pub mod api {
                     #[doc = "The result of the messages processing within the block."]
                     MessagesDispatched {
                         total: ::core::primitive::u32,
-                        statuses: ::subxt::KeyedVec<
+                        statuses: ::subxt::utils::KeyedVec<
                             runtime_types::gear_core::ids::MessageId,
                             runtime_types::gear_common::event::DispatchStatus,
                         >,
@@ -9908,7 +6971,9 @@ pub mod api {
             }
             pub mod schedule {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct HostFnWeights {
                     pub alloc: ::core::primitive::u64,
                     pub gr_gas_available: ::core::primitive::u64,
@@ -9945,7 +7010,9 @@ pub mod api {
                     pub gr_create_program_wgas_per_byte: ::core::primitive::u64,
                     pub gas: ::core::primitive::u64,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct InstructionWeights {
                     pub version: ::core::primitive::u32,
                     pub i64const: ::core::primitive::u32,
@@ -9999,7 +7066,9 @@ pub mod api {
                     pub i64rotl: ::core::primitive::u32,
                     pub i64rotr: ::core::primitive::u32,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct Limits {
                     pub event_topics: ::core::primitive::u32,
                     pub stack_height: ::core::primitive::u32,
@@ -10013,14 +7082,18 @@ pub mod api {
                     pub payload_len: ::core::primitive::u32,
                     pub code_len: ::core::primitive::u32,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct MemoryWeights {
                     pub initial_cost: ::core::primitive::u64,
                     pub allocation_cost: ::core::primitive::u64,
                     pub grow_cost: ::core::primitive::u64,
                     pub load_cost: ::core::primitive::u64,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct Schedule {
                     pub limits: runtime_types::pallet_gear::schedule::Limits,
                     pub instruction_weights:
@@ -10034,7 +7107,9 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -10051,18 +7126,24 @@ pub mod api {
                         debug_mode_on: ::core::primitive::bool,
                     },
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct DebugData {
                     pub dispatch_queue:
                         ::std::vec::Vec<runtime_types::gear_core::message::stored::StoredDispatch>,
                     pub programs:
                         ::std::vec::Vec<runtime_types::pallet_gear_debug::pallet::ProgramDetails>,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/v3/runtime/events-and-errors)\n\t\t\tof this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)\n\t\t\tof this pallet.\n\t\t\t"]
                 pub enum Error {}
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
                 pub enum Event {
                     #[codec(index = 0)]
                     DebugMode(::core::primitive::bool),
@@ -10070,21 +7151,27 @@ pub mod api {
                     #[doc = "A snapshot of the debug data: programs and message queue ('debug mode' only)"]
                     DebugDataSnapshot(runtime_types::pallet_gear_debug::pallet::DebugData),
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct ProgramDetails {
                     pub id: runtime_types::gear_core::ids::ProgramId,
                     pub state: runtime_types::pallet_gear_debug::pallet::ProgramState,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct ProgramInfo {
                     pub static_pages: runtime_types::gear_core::memory::WasmPageNumber,
-                    pub persistent_pages: ::subxt::KeyedVec<
+                    pub persistent_pages: ::subxt::utils::KeyedVec<
                         runtime_types::gear_core::memory::PageNumber,
                         ::std::vec::Vec<::core::primitive::u8>,
                     >,
-                    pub code_hash: ::subxt::sp_core::H256,
+                    pub code_hash: ::subxt::ext::sp_core::H256,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum ProgramState {
                     #[codec(index = 0)]
                     Active(runtime_types::pallet_gear_debug::pallet::ProgramInfo),
@@ -10097,8 +7184,10 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/v3/runtime/events-and-errors)\n\t\t\tof this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)\n\t\t\tof this pallet.\n\t\t\t"]
                 pub enum Error {
                     #[codec(index = 0)]
                     Forbidden,
@@ -10144,8 +7233,10 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/v3/runtime/events-and-errors)\n\t\t\tof this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)\n\t\t\tof this pallet.\n\t\t\t"]
                 pub enum Error {
                     #[codec(index = 0)]
                     #[doc = "Occurs when given key already exists in queue."]
@@ -10194,7 +7285,9 @@ pub mod api {
         }
         pub mod pallet_gear_payment {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct CustomChargeTransactionPayment<_0>(
                 pub runtime_types::pallet_transaction_payment::ChargeTransactionPayment,
                 #[codec(skip)] pub ::core::marker::PhantomData<_0>,
@@ -10204,7 +7297,9 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -10222,19 +7317,21 @@ pub mod api {
                     #[doc = ""]
                     resume_program {
                         program_id: runtime_types::gear_core::ids::ProgramId,
-                        memory_pages: ::subxt::KeyedVec<
+                        memory_pages: ::subxt::utils::KeyedVec<
                             runtime_types::gear_core::memory::PageNumber,
                             ::std::vec::Vec<::core::primitive::u8>,
                         >,
-                        wait_list: ::subxt::KeyedVec<
+                        wait_list: ::subxt::utils::KeyedVec<
                             runtime_types::gear_core::ids::MessageId,
                             runtime_types::gear_core::message::stored::StoredDispatch,
                         >,
                         value: ::core::primitive::u128,
                     },
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/v3/runtime/events-and-errors)\n\t\t\tof this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)\n\t\t\tof this pallet.\n\t\t\t"]
                 pub enum Error {
                     #[codec(index = 0)]
                     PausedProgramNotFound,
@@ -10249,8 +7346,10 @@ pub mod api {
                     #[codec(index = 5)]
                     InvalidPageData,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
                 pub enum Event {
                     #[codec(index = 0)]
                     #[doc = "Program has been successfully resumed"]
@@ -10262,12 +7361,14 @@ pub mod api {
             }
             pub mod pause {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct PausedProgram {
                     pub program_id: runtime_types::gear_core::ids::ProgramId,
                     pub program: runtime_types::gear_common::ActiveProgram,
-                    pub pages_hash: ::subxt::sp_core::H256,
-                    pub wait_list_hash: ::subxt::sp_core::H256,
+                    pub pages_hash: ::subxt::ext::sp_core::H256,
+                    pub wait_list_hash: ::subxt::ext::sp_core::H256,
                     pub waiting_init: ::std::vec::Vec<runtime_types::gear_core::ids::MessageId>,
                 }
             }
@@ -10276,8 +7377,10 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/v3/runtime/events-and-errors)\n\t\t\tof this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)\n\t\t\tof this pallet.\n\t\t\t"]
                 pub enum Error {
                     #[codec(index = 0)]
                     #[doc = "Occurs when given task already exists in task pool."]
@@ -10292,7 +7395,9 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -10303,7 +7408,7 @@ pub mod api {
                     report_equivocation {
                         equivocation_proof: ::std::boxed::Box<
                             runtime_types::sp_finality_grandpa::EquivocationProof<
-                                ::subxt::sp_core::H256,
+                                ::subxt::ext::sp_core::H256,
                                 ::core::primitive::u32,
                             >,
                         >,
@@ -10322,7 +7427,7 @@ pub mod api {
                     report_equivocation_unsigned {
                         equivocation_proof: ::std::boxed::Box<
                             runtime_types::sp_finality_grandpa::EquivocationProof<
-                                ::subxt::sp_core::H256,
+                                ::subxt::ext::sp_core::H256,
                                 ::core::primitive::u32,
                             >,
                         >,
@@ -10346,8 +7451,10 @@ pub mod api {
                         best_finalized_block_number: ::core::primitive::u32,
                     },
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/v3/runtime/events-and-errors)\n\t\t\tof this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)\n\t\t\tof this pallet.\n\t\t\t"]
                 pub enum Error {
                     #[codec(index = 0)]
                     #[doc = "Attempt to signal GRANDPA pause when the authority set isn't live"]
@@ -10373,8 +7480,10 @@ pub mod api {
                     #[doc = "A given equivocation report is valid but already previously reported."]
                     DuplicateOffenceReport,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
                 pub enum Event {
                     #[codec(index = 0)]
                     #[doc = "New authority set has been applied."]
@@ -10392,18 +7501,22 @@ pub mod api {
                     Resumed,
                 }
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct StoredPendingChange<_0> {
                 pub scheduled_at: _0,
                 pub delay: _0,
                 pub next_authorities:
-                    runtime_types::sp_runtime::bounded::weak_bounded_vec::WeakBoundedVec<(
+                    runtime_types::sp_core::bounded::weak_bounded_vec::WeakBoundedVec<(
                         runtime_types::sp_finality_grandpa::app::Public,
                         ::core::primitive::u64,
                     )>,
                 pub forced: ::core::option::Option<_0>,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum StoredState<_0> {
                 #[codec(index = 0)]
                 Live,
@@ -10419,7 +7532,9 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -10460,7 +7575,9 @@ pub mod api {
                     #[doc = "# </weight>"]
                     purge_keys,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Error for the session pallet."]
                 pub enum Error {
                     #[codec(index = 0)]
@@ -10479,8 +7596,10 @@ pub mod api {
                     #[doc = "Key setting account is not live, so it's impossible to associate keys."]
                     NoAccount,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
                 pub enum Event {
                     #[codec(index = 0)]
                     #[doc = "New session has happened. Note that the argument is the session index, not the"]
@@ -10495,7 +7614,9 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -10510,7 +7631,7 @@ pub mod api {
                     #[doc = "- Weight of derivative `call` execution + 10,000."]
                     #[doc = "# </weight>"]
                     sudo {
-                        call: ::std::boxed::Box<runtime_types::gear_runtime::Call>,
+                        call: ::std::boxed::Box<runtime_types::gear_runtime::RuntimeCall>,
                     },
                     #[codec(index = 1)]
                     #[doc = "Authenticates the sudo key and dispatches a function call with `Root` origin."]
@@ -10524,8 +7645,8 @@ pub mod api {
                     #[doc = "- The weight of this call is defined by the caller."]
                     #[doc = "# </weight>"]
                     sudo_unchecked_weight {
-                        call: ::std::boxed::Box<runtime_types::gear_runtime::Call>,
-                        weight: ::core::primitive::u64,
+                        call: ::std::boxed::Box<runtime_types::gear_runtime::RuntimeCall>,
+                        weight: runtime_types::sp_weights::weight_v2::Weight,
                     },
                     #[codec(index = 2)]
                     #[doc = "Authenticates the current sudo key and sets the given AccountId (`new`) as the new sudo"]
@@ -10539,8 +7660,8 @@ pub mod api {
                     #[doc = "- One DB change."]
                     #[doc = "# </weight>"]
                     set_key {
-                        new: ::subxt::sp_runtime::MultiAddress<
-                            ::subxt::sp_core::crypto::AccountId32,
+                        new: ::subxt::ext::sp_runtime::MultiAddress<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
                             (),
                         >,
                     },
@@ -10557,22 +7678,26 @@ pub mod api {
                     #[doc = "- Weight of derivative `call` execution + 10,000."]
                     #[doc = "# </weight>"]
                     sudo_as {
-                        who: ::subxt::sp_runtime::MultiAddress<
-                            ::subxt::sp_core::crypto::AccountId32,
+                        who: ::subxt::ext::sp_runtime::MultiAddress<
+                            ::subxt::ext::sp_core::crypto::AccountId32,
                             (),
                         >,
-                        call: ::std::boxed::Box<runtime_types::gear_runtime::Call>,
+                        call: ::std::boxed::Box<runtime_types::gear_runtime::RuntimeCall>,
                     },
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Error for the Sudo pallet"]
                 pub enum Error {
                     #[codec(index = 0)]
                     #[doc = "Sender must be the Sudo account"]
                     RequireSudo,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
                 pub enum Event {
                     #[codec(index = 0)]
                     #[doc = "A sudo just took place. \\[result\\]"]
@@ -10583,7 +7708,8 @@ pub mod api {
                     #[codec(index = 1)]
                     #[doc = "The \\[sudoer\\] just switched identity; the old key is supplied if one existed."]
                     KeyChanged {
-                        old_sudoer: ::core::option::Option<::subxt::sp_core::crypto::AccountId32>,
+                        old_sudoer:
+                            ::core::option::Option<::subxt::ext::sp_core::crypto::AccountId32>,
                     },
                     #[codec(index = 2)]
                     #[doc = "A sudo just took place. \\[result\\]"]
@@ -10598,7 +7724,9 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -10629,22 +7757,28 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
                 pub enum Event {
                     #[codec(index = 0)]
                     #[doc = "A transaction fee `actual_fee`, of which `tip` was added to the minimum inclusion fee,"]
                     #[doc = "has been paid by `who`."]
                     TransactionFeePaid {
-                        who: ::subxt::sp_core::crypto::AccountId32,
+                        who: ::subxt::ext::sp_core::crypto::AccountId32,
                         actual_fee: ::core::primitive::u128,
                         tip: ::core::primitive::u128,
                     },
                 }
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ChargeTransactionPayment(#[codec(compact)] pub ::core::primitive::u128);
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum Releases {
                 #[codec(index = 0)]
                 V1Ancient,
@@ -10656,7 +7790,9 @@ pub mod api {
             use super::runtime_types;
             pub mod pallet {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 #[doc = "Contains one variant per dispatchable that can be called by an extrinsic."]
                 pub enum Call {
                     #[codec(index = 0)]
@@ -10680,7 +7816,7 @@ pub mod api {
                     #[doc = "and the error of the failed call. If all were successful, then the `BatchCompleted`"]
                     #[doc = "event is deposited."]
                     batch {
-                        calls: ::std::vec::Vec<runtime_types::gear_runtime::Call>,
+                        calls: ::std::vec::Vec<runtime_types::gear_runtime::RuntimeCall>,
                     },
                     #[codec(index = 1)]
                     #[doc = "Send a call through an indexed pseudonym of the sender."]
@@ -10698,7 +7834,7 @@ pub mod api {
                     #[doc = "The dispatch origin for this call must be _Signed_."]
                     as_derivative {
                         index: ::core::primitive::u16,
-                        call: ::std::boxed::Box<runtime_types::gear_runtime::Call>,
+                        call: ::std::boxed::Box<runtime_types::gear_runtime::RuntimeCall>,
                     },
                     #[codec(index = 2)]
                     #[doc = "Send a batch of dispatch calls and atomically execute them."]
@@ -10716,7 +7852,7 @@ pub mod api {
                     #[doc = "- Complexity: O(C) where C is the number of calls to be batched."]
                     #[doc = "# </weight>"]
                     batch_all {
-                        calls: ::std::vec::Vec<runtime_types::gear_runtime::Call>,
+                        calls: ::std::vec::Vec<runtime_types::gear_runtime::RuntimeCall>,
                     },
                     #[codec(index = 3)]
                     #[doc = "Dispatches a function call with a provided origin."]
@@ -10731,7 +7867,7 @@ pub mod api {
                     #[doc = "# </weight>"]
                     dispatch_as {
                         as_origin: ::std::boxed::Box<runtime_types::gear_runtime::OriginCaller>,
-                        call: ::std::boxed::Box<runtime_types::gear_runtime::Call>,
+                        call: ::std::boxed::Box<runtime_types::gear_runtime::RuntimeCall>,
                     },
                     #[codec(index = 4)]
                     #[doc = "Send a batch of dispatch calls."]
@@ -10749,18 +7885,22 @@ pub mod api {
                     #[doc = "- Complexity: O(C) where C is the number of calls to be batched."]
                     #[doc = "# </weight>"]
                     force_batch {
-                        calls: ::std::vec::Vec<runtime_types::gear_runtime::Call>,
+                        calls: ::std::vec::Vec<runtime_types::gear_runtime::RuntimeCall>,
                     },
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/v3/runtime/events-and-errors)\n\t\t\tof this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tCustom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)\n\t\t\tof this pallet.\n\t\t\t"]
                 pub enum Error {
                     #[codec(index = 0)]
                     #[doc = "Too many calls batched."]
                     TooManyCalls,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/v3/runtime/events-and-errors) emitted\n\t\t\tby this pallet.\n\t\t\t"]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
+                #[doc = "\n\t\t\tThe [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted\n\t\t\tby this pallet.\n\t\t\t"]
                 pub enum Event {
                     #[codec(index = 0)]
                     #[doc = "Batch of dispatches did not complete fully. Index of first failing dispatch given, as"]
@@ -10794,7 +7934,9 @@ pub mod api {
         }
         pub mod primitive_types {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct H256(pub [::core::primitive::u8; 32usize]);
         }
         pub mod sp_arithmetic {
@@ -10802,9 +7944,9 @@ pub mod api {
             pub mod fixed_point {
                 use super::runtime_types;
                 #[derive(
-                    :: subxt :: codec :: CompactAs,
-                    :: subxt :: codec :: Decode,
-                    :: subxt :: codec :: Encode,
+                    :: subxt :: ext :: codec :: CompactAs,
+                    :: subxt :: ext :: codec :: Decode,
+                    :: subxt :: ext :: codec :: Encode,
                     Debug,
                 )]
                 pub struct FixedU128(pub ::core::primitive::u128);
@@ -10812,9 +7954,9 @@ pub mod api {
             pub mod per_things {
                 use super::runtime_types;
                 #[derive(
-                    :: subxt :: codec :: CompactAs,
-                    :: subxt :: codec :: Decode,
-                    :: subxt :: codec :: Encode,
+                    :: subxt :: ext :: codec :: CompactAs,
+                    :: subxt :: ext :: codec :: Decode,
+                    :: subxt :: ext :: codec :: Encode,
                     Debug,
                 )]
                 pub struct Perbill(pub ::core::primitive::u32);
@@ -10824,12 +7966,16 @@ pub mod api {
             use super::runtime_types;
             pub mod app {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct Public(pub runtime_types::sp_core::sr25519::Public);
             }
             pub mod digests {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum NextConfigDescriptor {
                     #[codec(index = 1)]
                     V1 {
@@ -10837,7 +7983,9 @@ pub mod api {
                         allowed_slots: runtime_types::sp_consensus_babe::AllowedSlots,
                     },
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum PreDigest {
                     #[codec(index = 1)]
                     Primary(runtime_types::sp_consensus_babe::digests::PrimaryPreDigest),
@@ -10848,19 +7996,25 @@ pub mod api {
                     #[codec(index = 3)]
                     SecondaryVRF(runtime_types::sp_consensus_babe::digests::SecondaryVRFPreDigest),
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct PrimaryPreDigest {
                     pub authority_index: ::core::primitive::u32,
                     pub slot: runtime_types::sp_consensus_slots::Slot,
                     pub vrf_output: [::core::primitive::u8; 32usize],
                     pub vrf_proof: [::core::primitive::u8; 64usize],
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct SecondaryPlainPreDigest {
                     pub authority_index: ::core::primitive::u32,
                     pub slot: runtime_types::sp_consensus_slots::Slot,
                 }
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct SecondaryVRFPreDigest {
                     pub authority_index: ::core::primitive::u32,
                     pub slot: runtime_types::sp_consensus_slots::Slot,
@@ -10868,7 +8022,9 @@ pub mod api {
                     pub vrf_proof: [::core::primitive::u8; 64usize],
                 }
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum AllowedSlots {
                 #[codec(index = 0)]
                 PrimarySlots,
@@ -10877,7 +8033,9 @@ pub mod api {
                 #[codec(index = 2)]
                 PrimaryAndSecondaryVRFSlots,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct BabeEpochConfiguration {
                 pub c: (::core::primitive::u64, ::core::primitive::u64),
                 pub allowed_slots: runtime_types::sp_consensus_babe::AllowedSlots,
@@ -10885,7 +8043,9 @@ pub mod api {
         }
         pub mod sp_consensus_slots {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct EquivocationProof<_0, _1> {
                 pub offender: _1,
                 pub slot: runtime_types::sp_consensus_slots::Slot,
@@ -10893,54 +8053,97 @@ pub mod api {
                 pub second_header: _0,
             }
             #[derive(
-                :: subxt :: codec :: CompactAs,
-                :: subxt :: codec :: Decode,
-                :: subxt :: codec :: Encode,
+                :: subxt :: ext :: codec :: CompactAs,
+                :: subxt :: ext :: codec :: Decode,
+                :: subxt :: ext :: codec :: Encode,
                 Debug,
             )]
             pub struct Slot(pub ::core::primitive::u64);
         }
         pub mod sp_core {
             use super::runtime_types;
+            pub mod bounded {
+                use super::runtime_types;
+                pub mod bounded_vec {
+                    use super::runtime_types;
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
+                    pub struct BoundedVec<_0>(pub ::std::vec::Vec<_0>);
+                }
+                pub mod weak_bounded_vec {
+                    use super::runtime_types;
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
+                    pub struct WeakBoundedVec<_0>(pub ::std::vec::Vec<_0>);
+                }
+            }
             pub mod crypto {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct AccountId32(pub [::core::primitive::u8; 32usize]);
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct KeyTypeId(pub [::core::primitive::u8; 4usize]);
             }
             pub mod ecdsa {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct Signature(pub [::core::primitive::u8; 65usize]);
             }
             pub mod ed25519 {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct Public(pub [::core::primitive::u8; 32usize]);
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct Signature(pub [::core::primitive::u8; 64usize]);
             }
             pub mod sr25519 {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct Public(pub [::core::primitive::u8; 32usize]);
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct Signature(pub [::core::primitive::u8; 64usize]);
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum Void {}
         }
         pub mod sp_finality_grandpa {
             use super::runtime_types;
             pub mod app {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct Public(pub runtime_types::sp_core::ed25519::Public);
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct Signature(pub runtime_types::sp_core::ed25519::Signature);
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum Equivocation<_0, _1> {
                 #[codec(index = 0)]
                 Prevote(
@@ -10959,7 +8162,9 @@ pub mod api {
                     >,
                 ),
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct EquivocationProof<_0, _1> {
                 pub set_id: ::core::primitive::u64,
                 pub equivocation: runtime_types::sp_finality_grandpa::Equivocation<_0, _1>,
@@ -10967,29 +8172,24 @@ pub mod api {
         }
         pub mod sp_runtime {
             use super::runtime_types;
-            pub mod bounded {
-                use super::runtime_types;
-                pub mod bounded_vec {
-                    use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                    pub struct BoundedVec<_0>(pub ::std::vec::Vec<_0>);
-                }
-                pub mod weak_bounded_vec {
-                    use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
-                    pub struct WeakBoundedVec<_0>(pub ::std::vec::Vec<_0>);
-                }
-            }
             pub mod generic {
                 use super::runtime_types;
                 pub mod digest {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct Digest {
                         pub logs:
                             ::std::vec::Vec<runtime_types::sp_runtime::generic::digest::DigestItem>,
                     }
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub enum DigestItem {
                         #[codec(index = 6)]
                         PreRuntime(
@@ -11014,7 +8214,11 @@ pub mod api {
                 }
                 pub mod era {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub enum Era {
                         #[codec(index = 0)]
                         Immortal,
@@ -11532,13 +8736,17 @@ pub mod api {
                 }
                 pub mod header {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct Header<_0, _1> {
-                        pub parent_hash: ::subxt::sp_core::H256,
+                        pub parent_hash: ::subxt::ext::sp_core::H256,
                         #[codec(compact)]
                         pub number: _0,
-                        pub state_root: ::subxt::sp_core::H256,
-                        pub extrinsics_root: ::subxt::sp_core::H256,
+                        pub state_root: ::subxt::ext::sp_core::H256,
+                        pub extrinsics_root: ::subxt::ext::sp_core::H256,
                         pub digest: runtime_types::sp_runtime::generic::digest::Digest,
                         #[codec(skip)]
                         pub __subxt_unused_type_params: ::core::marker::PhantomData<_1>,
@@ -11546,7 +8754,11 @@ pub mod api {
                 }
                 pub mod unchecked_extrinsic {
                     use super::runtime_types;
-                    #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                    #[derive(
+                        :: subxt :: ext :: codec :: Decode,
+                        :: subxt :: ext :: codec :: Encode,
+                        Debug,
+                    )]
                     pub struct UncheckedExtrinsic<_0, _1, _2, _3>(
                         pub ::std::vec::Vec<::core::primitive::u8>,
                         #[codec(skip)] pub ::core::marker::PhantomData<(_0, _1, _2, _3)>,
@@ -11555,7 +8767,9 @@ pub mod api {
             }
             pub mod multiaddress {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub enum MultiAddress<_0, _1> {
                     #[codec(index = 0)]
                     Id(_0),
@@ -11571,10 +8785,14 @@ pub mod api {
             }
             pub mod traits {
                 use super::runtime_types;
-                #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+                #[derive(
+                    :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+                )]
                 pub struct BlakeTwo256;
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum ArithmeticError {
                 #[codec(index = 0)]
                 Underflow,
@@ -11583,7 +8801,9 @@ pub mod api {
                 #[codec(index = 2)]
                 DivisionByZero,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum DispatchError {
                 #[codec(index = 0)]
                 Other,
@@ -11606,12 +8826,16 @@ pub mod api {
                 #[codec(index = 9)]
                 Transactional(runtime_types::sp_runtime::TransactionalError),
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct ModuleError {
                 pub index: ::core::primitive::u8,
                 pub error: [::core::primitive::u8; 4usize],
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum MultiSignature {
                 #[codec(index = 0)]
                 Ed25519(runtime_types::sp_core::ed25519::Signature),
@@ -11620,7 +8844,9 @@ pub mod api {
                 #[codec(index = 2)]
                 Ecdsa(runtime_types::sp_core::ecdsa::Signature),
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum TokenError {
                 #[codec(index = 0)]
                 NoFunds,
@@ -11637,7 +8863,9 @@ pub mod api {
                 #[codec(index = 6)]
                 Unsupported,
             }
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub enum TransactionalError {
                 #[codec(index = 0)]
                 LimitReached,
@@ -11647,7 +8875,9 @@ pub mod api {
         }
         pub mod sp_version {
             use super::runtime_types;
-            #[derive(:: subxt :: codec :: Decode, :: subxt :: codec :: Encode, Debug)]
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
             pub struct RuntimeVersion {
                 pub spec_name: ::std::string::String,
                 pub impl_name: ::std::string::String,
@@ -11660,254 +8890,176 @@ pub mod api {
                 pub state_version: ::core::primitive::u8,
             }
         }
+        pub mod sp_weights {
+            use super::runtime_types;
+            pub mod weight_v2 {
+                use super::runtime_types;
+                #[derive(
+                    :: subxt :: ext :: codec :: CompactAs,
+                    :: subxt :: ext :: codec :: Decode,
+                    :: subxt :: ext :: codec :: Encode,
+                    Debug,
+                )]
+                pub struct Weight {
+                    pub ref_time: ::core::primitive::u64,
+                }
+            }
+            #[derive(
+                :: subxt :: ext :: codec :: Decode, :: subxt :: ext :: codec :: Encode, Debug,
+            )]
+            pub struct RuntimeDbWeight {
+                pub read: ::core::primitive::u64,
+                pub write: ::core::primitive::u64,
+            }
+        }
     }
-    #[doc = r" The default error type returned when there is a runtime issue."]
+    #[doc = r" The default error type returned when there is a runtime issue,"]
+    #[doc = r" exposed here for ease of use."]
     pub type DispatchError = runtime_types::sp_runtime::DispatchError;
-    impl ::subxt::HasModuleError for runtime_types::sp_runtime::DispatchError {
-        fn module_error_data(&self) -> Option<::subxt::ModuleErrorData> {
-            if let Self::Module(module_error) = self {
-                Some(::subxt::ModuleErrorData {
-                    pallet_index: module_error.index,
-                    error: module_error.error,
-                })
-            } else {
-                None
-            }
+    pub fn constants() -> ConstantsApi {
+        ConstantsApi
+    }
+    pub fn storage() -> StorageApi {
+        StorageApi
+    }
+    pub fn tx() -> TransactionApi {
+        TransactionApi
+    }
+    pub struct ConstantsApi;
+    impl ConstantsApi {
+        pub fn system(&self) -> system::constants::ConstantsApi {
+            system::constants::ConstantsApi
+        }
+        pub fn timestamp(&self) -> timestamp::constants::ConstantsApi {
+            timestamp::constants::ConstantsApi
+        }
+        pub fn authorship(&self) -> authorship::constants::ConstantsApi {
+            authorship::constants::ConstantsApi
+        }
+        pub fn babe(&self) -> babe::constants::ConstantsApi {
+            babe::constants::ConstantsApi
+        }
+        pub fn grandpa(&self) -> grandpa::constants::ConstantsApi {
+            grandpa::constants::ConstantsApi
+        }
+        pub fn balances(&self) -> balances::constants::ConstantsApi {
+            balances::constants::ConstantsApi
+        }
+        pub fn transaction_payment(&self) -> transaction_payment::constants::ConstantsApi {
+            transaction_payment::constants::ConstantsApi
+        }
+        pub fn utility(&self) -> utility::constants::ConstantsApi {
+            utility::constants::ConstantsApi
+        }
+        pub fn gear_scheduler(&self) -> gear_scheduler::constants::ConstantsApi {
+            gear_scheduler::constants::ConstantsApi
+        }
+        pub fn gear_gas(&self) -> gear_gas::constants::ConstantsApi {
+            gear_gas::constants::ConstantsApi
+        }
+        pub fn gear(&self) -> gear::constants::ConstantsApi {
+            gear::constants::ConstantsApi
         }
     }
-    pub struct RuntimeApi<T: ::subxt::Config, X> {
-        pub client: ::subxt::Client<T>,
-        marker: ::core::marker::PhantomData<X>,
-    }
-    impl<T: ::subxt::Config, X> Clone for RuntimeApi<T, X> {
-        fn clone(&self) -> Self {
-            Self {
-                client: self.client.clone(),
-                marker: ::core::marker::PhantomData,
-            }
+    pub struct StorageApi;
+    impl StorageApi {
+        pub fn system(&self) -> system::storage::StorageApi {
+            system::storage::StorageApi
+        }
+        pub fn timestamp(&self) -> timestamp::storage::StorageApi {
+            timestamp::storage::StorageApi
+        }
+        pub fn authorship(&self) -> authorship::storage::StorageApi {
+            authorship::storage::StorageApi
+        }
+        pub fn babe(&self) -> babe::storage::StorageApi {
+            babe::storage::StorageApi
+        }
+        pub fn grandpa(&self) -> grandpa::storage::StorageApi {
+            grandpa::storage::StorageApi
+        }
+        pub fn balances(&self) -> balances::storage::StorageApi {
+            balances::storage::StorageApi
+        }
+        pub fn transaction_payment(&self) -> transaction_payment::storage::StorageApi {
+            transaction_payment::storage::StorageApi
+        }
+        pub fn session(&self) -> session::storage::StorageApi {
+            session::storage::StorageApi
+        }
+        pub fn sudo(&self) -> sudo::storage::StorageApi {
+            sudo::storage::StorageApi
+        }
+        pub fn gear_program(&self) -> gear_program::storage::StorageApi {
+            gear_program::storage::StorageApi
+        }
+        pub fn gear_messenger(&self) -> gear_messenger::storage::StorageApi {
+            gear_messenger::storage::StorageApi
+        }
+        pub fn gear_scheduler(&self) -> gear_scheduler::storage::StorageApi {
+            gear_scheduler::storage::StorageApi
+        }
+        pub fn gear_gas(&self) -> gear_gas::storage::StorageApi {
+            gear_gas::storage::StorageApi
+        }
+        pub fn gear_debug(&self) -> gear_debug::storage::StorageApi {
+            gear_debug::storage::StorageApi
         }
     }
-    impl<T, X> ::core::convert::From<::subxt::Client<T>> for RuntimeApi<T, X>
-    where
-        T: ::subxt::Config,
-        X: ::subxt::extrinsic::ExtrinsicParams<T>,
-    {
-        fn from(client: ::subxt::Client<T>) -> Self {
-            Self {
-                client,
-                marker: ::core::marker::PhantomData,
-            }
+    pub struct TransactionApi;
+    impl TransactionApi {
+        pub fn system(&self) -> system::calls::TransactionApi {
+            system::calls::TransactionApi
+        }
+        pub fn timestamp(&self) -> timestamp::calls::TransactionApi {
+            timestamp::calls::TransactionApi
+        }
+        pub fn authorship(&self) -> authorship::calls::TransactionApi {
+            authorship::calls::TransactionApi
+        }
+        pub fn babe(&self) -> babe::calls::TransactionApi {
+            babe::calls::TransactionApi
+        }
+        pub fn grandpa(&self) -> grandpa::calls::TransactionApi {
+            grandpa::calls::TransactionApi
+        }
+        pub fn balances(&self) -> balances::calls::TransactionApi {
+            balances::calls::TransactionApi
+        }
+        pub fn session(&self) -> session::calls::TransactionApi {
+            session::calls::TransactionApi
+        }
+        pub fn sudo(&self) -> sudo::calls::TransactionApi {
+            sudo::calls::TransactionApi
+        }
+        pub fn utility(&self) -> utility::calls::TransactionApi {
+            utility::calls::TransactionApi
+        }
+        pub fn gear_program(&self) -> gear_program::calls::TransactionApi {
+            gear_program::calls::TransactionApi
+        }
+        pub fn gear(&self) -> gear::calls::TransactionApi {
+            gear::calls::TransactionApi
+        }
+        pub fn gear_debug(&self) -> gear_debug::calls::TransactionApi {
+            gear_debug::calls::TransactionApi
         }
     }
-    impl<'a, T, X> RuntimeApi<T, X>
-    where
-        T: ::subxt::Config,
-        X: ::subxt::extrinsic::ExtrinsicParams<T>,
-    {
-        pub fn validate_metadata(&'a self) -> Result<(), ::subxt::MetadataError> {
-            let runtime_metadata_hash = {
-                let locked_metadata = self.client.metadata();
-                let metadata = locked_metadata.read();
-                metadata.metadata_hash(&PALLETS)
-            };
-            if runtime_metadata_hash
-                != [
-                    213u8, 6u8, 119u8, 199u8, 32u8, 177u8, 131u8, 211u8, 245u8, 216u8, 162u8, 63u8,
-                    36u8, 233u8, 225u8, 35u8, 64u8, 98u8, 119u8, 80u8, 149u8, 65u8, 42u8, 14u8,
-                    57u8, 41u8, 60u8, 70u8, 252u8, 81u8, 229u8, 136u8,
-                ]
-            {
-                Err(::subxt::MetadataError::IncompatibleMetadata)
-            } else {
-                Ok(())
-            }
-        }
-        pub fn constants(&'a self) -> ConstantsApi<'a, T> {
-            ConstantsApi {
-                client: &self.client,
-            }
-        }
-        pub fn storage(&'a self) -> StorageApi<'a, T> {
-            StorageApi {
-                client: &self.client,
-            }
-        }
-        pub fn tx(&'a self) -> TransactionApi<'a, T, X> {
-            TransactionApi {
-                client: &self.client,
-                marker: ::core::marker::PhantomData,
-            }
-        }
-        pub fn events(&'a self) -> EventsApi<'a, T> {
-            EventsApi {
-                client: &self.client,
-            }
-        }
-    }
-    pub struct EventsApi<'a, T: ::subxt::Config> {
-        client: &'a ::subxt::Client<T>,
-    }
-    impl<'a, T: ::subxt::Config> EventsApi<'a, T> {
-        pub async fn at(
-            &self,
-            block_hash: T::Hash,
-        ) -> Result<::subxt::events::Events<T, Event>, ::subxt::BasicError> {
-            ::subxt::events::at::<T, Event>(self.client, block_hash).await
-        }
-        pub async fn subscribe(
-            &self,
-        ) -> Result<
-            ::subxt::events::EventSubscription<'a, ::subxt::events::EventSub<T::Header>, T, Event>,
-            ::subxt::BasicError,
-        > {
-            ::subxt::events::subscribe::<T, Event>(self.client).await
-        }
-        pub async fn subscribe_finalized(
-            &self,
-        ) -> Result<
-            ::subxt::events::EventSubscription<
-                'a,
-                ::subxt::events::FinalizedEventSub<'a, T::Header>,
-                T,
-                Event,
-            >,
-            ::subxt::BasicError,
-        > {
-            ::subxt::events::subscribe_finalized::<T, Event>(self.client).await
-        }
-    }
-    pub struct ConstantsApi<'a, T: ::subxt::Config> {
-        client: &'a ::subxt::Client<T>,
-    }
-    impl<'a, T: ::subxt::Config> ConstantsApi<'a, T> {
-        pub fn system(&self) -> system::constants::ConstantsApi<'a, T> {
-            system::constants::ConstantsApi::new(self.client)
-        }
-        pub fn timestamp(&self) -> timestamp::constants::ConstantsApi<'a, T> {
-            timestamp::constants::ConstantsApi::new(self.client)
-        }
-        pub fn authorship(&self) -> authorship::constants::ConstantsApi<'a, T> {
-            authorship::constants::ConstantsApi::new(self.client)
-        }
-        pub fn babe(&self) -> babe::constants::ConstantsApi<'a, T> {
-            babe::constants::ConstantsApi::new(self.client)
-        }
-        pub fn grandpa(&self) -> grandpa::constants::ConstantsApi<'a, T> {
-            grandpa::constants::ConstantsApi::new(self.client)
-        }
-        pub fn balances(&self) -> balances::constants::ConstantsApi<'a, T> {
-            balances::constants::ConstantsApi::new(self.client)
-        }
-        pub fn transaction_payment(&self) -> transaction_payment::constants::ConstantsApi<'a, T> {
-            transaction_payment::constants::ConstantsApi::new(self.client)
-        }
-        pub fn utility(&self) -> utility::constants::ConstantsApi<'a, T> {
-            utility::constants::ConstantsApi::new(self.client)
-        }
-        pub fn gear_scheduler(&self) -> gear_scheduler::constants::ConstantsApi<'a, T> {
-            gear_scheduler::constants::ConstantsApi::new(self.client)
-        }
-        pub fn gear_gas(&self) -> gear_gas::constants::ConstantsApi<'a, T> {
-            gear_gas::constants::ConstantsApi::new(self.client)
-        }
-        pub fn gear(&self) -> gear::constants::ConstantsApi<'a, T> {
-            gear::constants::ConstantsApi::new(self.client)
-        }
-    }
-    pub struct StorageApi<'a, T: ::subxt::Config> {
-        client: &'a ::subxt::Client<T>,
-    }
-    impl<'a, T> StorageApi<'a, T>
-    where
-        T: ::subxt::Config,
-    {
-        pub fn system(&self) -> system::storage::StorageApi<'a, T> {
-            system::storage::StorageApi::new(self.client)
-        }
-        pub fn timestamp(&self) -> timestamp::storage::StorageApi<'a, T> {
-            timestamp::storage::StorageApi::new(self.client)
-        }
-        pub fn authorship(&self) -> authorship::storage::StorageApi<'a, T> {
-            authorship::storage::StorageApi::new(self.client)
-        }
-        pub fn babe(&self) -> babe::storage::StorageApi<'a, T> {
-            babe::storage::StorageApi::new(self.client)
-        }
-        pub fn grandpa(&self) -> grandpa::storage::StorageApi<'a, T> {
-            grandpa::storage::StorageApi::new(self.client)
-        }
-        pub fn balances(&self) -> balances::storage::StorageApi<'a, T> {
-            balances::storage::StorageApi::new(self.client)
-        }
-        pub fn transaction_payment(&self) -> transaction_payment::storage::StorageApi<'a, T> {
-            transaction_payment::storage::StorageApi::new(self.client)
-        }
-        pub fn session(&self) -> session::storage::StorageApi<'a, T> {
-            session::storage::StorageApi::new(self.client)
-        }
-        pub fn sudo(&self) -> sudo::storage::StorageApi<'a, T> {
-            sudo::storage::StorageApi::new(self.client)
-        }
-        pub fn gear_program(&self) -> gear_program::storage::StorageApi<'a, T> {
-            gear_program::storage::StorageApi::new(self.client)
-        }
-        pub fn gear_messenger(&self) -> gear_messenger::storage::StorageApi<'a, T> {
-            gear_messenger::storage::StorageApi::new(self.client)
-        }
-        pub fn gear_scheduler(&self) -> gear_scheduler::storage::StorageApi<'a, T> {
-            gear_scheduler::storage::StorageApi::new(self.client)
-        }
-        pub fn gear_gas(&self) -> gear_gas::storage::StorageApi<'a, T> {
-            gear_gas::storage::StorageApi::new(self.client)
-        }
-        pub fn gear_debug(&self) -> gear_debug::storage::StorageApi<'a, T> {
-            gear_debug::storage::StorageApi::new(self.client)
-        }
-    }
-    pub struct TransactionApi<'a, T: ::subxt::Config, X> {
-        client: &'a ::subxt::Client<T>,
-        marker: ::core::marker::PhantomData<X>,
-    }
-    impl<'a, T, X> TransactionApi<'a, T, X>
-    where
-        T: ::subxt::Config,
-        X: ::subxt::extrinsic::ExtrinsicParams<T>,
-    {
-        pub fn system(&self) -> system::calls::TransactionApi<'a, T, X> {
-            system::calls::TransactionApi::new(self.client)
-        }
-        pub fn timestamp(&self) -> timestamp::calls::TransactionApi<'a, T, X> {
-            timestamp::calls::TransactionApi::new(self.client)
-        }
-        pub fn authorship(&self) -> authorship::calls::TransactionApi<'a, T, X> {
-            authorship::calls::TransactionApi::new(self.client)
-        }
-        pub fn babe(&self) -> babe::calls::TransactionApi<'a, T, X> {
-            babe::calls::TransactionApi::new(self.client)
-        }
-        pub fn grandpa(&self) -> grandpa::calls::TransactionApi<'a, T, X> {
-            grandpa::calls::TransactionApi::new(self.client)
-        }
-        pub fn balances(&self) -> balances::calls::TransactionApi<'a, T, X> {
-            balances::calls::TransactionApi::new(self.client)
-        }
-        pub fn session(&self) -> session::calls::TransactionApi<'a, T, X> {
-            session::calls::TransactionApi::new(self.client)
-        }
-        pub fn sudo(&self) -> sudo::calls::TransactionApi<'a, T, X> {
-            sudo::calls::TransactionApi::new(self.client)
-        }
-        pub fn utility(&self) -> utility::calls::TransactionApi<'a, T, X> {
-            utility::calls::TransactionApi::new(self.client)
-        }
-        pub fn gear_program(&self) -> gear_program::calls::TransactionApi<'a, T, X> {
-            gear_program::calls::TransactionApi::new(self.client)
-        }
-        pub fn gear(&self) -> gear::calls::TransactionApi<'a, T, X> {
-            gear::calls::TransactionApi::new(self.client)
-        }
-        pub fn gear_debug(&self) -> gear_debug::calls::TransactionApi<'a, T, X> {
-            gear_debug::calls::TransactionApi::new(self.client)
+    #[doc = r" check whether the Client you are using is aligned with the statically generated codegen."]
+    pub fn validate_codegen<T: ::subxt::Config, C: ::subxt::client::OfflineClientT<T>>(
+        client: &C,
+    ) -> Result<(), ::subxt::error::MetadataError> {
+        let runtime_metadata_hash = client.metadata().metadata_hash(&PALLETS);
+        if runtime_metadata_hash
+            != [
+                76u8, 183u8, 163u8, 216u8, 96u8, 71u8, 80u8, 72u8, 8u8, 16u8, 238u8, 212u8, 126u8,
+                89u8, 121u8, 171u8, 42u8, 76u8, 183u8, 12u8, 216u8, 25u8, 178u8, 82u8, 169u8,
+                107u8, 54u8, 64u8, 97u8, 198u8, 136u8, 91u8,
+            ]
+        {
+            Err(::subxt::error::MetadataError::IncompatibleMetadata)
+        } else {
+            Ok(())
         }
     }
 }
