@@ -1538,18 +1538,17 @@ name = "gcore"
 version = "0.1.0"
 source = "git+https://github.com/gear-tech/gear.git#76e10a2e447b1f61a4b88a0ed103ce7c480a7fe0"
 dependencies = [
- "gear-core-errors",
+ "gear-core-errors 0.1.0 (git+https://github.com/gear-tech/gear.git)",
  "parity-scale-codec",
 ]
 
 [[package]]
 name = "gear-core"
 version = "0.1.0"
-source = "git+https://github.com/gear-tech/gear.git#76e10a2e447b1f61a4b88a0ed103ce7c480a7fe0"
 dependencies = [
  "blake2-rfc",
  "derive_more",
- "gear-core-errors",
+ "gear-core-errors 0.1.0",
  "hex",
  "log",
  "parity-scale-codec",
@@ -1558,6 +1557,13 @@ dependencies = [
  "scale-info",
  "static_assertions",
  "wasm-instrument",
+]
+
+[[package]]
+name = "gear-core-errors"
+version = "0.1.0"
+dependencies = [
+ "derive_more",
 ]
 
 [[package]]
@@ -1706,7 +1712,7 @@ dependencies = [
  "futures",
  "galloc",
  "gcore",
- "gear-core-errors",
+ "gear-core-errors 0.1.0 (git+https://github.com/gear-tech/gear.git)",
  "gstd-codegen",
  "hex",
  "parity-scale-codec",
