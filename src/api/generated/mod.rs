@@ -1,17 +1,16 @@
 mod metadata;
 
+pub use metadata::*;
+
+use self::api::runtime_types::gear_runtime::RuntimeEvent;
+use self::api::Event as ApiEvent;
 use gear_core::message::ReplyDetails;
 use gear_core::message::StoredMessage;
-pub use metadata::*;
-use parity_scale_codec::{Decode, Encode};
-
 use gear_core::{ids, message};
 use metadata::api::runtime_types::{
     gear_common::event::*, gear_core::ids as generated_ids, gear_core::message as generated_message,
 };
-
-use self::api::runtime_types::gear_runtime::Event as RuntimeEvent;
-use self::api::Event as ApiEvent;
+use parity_scale_codec::{Decode, Encode};
 
 impl From<ids::MessageId> for generated_ids::MessageId {
     fn from(other: ids::MessageId) -> Self {
@@ -101,5 +100,7 @@ macro_rules! impl_basic {
 }
 
 impl_basic! {
-    ApiEvent, RuntimeEvent, generated_ids::MessageId, generated_ids::ProgramId, generated_ids::CodeId, Reason<UserMessageReadRuntimeReason, UserMessageReadSystemReason>
+    ApiEvent, RuntimeEvent, generated_ids::MessageId,
+    generated_ids::ProgramId, generated_ids::CodeId,
+    Reason<UserMessageReadRuntimeReason, UserMessageReadSystemReason>
 }
