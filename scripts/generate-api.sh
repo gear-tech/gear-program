@@ -37,15 +37,31 @@ USAGE:
 EOF
 }
 
+###############################
+# Check the version of subxt-cli.
+#################################
+function check-subxt-cli-version() {
+    if ! [ "$(subxt --version) == *0.22.0" ]; then
+        echo "gear-program requires subxt-cli 0.22.0, override it? [Y/N]"
+        read answer
+
+        if [[ $answer == [yY] ]]; then
+            return 0;
+        fi
+    fi
+
+    return 1;
+}
+
 ###############################################################
 # Check if the required binaries are installed in the machine.
 ###############################################################
 function pre-check() {
-    echo 'downloading the latest gear-node...';
-    ${SCRIPTS}/download-gear.sh "${ROOT_DIR}/res/"
+    # echo 'downloading the latest gear-node...';
+    # ${SCRIPTS}/download-gear.sh "${ROOT_DIR}/res/"
 
-    if ! [ -x "$(command -v subxt)" ]; then
-        echo 'subxt not found, installing subxt...';
+    if ! [ -x "$(command -v subxt)" ] || check-subxt-cli-version ; then
+        echo 'installing subxt...';
 
         if ! [ -x "$(command -v cargo)" ]; then
             echo 'cargo not found, installing rust...';
