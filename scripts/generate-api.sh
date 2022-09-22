@@ -57,8 +57,8 @@ function check-subxt-cli-version() {
 # Check if the required binaries are installed in the machine.
 ###############################################################
 function pre-check() {
-    # echo 'downloading the latest gear-node...';
-    # ${SCRIPTS}/download-gear.sh "${ROOT_DIR}/res/"
+    echo 'downloading the latest gear-node...';
+    ${SCRIPTS}/download-gear.sh "${ROOT_DIR}/res/"
 
     if ! [ -x "$(command -v subxt)" ] || check-subxt-cli-version ; then
         echo 'installing subxt...';
