@@ -2,7 +2,7 @@
 //!
 //! subxt codegen | rustfmt --edition=2021
 //!
-//! spec_version: 230
+//! spec_version: 270
 #![allow(clippy::all)]
 #![allow(missing_docs)]
 #[allow(dead_code, unused_imports, non_camel_case_types)]
@@ -1551,9 +1551,10 @@ pub mod api {
                     let metadata = locked_metadata.read();
                     if metadata.constant_hash("System", "Version")?
                         == [
-                            22u8, 187u8, 151u8, 172u8, 216u8, 198u8, 150u8, 162u8, 213u8, 59u8,
-                            243u8, 147u8, 25u8, 114u8, 3u8, 74u8, 213u8, 53u8, 210u8, 71u8, 101u8,
-                            35u8, 171u8, 63u8, 193u8, 16u8, 236u8, 233u8, 133u8, 90u8, 217u8, 94u8,
+                            12u8, 210u8, 76u8, 143u8, 149u8, 235u8, 186u8, 32u8, 244u8, 252u8,
+                            232u8, 199u8, 141u8, 26u8, 229u8, 167u8, 90u8, 113u8, 179u8, 101u8,
+                            254u8, 243u8, 234u8, 122u8, 34u8, 41u8, 32u8, 249u8, 123u8, 79u8,
+                            170u8, 231u8,
                         ]
                     {
                         let pallet = metadata.pallet("System")?;
@@ -8216,9 +8217,9 @@ pub mod api {
                     let metadata = locked_metadata.read();
                     if metadata.constant_hash("Gear", "Schedule")?
                         == [
-                            216u8, 53u8, 213u8, 122u8, 171u8, 229u8, 87u8, 40u8, 0u8, 157u8, 67u8,
-                            172u8, 55u8, 82u8, 225u8, 157u8, 9u8, 232u8, 112u8, 33u8, 201u8, 111u8,
-                            203u8, 254u8, 4u8, 47u8, 65u8, 216u8, 59u8, 85u8, 188u8, 21u8,
+                            190u8, 249u8, 239u8, 138u8, 76u8, 42u8, 7u8, 80u8, 198u8, 241u8, 123u8,
+                            55u8, 30u8, 245u8, 2u8, 11u8, 199u8, 93u8, 105u8, 198u8, 118u8, 254u8,
+                            198u8, 41u8, 202u8, 168u8, 165u8, 146u8, 28u8, 56u8, 198u8, 124u8,
                         ]
                     {
                         let pallet = metadata.pallet("Gear")?;
@@ -9934,7 +9935,7 @@ pub mod api {
                     pub gr_leave: ::core::primitive::u64,
                     pub gr_wait: ::core::primitive::u64,
                     pub gr_wait_for: ::core::primitive::u64,
-                    pub gr_wait_no_more: ::core::primitive::u64,
+                    pub gr_wait_up_to: ::core::primitive::u64,
                     pub gr_wake: ::core::primitive::u64,
                     pub gr_create_program_wgas: ::core::primitive::u64,
                     pub gr_create_program_wgas_per_byte: ::core::primitive::u64,
@@ -11727,9 +11728,9 @@ pub mod api {
             };
             if runtime_metadata_hash
                 != [
-                    9u8, 214u8, 155u8, 148u8, 246u8, 19u8, 188u8, 52u8, 132u8, 227u8, 207u8, 186u8,
-                    8u8, 62u8, 3u8, 138u8, 234u8, 9u8, 242u8, 187u8, 227u8, 123u8, 47u8, 40u8,
-                    45u8, 216u8, 160u8, 76u8, 111u8, 3u8, 13u8, 59u8,
+                    227u8, 91u8, 77u8, 81u8, 119u8, 27u8, 121u8, 48u8, 23u8, 209u8, 102u8, 192u8,
+                    48u8, 10u8, 39u8, 2u8, 198u8, 171u8, 172u8, 214u8, 99u8, 11u8, 67u8, 171u8,
+                    51u8, 232u8, 148u8, 100u8, 13u8, 36u8, 244u8, 57u8,
                 ]
             {
                 Err(::subxt::MetadataError::IncompatibleMetadata)
