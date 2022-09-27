@@ -1,3 +1,11 @@
+[home]: https://github.com/gear-tech/gear/tree/master/program
+
+# DEPRECATED
+
+This repository was deprecated and migrated to [gear-tech/gear/program][home].
+
+---
+
 # gear-program
 
 [![CI][ci1]][ci2]
