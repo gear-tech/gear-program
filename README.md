@@ -34,7 +34,8 @@ Usages:
 
 ```sh
 $ gear
-gear-program 0.1.4
+gear-program 0.1.5
+Commands of cli `gear`
 
 USAGE:
     gear [FLAGS] [OPTIONS] <SUBCOMMAND>
@@ -49,20 +50,21 @@ OPTIONS:
     -p, --passwd <passwd>        Password of the signer account
 
 SUBCOMMANDS:
-    claim       Claim value from mailbox
-    create      Deploy program to gear node
-    help        Prints this message or the help of the given subcommand(s)
-    info        Get account info from ss58address
-    key         Keypair utils
-    login       Log in to account
-    meta        Show metadata structure, read types from registry, etc
-    new         Create a new gear program
-    program     Read program state, etc
-    reply       Sends a reply message
-    send        Sends a message to a program or to another account
-    transfer    Transfer value
-    update      Update self from crates.io or github
-    upload      Saves program `code` in storage
+    claim             Claim value from mailbox
+    create            Deploy program to gear node
+    help              Prints this message or the help of the given subcommand(s)
+    info              Get account info from ss58address
+    key               Keypair utils
+    login             Log in to account
+    meta              Show metadata structure, read types from registry, etc
+    new               Create a new gear program
+    program           Read program state, etc
+    reply             Sends a reply message
+    send              Sends a message to a program or to another account
+    transfer          Transfer value
+    update            Update self from crates.io or github
+    upload            Saves program `code` in storage
+    upload-program    Deploy program to gear node
 ```
 
 Now, let's create a <kbd>new</kbd> gear program and upload it to the staging testnet!
@@ -105,6 +107,25 @@ $ gear upload hello-world/target/wasm32-unknown-unknown/release/hello_world.wasm
 [INFO ] Successfully submited call Gear::upload_code 0x2c54…e9d9 at 0x4409…fa04!
 [INFO ]         Balance spent: 3724868714
 ```
+
+## Development
+
+This repo provides CI checking if the spec-version of gear-program and gear are matched per day,
+since [gear](https://github.com/gear-tech/gear) is also in development, the spec-version may change
+frequently.
+
+If only spec-version checking failed in the CI, it's okay to use the current version of gear-program
+since the api hasn't been changed, otherwise, please open an issue to remind the developers to update
+the api.
+
+For updating the api in local environment, run `scripts/generate-api.sh` to do it, which will
+
+1. Install the latest version of gear binary to directory `res`
+2. Install subxt-cli if need
+3. Generate api to `src/generated/metadata.rs`
+
+If the program can be compiled and all of the tests passed, the api of gear-program is up-to-date,
+and everything works.
 
 ## LICENSE
 

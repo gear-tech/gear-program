@@ -29,7 +29,7 @@ fn check_spec_version() -> Result<()> {
 #[tokio::test]
 async fn api_timeout() {
     assert!(matches!(
-        Api::new_with_timeout(None, Some(10)).await.err(),
+        Api::new_with_timeout(None, Some(1)).await.err(),
         Some(Error::Ws(
             jsonrpsee_client_transport::ws::WsHandshakeError::Timeout(..)
         ))
